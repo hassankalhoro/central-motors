@@ -26,13 +26,15 @@ export default function CategoryPage({ params }: { params: { category: string } 
     <>
       <PageHero eyebrow="Category" title={category.name} subtitle={category.blurb} back={{ href: "/products", label: "All models" }} />
 
-      <div className="container-site flex flex-wrap gap-2.5 pt-6">
-        {categories.map((c) => (
-          <Link key={c.slug} href={`/products/${c.slug}`} className={cn("chip", c.slug === category.slug && "chip-active")}>
-            {c.name}
-          </Link>
-        ))}
-      </div>
+      {categories.length > 1 && (
+        <div className="container-site flex flex-wrap gap-2.5 pt-6">
+          {categories.map((c) => (
+            <Link key={c.slug} href={`/products/${c.slug}`} className={cn("chip", c.slug === category.slug && "chip-active")}>
+              {c.name}
+            </Link>
+          ))}
+        </div>
+      )}
 
       <section className="container-site pb-20 pt-6">
         {products.length === 0 ? (

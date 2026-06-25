@@ -1,15 +1,15 @@
 // Static page content ported from the approved design prototype.
 
 export const heroSlides = [
-  { slug: "swift", cat: "Automobiles", tagline: "The hatchback that loves a corner.", specs: ["1.3L Petrol", "5-Speed", "5 Seats"] },
-  { slug: "vitara", cat: "Automobiles", tagline: "A go-anywhere compact SUV.", specs: ["1.6L", "ALLGRIP 4WD", "SUV"] },
-  { slug: "jimny", cat: "Automobiles", tagline: "Built to go off the map.", specs: ["1.3L", "4x4", "Ladder Frame"] },
-  { slug: "ciaz", cat: "Automobiles", tagline: "Executive comfort, Suzuki value.", specs: ["1.4L", "Sedan", "Automatic"] },
-  { slug: "gsx-r-600", cat: "Heavy Bikes", tagline: "Track-bred supersport DNA.", specs: ["600cc", "Inline-4", "Superbike"] },
+  { slug: "swift", cat: "Automobiles", tagline: "Sporty styling, premium hatchback.", specs: ["Six Airbags", "ABS with EBD", "Push Start"] },
+  { slug: "fronx", cat: "Automobiles", tagline: "Suzuki's bold new XUV.", specs: ["SUV", "Cruise Control", "Wireless Charger"] },
+  { slug: "cultus", cat: "Automobiles", tagline: "Practical, efficient, everyday.", specs: ["Alloy Wheels", "ABS", "Dual Airbags"] },
+  { slug: "alto", cat: "Automobiles", tagline: "The economical city hatchback.", specs: ["Power Steering", "ABS", "Airbags"] },
+  { slug: "every", cat: "Automobiles", tagline: "Versatile van for work and family.", specs: ["Van", "Keyless Entry", "Power Windows"] },
 ];
 
 export const homeStats = [
-  { num: "19", label: "Suzuki models in stock" },
+  { num: "6", label: "Current Suzuki models" },
   { num: "3S", label: "Sales · Service · Parts" },
   { num: "13+", label: "Years serving Rawalpindi" },
 ];
@@ -26,7 +26,7 @@ export const valueProps = [
 ];
 
 export const aboutStats = [
-  { num: "19", label: "Suzuki models" },
+  { num: "6", label: "Suzuki models" },
   { num: "13+", label: "Years in business" },
   { num: "3S", label: "Sales · Service · Parts" },
   { num: "1000s", label: "Happy customers" },

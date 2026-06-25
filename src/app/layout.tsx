@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   },
   description:
     "Authorised 3S Suzuki dealership in Rawalpindi — explore the latest Suzuki cars, bikes, prices, and book sales or service inquiries.",
-  keywords: ["Suzuki", "Rawalpindi", "Central Motors", "Suzuki dealer", "Swift", "Cultus", "WagonR", "Vitara"],
+  keywords: ["Suzuki", "Rawalpindi", "Central Motors", "Suzuki dealer", "Alto", "WagonR", "Cultus", "Swift", "Every", "Fronx"],
   icons: { icon: "/favicon.png", apple: "/favicon.png" },
   openGraph: {
     type: "website",

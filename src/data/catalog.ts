@@ -1,7 +1,6 @@
 import type { Category } from "./types";
 
+// Single lineup — Suzuki passenger automobiles (motorbikes removed per client).
 export const categories: Category[] = [
-  { slug: "automobiles", name: "Automobiles", glyph: "A", blurb: "Hatchbacks, sedans, SUVs, MPVs and pickups for every Pakistani family and business." },
-  { slug: "heavy-bikes", name: "Heavy Bikes", glyph: "H", blurb: "Big-displacement Suzuki motorcycles — from the Inazuma tourer to the GSX-R supersport." },
-  { slug: "motorcycles", name: "Motorcycles", glyph: "M", blurb: "Economical, dependable commuter bikes that keep the country moving." },
+  { slug: "automobiles", name: "Automobiles", glyph: "A", blurb: "Suzuki cars, SUVs and vans for every Pakistani family and business." },
 ];

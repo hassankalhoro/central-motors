@@ -5,7 +5,7 @@ import Well from "@/components/site/Well";
 import Reveal from "@/components/site/Reveal";
 import { formatPKR, formatDateShort } from "@/lib/utils";
 import {
-  getCategories, getCategoryCount, getFeaturedProducts, getProductBySlug,
+  getFeaturedProducts, getProductBySlug,
   getNews, heroSlides, homeStats, valueProps,
 } from "@/data";
 
@@ -17,7 +17,6 @@ export default function Home() {
       priceLabel: formatPKR(p?.startPrice ?? 0), image: p?.images?.[0] ?? null, blur: p?.blur?.[0],
     };
   });
-  const categories = getCategories();
   const featured = getFeaturedProducts(8);
   const news = getNews(2);
 
@@ -37,40 +36,18 @@ export default function Home() {
         </div>
       </section>
 
-      {/* categories */}
+      {/* lineup */}
       <section className="container-site pt-[70px]">
         <div className="flex flex-wrap items-end justify-between gap-5">
           <div>
-            <div className="eyebrow">Browse by type</div>
-            <h2 className="section-title mt-2.5">Find your Suzuki</h2>
+            <div className="eyebrow">Showroom</div>
+            <h2 className="section-title mt-2.5">The Suzuki lineup</h2>
           </div>
           <Link href="/products" className="text-sm font-bold text-suzuki-blue">View all models →</Link>
         </div>
-        <div className="mt-[30px] grid grid-cols-1 gap-[18px] sm:grid-cols-2 lg:grid-cols-3">
-          {categories.map((c, idx) => (
-            <Reveal key={c.slug} delay={idx * 70}>
-              <Link href={`/products/${c.slug}`} className="card card-lift block overflow-hidden hover:!shadow-liftlg">
-                <Well src={null} alt={c.name} glyph={c.glyph} gradient className="h-[168px]" />
-                <div className="p-5">
-                  <div className="flex items-center justify-between">
-                    <h3 className="font-display text-xl font-extrabold text-ink">{c.name}</h3>
-                    <span className="rounded-full bg-[#EAF1FB] px-2.5 py-[5px] text-xs font-bold text-suzuki-blue">{getCategoryCount(c.slug)} models</span>
-                  </div>
-                  <p className="mt-2 text-sm leading-relaxed text-ink-muted">{c.blurb}</p>
-                </div>
-              </Link>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* featured */}
-      <section className="container-site pt-[70px]">
-        <div className="eyebrow">Showroom picks</div>
-        <h2 className="section-title mt-2.5">Featured models</h2>
         <div className="mt-[30px] grid grid-cols-1 gap-[18px] sm:grid-cols-2 lg:grid-cols-4">
           {featured.map((p, idx) => (
-            <Reveal key={p.slug} delay={idx * 50}><ProductCard product={p} showCategory /></Reveal>
+            <Reveal key={p.slug} delay={idx * 50}><ProductCard product={p} /></Reveal>
           ))}
         </div>
       </section>

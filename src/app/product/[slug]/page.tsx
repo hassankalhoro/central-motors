@@ -5,7 +5,7 @@ import ProductGallery from "@/components/site/ProductGallery";
 import ProductCard from "@/components/site/ProductCard";
 import Reveal from "@/components/site/Reveal";
 import { formatPKR } from "@/lib/utils";
-import { products, getProductBySlug, getRelatedProducts, categoryName } from "@/data";
+import { products, getProductBySlug, getRelatedProducts, getAdjacentProducts, categoryName } from "@/data";
 
 export function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }));
@@ -26,14 +26,31 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
   if (!product) notFound();
   const catName = categoryName(product.category);
   const related = getRelatedProducts(product, 4);
+  const { prev, next } = getAdjacentProducts(product.slug);
 
   return (
     <>
-      <nav className="container-site pt-[22px] text-[13px] text-ink-faint">
-        <Link href="/products" className="font-semibold text-ink-muted">Products</Link>
-        <span className="text-[#C8D0DC]"> / </span>{catName}
-        <span className="text-[#C8D0DC]"> / </span><span className="font-semibold text-ink">{product.name}</span>
-      </nav>
+      <div className="container-site flex flex-wrap items-center justify-between gap-3 pt-[22px]">
+        <nav className="text-[13px] text-ink-faint">
+          <Link href="/products" className="font-semibold text-ink-muted">Products</Link>
+          <span className="text-[#C8D0DC]"> / </span>{catName}
+          <span className="text-[#C8D0DC]"> / </span><span className="font-semibold text-ink">{product.name}</span>
+        </nav>
+        <div className="flex items-center gap-2">
+          {prev && (
+            <Link href={`/product/${prev.slug}`} aria-label={`Previous: ${prev.name}`}
+              className="inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-3.5 py-2 text-[13px] font-bold text-ink-soft transition hover:border-suzuki-blue hover:text-suzuki-blue">
+              ← <span className="hidden sm:inline">{prev.name}</span>
+            </Link>
+          )}
+          {next && (
+            <Link href={`/product/${next.slug}`} aria-label={`Next: ${next.name}`}
+              className="inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-3.5 py-2 text-[13px] font-bold text-ink-soft transition hover:border-suzuki-blue hover:text-suzuki-blue">
+              <span className="hidden sm:inline">{next.name}</span> →
+            </Link>
+          )}
+        </div>
+      </div>
 
       <section className="container-site grid grid-cols-1 items-start gap-[38px] pt-[18px] lg:grid-cols-[1.1fr_.9fr]">
         <ProductGallery images={product.images ?? []} blur={product.blur ?? []} name={product.name} category={catName} />
@@ -68,6 +85,22 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
           )}
         </div>
       </section>
+
+      {product.features.length > 0 && (
+        <section className="container-site pt-[54px]">
+          <div className="eyebrow">Specifications</div>
+          <h2 className="mt-2.5 font-display text-2xl font-extrabold tracking-tight text-ink">Key features</h2>
+          <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            {product.features.map((f) => (
+              <div key={f} className="flex items-center gap-2.5 rounded-xl border border-line bg-white px-4 py-3 text-sm font-medium text-ink shadow-card">
+                <span className="grid h-5 w-5 flex-shrink-0 place-items-center rounded-full bg-suzuki-blue/10 text-[11px] font-bold text-suzuki-blue">✓</span>
+                {f}
+              </div>
+            ))}
+          </div>
+          <p className="mt-3 text-xs text-ink-muted">Features vary by variant. Please confirm the exact specification with our sales team.</p>
+        </section>
+      )}
 
       {related.length > 0 && (
         <section className="container-site pb-20 pt-[60px]">

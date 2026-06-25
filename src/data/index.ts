@@ -27,6 +27,18 @@ export const getFeaturedProducts = (limit = 8) =>
     .slice(0, limit);
 export const getRelatedProducts = (p: Product, limit = 4) =>
   getProductsByCategory(p.category).filter((x) => x.slug !== p.slug).slice(0, limit);
+
+/** Previous/next product in the lineup (wraps around) for detail-page navigation. */
+export const getAdjacentProducts = (slug: string): { prev?: Product; next?: Product } => {
+  const list = getProducts();
+  const i = list.findIndex((p) => p.slug === slug);
+  if (i === -1) return {};
+  const n = list.length;
+  return { prev: list[(i - 1 + n) % n], next: list[(i + 1) % n] };
+};
+
+/** Distinct body types (from product.tag) for filtering. */
+export const getBodyTypes = () => Array.from(new Set(getProducts().map((p) => p.tag)));
 export const getProductGroups = () =>
   categories.map((c) => ({ ...c, count: getCategoryCount(c.slug), products: getProductsByCategory(c.slug) }));
 export const getProductNames = () => getProducts().map((p) => p.name);

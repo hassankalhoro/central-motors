@@ -44,7 +44,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
       <div aria-hidden className="absolute -bottom-60 -left-40 h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle,rgba(225,22,34,.24),transparent_65%)] animate-glow" />
       <div aria-hidden className="absolute inset-0 opacity-50 [background-image:radial-gradient(rgba(255,255,255,.07)_1px,transparent_1px)] [background-size:26px_26px]" />
 
-      <div className="container-site relative grid grid-cols-1 items-center gap-11 pt-16 lg:grid-cols-[1.04fr_.96fr]">
+      <div className="container-site relative grid grid-cols-1 items-center gap-8 pt-10 lg:grid-cols-[1.04fr_.96fr] lg:gap-11 lg:pt-16">
         {/* copy */}
         <div key={`copy-${i}`} className="animate-fade-up">
           <div className="text-[13px] font-bold uppercase tracking-[0.18em] text-suzuki-sky">Suzuki {s.cat}</div>
@@ -67,33 +67,33 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
         </div>
 
         {/* visual */}
-        <div className="relative hidden self-end lg:flex lg:flex-col">
-          <div key={`well-${i}`} className="relative flex min-h-[330px] animate-fade-up flex-col justify-end overflow-hidden rounded-[22px] border border-white/[.12] bg-[linear-gradient(170deg,#0B2F6E,#06245C)] px-[30px] pt-8">
-            <span aria-hidden className="absolute left-5 top-1.5 select-none font-display text-[170px] font-black italic leading-[.8] text-white/[.05]">{s.name[0]}</span>
-            <div className="absolute right-6 top-5 font-display text-[11px] font-bold tracking-[0.14em] text-white/40">0{i + 1} / 0{n}</div>
+        <div className="relative flex flex-col self-end">
+          <div key={`well-${i}`} className="well-stripe relative flex min-h-[240px] animate-fade-up flex-col justify-end overflow-hidden rounded-[22px] border border-white/20 bg-gradient-to-br from-white to-[#E7EDF5] px-5 pt-6 shadow-lift lg:min-h-[330px] lg:px-[30px] lg:pt-8">
+            <span aria-hidden className="absolute left-5 top-1.5 select-none font-display text-[120px] font-black italic leading-[.8] text-[rgba(6,36,92,.06)] lg:text-[170px]">{s.name[0]}</span>
+            <div className="absolute right-6 top-5 font-display text-[11px] font-bold tracking-[0.14em] text-ink-faint">0{i + 1} / 0{n}</div>
             {s.image ? (
-              <div className="relative h-[230px] w-full">
+              <div className="relative h-[170px] w-full lg:h-[240px]">
                 <Image
                   src={s.image}
                   alt={s.name}
                   fill
                   priority={i === 0}
-                  sizes="(max-width:1024px) 0px, 45vw"
+                  sizes="(max-width:1024px) 92vw, 45vw"
                   quality={80}
                   placeholder={s.blur ? "blur" : "empty"}
                   blurDataURL={s.blur}
-                  className="object-contain object-bottom"
+                  className="object-contain object-center"
                 />
               </div>
             ) : (
-              <div className="font-display text-[46px] font-black leading-[.95] text-white">{s.name}</div>
+              <div className="font-display text-[46px] font-black leading-[.95] text-suzuki-dark">{s.name}</div>
             )}
-            <div className="flex items-end justify-between py-3.5 pb-6">
+            <div className="mt-2 flex items-end justify-between border-t border-line py-3.5 pb-6">
               <div>
-                <div className="text-[11px] text-[#9DB4D6]">Suzuki {s.cat}</div>
-                <div className="font-display text-xl font-extrabold text-white">{s.priceLabel}</div>
+                <div className="text-[11px] text-ink-muted">Suzuki {s.cat}</div>
+                <div className="font-display text-xl font-extrabold text-suzuki-dark">{s.priceLabel}</div>
               </div>
-              <Link href={`/product/${s.slug}`} className="rounded-full bg-white px-4 py-2.5 text-[13px] font-bold text-suzuki-dark">Details</Link>
+              <Link href={`/product/${s.slug}`} className="rounded-full bg-suzuki-red px-4 py-2.5 text-[13px] font-bold text-white shadow-cta">Details</Link>
             </div>
           </div>
 

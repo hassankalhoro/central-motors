@@ -1,4 +1,4 @@
-export type CategorySlug = "automobiles" | "heavy-bikes" | "motorcycles";
+export type CategorySlug = "automobiles";
 
 export type Variant = { name: string; price: number };
 
@@ -8,6 +8,8 @@ export type Product = {
   category: CategorySlug;
   desc: string;
   tag: string; // e.g. "1.3L · Petrol"
+  /** Real spec features scraped from the manufacturer/dealer spec table. */
+  features: string[];
   variants: Variant[];
   startPrice: number;
   featured: boolean;

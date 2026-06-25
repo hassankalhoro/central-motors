@@ -29,33 +29,27 @@ const nextConfig = {
   },
 
   async redirects() {
+    const toProducts = (from) => ({ source: from, destination: "/products", permanent: true });
     const product = (from, slug) => ({ source: from, destination: `/product/${slug}`, permanent: true });
     return [
-      { source: "/auto-mobile", destination: "/products/automobiles", permanent: true },
-      { source: "/heavy-bikes", destination: "/products/heavy-bikes", permanent: true },
-      { source: "/motorcycles", destination: "/products/motorcycles", permanent: true },
+      // corporate / section pages
+      { source: "/auto-mobile", destination: "/products", permanent: true },
       { source: "/vision-mission", destination: "/about", permanent: true },
       { source: "/suzuki-geniune-parts", destination: "/genuine-parts", permanent: true },
       { source: "/contact-us", destination: "/contact", permanent: true },
+      // surviving models (current lineup)
       product("/swift", "swift"),
       product("/cultus", "cultus"),
       product("/wagon-r", "wagon-r"),
-      product("/vitara", "vitara"),
-      product("/ciaz", "ciaz"),
-      product("/mehran", "mehran"),
-      product("/bolan", "bolan"),
-      product("/apv", "apv"),
-      product("/jimny", "jimny"),
-      product("/mega-carry", "mega-carry"),
-      product("/ravi-pickup", "ravi-pickup"),
-      product("/cargo-van-2", "cargo-van"),
-      product("/inazuma", "inazuma"),
-      product("/inazuma-aegis", "inazuma-aegis"),
-      product("/gsx-r-600", "gsx-r-600"),
-      product("/gs-150se-gs150", "gs-150"),
-      product("/gr-150", "gr-150"),
-      product("/gd-110s", "gd-110s"),
-      product("/sprinter-eco", "sprinter-eco"),
+      // removed categories → all models
+      toProducts("/heavy-bikes"),
+      toProducts("/motorcycles"),
+      toProducts("/products/heavy-bikes"),
+      toProducts("/products/motorcycles"),
+      // discontinued cars & all motorbikes → all models (no dead links)
+      ...["/vitara", "/ciaz", "/mehran", "/bolan", "/apv", "/jimny", "/mega-carry",
+        "/ravi-pickup", "/cargo-van-2", "/inazuma", "/inazuma-aegis", "/gsx-r-600",
+        "/gs-150se-gs150", "/gr-150", "/gd-110s", "/sprinter-eco"].map(toProducts),
     ];
   },
 };

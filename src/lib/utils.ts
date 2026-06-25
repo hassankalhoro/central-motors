@@ -1,4 +1,4 @@
-/** Format an integer PKR amount as "PKR 1,435,000"; 0 → "Call for price". */
+/** Format an integer PKR amount as "PKR 4,460,160"; 0 → "Call for price". */
 export function formatPKR(amount: number): string {
   return amount > 0 ? `PKR ${amount.toLocaleString("en-US")}` : "Call for price";
 }
