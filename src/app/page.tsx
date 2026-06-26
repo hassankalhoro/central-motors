@@ -3,6 +3,7 @@ import HeroCarousel, { type HeroSlide } from "@/components/site/HeroCarousel";
 import ProductCard from "@/components/site/ProductCard";
 import Well from "@/components/site/Well";
 import Reveal from "@/components/site/Reveal";
+import ValueProps from "@/components/site/ValueProps";
 import { formatPKR, formatDateShort } from "@/lib/utils";
 import {
   getFeaturedProducts, getProductBySlug,
@@ -58,19 +59,11 @@ export default function Home() {
           <div className="mx-auto max-w-[620px] text-center">
             <div className="eyebrow">Value for money</div>
             <h2 className="section-title mt-2.5">More than a showroom</h2>
-            <p className="mt-3 leading-relaxed text-ink-muted">Everything that keeps your Suzuki on the road — from genuine parts to insurance and finance.</p>
+            <p className="mt-3 leading-relaxed text-ink-muted">Everything that keeps your Suzuki on the road — from genuine parts to insurance and finance. Tap a card for more.</p>
           </div>
-          <div className="mt-[38px] grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-4">
-            {valueProps.map((v, idx) => (
-              <Reveal key={v.title} delay={idx * 40}>
-                <div className="card card-lift h-full p-5">
-                  <div className="grid h-10 w-10 place-items-center rounded-xl bg-suzuki-dark font-display text-base font-extrabold text-white">{v.mark}</div>
-                  <h3 className="mt-3.5 font-display text-base font-bold text-ink">{v.title}</h3>
-                  <p className="mt-1.5 text-[13px] leading-relaxed text-ink-muted">{v.body}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+          <Reveal className="mt-[38px] block">
+            <ValueProps items={valueProps} />
+          </Reveal>
         </div>
       </section>
 

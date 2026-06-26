@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import PageHero from "@/components/site/PageHero";
 import Reveal from "@/components/site/Reveal";
+import ServicesExplorer from "@/components/site/ServicesExplorer";
 import { serviceSections } from "@/data";
 
 export const metadata: Metadata = {
@@ -12,16 +13,16 @@ export default function ServicesPage() {
   return (
     <>
       <PageHero eyebrow="After-sales" title="Services" subtitle="Everything beyond the sale — exchange, certified used cars, warranty and insurance." />
-      <section className="mx-auto flex max-w-[1100px] flex-col gap-[18px] px-5 py-14 sm:px-8">
-        {serviceSections.map((sv, idx) => (
-          <Reveal key={sv.title} delay={idx * 50} className="card card-lift grid grid-cols-1 items-center gap-6 p-7 sm:grid-cols-[120px_1fr]">
-            <div className="well-stripe grid h-[120px] w-[120px] place-items-center rounded-2xl bg-gradient-to-br from-suzuki-blue to-suzuki-dark font-display text-[30px] font-black text-white">{sv.mark}</div>
-            <div>
-              <h2 className="font-display text-2xl font-extrabold tracking-tight text-ink">{sv.title}</h2>
-              <p className="mt-2.5 text-[15px] leading-relaxed text-ink-soft">{sv.body}</p>
-            </div>
-          </Reveal>
-        ))}
+      <section className="mx-auto max-w-[1100px] px-5 py-14 sm:px-8">
+        <Reveal>
+          <p className="mb-7 max-w-[640px] text-[15px] leading-relaxed text-ink-muted">
+            Tap any service to see what&apos;s included. Our team is here for the whole journey —
+            from your first valuation to every service visit after.
+          </p>
+        </Reveal>
+        <Reveal delay={60}>
+          <ServicesExplorer services={serviceSections} />
+        </Reveal>
       </section>
     </>
   );

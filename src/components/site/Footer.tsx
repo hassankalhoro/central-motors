@@ -60,7 +60,11 @@ export default function Footer() {
       </div>
       <div className="container-site mt-10 flex flex-col items-center justify-between gap-2.5 border-t border-white/[.08] py-6 text-center text-[12.5px] text-[#6E84A8] sm:flex-row sm:text-left">
         <div>© {new Date().getFullYear()} {settings.siteName}. All rights reserved.</div>
-        <div>Sales · Service · Spare Parts</div>
+        <div className="flex items-center gap-3">
+          <Link href="/privacy" className="transition hover:text-white">Privacy Policy</Link>
+          <span aria-hidden>·</span>
+          <span>Sales · Service · Spare Parts</span>
+        </div>
       </div>
     </footer>
   );

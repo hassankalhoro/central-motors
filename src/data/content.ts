@@ -15,14 +15,62 @@ export const homeStats = [
 ];
 
 export const valueProps = [
-  { mark: "UC", title: "Certified Used Cars", body: "Inspected, reconditioned pre-owned Suzukis with a warranty." },
-  { mark: "EX", title: "Exchange Offer", body: "Trade in your old car against any new model — instant valuation." },
-  { mark: "GP", title: "Genuine Parts", body: "100% authentic Suzuki spare parts and service kits." },
-  { mark: "CC", title: "Customer Care", body: "A modern 3S workshop and a dedicated care desk." },
-  { mark: "EW", title: "Extended Warranty", body: "Protect your Suzuki beyond the standard cover." },
-  { mark: "FI", title: "Finance & Insurance", body: "Easy installment plans and bundled insurance." },
-  { mark: "BS", title: "Body Shop", body: "Expert denting, painting and accident repair." },
-  { mark: "24", title: "Roadside Help", body: "We keep you moving when you need us most." },
+  {
+    icon: "certified",
+    title: "Certified Used Cars",
+    body: "Inspected, reconditioned pre-owned Suzukis with a warranty.",
+    detail: "Every pre-owned Suzuki we sell is multi-point inspected, reconditioned by our technicians and handed over with a warranty — peace of mind at a pre-owned price.",
+    points: ["Multi-point inspection", "Reconditioned by Suzuki technicians", "Backed by a warranty"],
+  },
+  {
+    icon: "exchange",
+    title: "Exchange Offer",
+    body: "Trade in your old car against any new model — instant valuation.",
+    detail: "Trade your current car against any new Suzuki. We give a fair, on-the-spot valuation and handle the ownership transfer and paperwork end-to-end.",
+    points: ["Free on-the-spot valuation", "Value adjusted against any model", "Transfer & paperwork handled"],
+  },
+  {
+    icon: "parts",
+    title: "Genuine Parts",
+    body: "100% authentic Suzuki spare parts and service kits.",
+    detail: "100% authentic Suzuki parts and service kits straight from our parts counter — the right fit and the right quality, every time.",
+    points: ["100% genuine parts", "Engine, body & service kits", "Fast over-the-counter access"],
+  },
+  {
+    icon: "care",
+    title: "Customer Care",
+    body: "A modern 3S workshop and a dedicated care desk.",
+    detail: "A modern Sales, Service & Spare-parts workshop backed by a dedicated care desk that logs, tracks and resolves every concern.",
+    points: ["Modern 3S workshop", "Dedicated care desk", "Concerns tracked to resolution"],
+  },
+  {
+    icon: "warranty",
+    title: "Extended Warranty",
+    body: "Protect your Suzuki beyond the standard cover.",
+    detail: "Extend cover beyond the standard 2 years / 30,000 km with a plan tailored to how you actually use your car — serviced and honoured at our authorised 3S workshop.",
+    points: ["Beyond 2 yrs / 30,000 km", "Plans to suit your usage", "Honoured at our 3S workshop"],
+  },
+  {
+    icon: "finance",
+    title: "Finance & Insurance",
+    body: "Easy installment plans and bundled insurance.",
+    detail: "Easy installment plans and comprehensive insurance bundled with your purchase through our trusted partners — quick quotes and competitive premiums.",
+    points: ["Easy installment plans", "Bundled comprehensive cover", "Quotes through trusted partners"],
+  },
+  {
+    icon: "bodyshop",
+    title: "Body Shop",
+    body: "Expert denting, painting and accident repair.",
+    detail: "Professional denting, painting and accident repair carried out in a colour-matched paint booth so your Suzuki leaves looking like new.",
+    points: ["Denting & painting", "Accident repair", "Colour-matched paint booth"],
+  },
+  {
+    icon: "roadside",
+    title: "Roadside Help",
+    body: "We keep you moving when you need us most.",
+    detail: "Support when you need it most — practical help that keeps you moving and gets you back on the road with the least disruption.",
+    points: ["Help when you need it", "Keeps you moving", "Support you can count on"],
+  },
 ];
 
 export const aboutStats = [
@@ -33,19 +81,59 @@ export const aboutStats = [
 ];
 
 export const serviceSections = [
-  { mark: "EX", title: "Exchange Offer", body: "Trade in your current car against any new Suzuki. Our team gives you a fair, transparent valuation on the spot and handles the paperwork end-to-end." },
-  { mark: "UC", title: "Certified Used Cars", body: "Every pre-owned Suzuki we sell is multi-point inspected, reconditioned and backed by a warranty — peace of mind at a pre-owned price." },
-  { mark: "EW", title: "Extended Warranty", body: "Protect your investment beyond the standard manufacturer cover with an extended warranty plan tailored to your usage." },
-  { mark: "CI", title: "Car Insurance", body: "Bundle comprehensive insurance with your purchase through our partners — quick quotes, easy claims and competitive premiums." },
+  {
+    icon: "exchange",
+    title: "Exchange Offer",
+    body: "Trade in your current car against any new Suzuki. Our team gives you a fair, transparent valuation on the spot and handles the paperwork end-to-end.",
+    highlights: [
+      "Free, transparent valuation on the spot",
+      "Adjust your old car's value against any new model",
+      "Ownership transfer and paperwork handled for you",
+    ],
+    cta: { href: "/online-inquiry", label: "Get a valuation" },
+  },
+  {
+    icon: "certified",
+    title: "Certified Used Cars",
+    body: "Every pre-owned Suzuki we sell is multi-point inspected, reconditioned and backed by a warranty — peace of mind at a pre-owned price.",
+    highlights: [
+      "Multi-point mechanical and body inspection",
+      "Reconditioned by trained Suzuki technicians",
+      "Backed by a warranty for genuine peace of mind",
+    ],
+    cta: { href: "/online-inquiry", label: "Enquire about stock" },
+  },
+  {
+    icon: "warranty",
+    title: "Extended Warranty",
+    body: "Protect your investment beyond the standard manufacturer cover with an extended warranty plan tailored to your usage.",
+    highlights: [
+      "Extends cover beyond the standard 2 years / 30,000 km",
+      "Plans tailored to how you actually use your car",
+      "Serviced and honoured at our authorised 3S workshop",
+    ],
+    cta: { href: "/customer-care", label: "Warranty details" },
+  },
+  {
+    icon: "insurance",
+    title: "Car Insurance",
+    body: "Bundle comprehensive insurance with your purchase through our partners — quick quotes, easy claims and competitive premiums.",
+    highlights: [
+      "Comprehensive cover from trusted partner insurers",
+      "Quick quotes bundled with your vehicle purchase",
+      "Hassle-free claims supported by our team",
+    ],
+    cta: { href: "/contact", label: "Ask for a quote" },
+  },
 ];
 
 export const facilities = [
-  { mark: "3S", title: "3S Workshop", body: "A modern Sales, Service & Spare-parts facility with trained Suzuki technicians." },
-  { mark: "BS", title: "Body Shop", body: "Professional denting, painting and accident repair with a colour-matched paint booth." },
-  { mark: "DG", title: "Computerised Diagnostics", body: "Factory-grade diagnostic tools for accurate, first-time fault finding." },
-  { mark: "GP", title: "Genuine Parts Counter", body: "Fast over-the-counter access to 100% authentic Suzuki spare parts." },
-  { mark: "QC", title: "Quality Control", body: "Multi-point checks before every vehicle leaves the workshop." },
-  { mark: "CC", title: "Customer Care Desk", body: "A dedicated desk to log, track and resolve every customer concern." },
+  { icon: "workshop", mark: "3S", title: "3S Workshop", body: "A modern Sales, Service & Spare-parts facility with trained Suzuki technicians." },
+  { icon: "bodyshop", mark: "BS", title: "Body Shop", body: "Professional denting, painting and accident repair with a colour-matched paint booth." },
+  { icon: "diagnostics", mark: "DG", title: "Computerised Diagnostics", body: "Factory-grade diagnostic tools for accurate, first-time fault finding." },
+  { icon: "parts", mark: "GP", title: "Genuine Parts Counter", body: "Fast over-the-counter access to 100% authentic Suzuki spare parts." },
+  { icon: "quality", mark: "QC", title: "Quality Control", body: "Multi-point checks before every vehicle leaves the workshop." },
+  { icon: "care", mark: "CC", title: "Customer Care Desk", body: "A dedicated desk to log, track and resolve every customer concern." },
 ];
 
 export const warrantyRows = [
