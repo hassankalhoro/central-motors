@@ -8,6 +8,8 @@ const nextConfig = {
     minimumCacheTTL: 60 * 60 * 24 * 365, // optimized images cached 1 year
     deviceSizes: [360, 414, 640, 768, 1024, 1280, 1536],
     imageSizes: [16, 32, 64, 96, 128, 256],
+    // Admin-uploaded media is served from Cloudinary's CDN.
+    remotePatterns: [{ protocol: "https", hostname: "res.cloudinary.com" }],
   },
 
   async headers() {
@@ -18,6 +20,22 @@ const nextConfig = {
       { key: "X-DNS-Prefetch-Control", value: "on" },
       { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
       { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+      // CSP in report-only first (per ADMIN-PANEL-PLAN §10) so we can tighten without breakage.
+      // Allows Cloudinary images and the inline styles/scripts Next.js needs.
+      {
+        key: "Content-Security-Policy-Report-Only",
+        value: [
+          "default-src 'self'",
+          "img-src 'self' data: blob: https://res.cloudinary.com",
+          "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+          "style-src 'self' 'unsafe-inline'",
+          "font-src 'self' data:",
+          "connect-src 'self' https://api.cloudinary.com",
+          "frame-ancestors 'self'",
+          "base-uri 'self'",
+          "form-action 'self'",
+        ].join("; "),
+      },
     ];
     const immutable = [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }];
     return [

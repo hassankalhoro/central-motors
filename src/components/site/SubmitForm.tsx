@@ -100,7 +100,13 @@ export default function SubmitForm({
       {status === "error" && (
         <p className="mt-3 rounded-lg bg-[#FDEEF0] px-4 py-3 text-sm font-medium text-suzuki-red">Something went wrong — please try again or call us.</p>
       )}
-      <button type="submit" disabled={status === "sending"} className="mt-[18px] w-full rounded-xl bg-suzuki-red py-[15px] text-[15px] font-bold text-white shadow-cta transition hover:bg-suzuki-red-dk disabled:opacity-70">
+      <button type="submit" disabled={status === "sending"} className="mt-[18px] flex w-full items-center justify-center gap-2 rounded-xl bg-suzuki-red py-[15px] text-[15px] font-bold text-white shadow-cta transition hover:bg-suzuki-red-dk disabled:opacity-70">
+        {status === "sending" && (
+          <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+            <path className="opacity-90" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4z" />
+          </svg>
+        )}
         {status === "sending" ? "Sending…" : submitLabel}
       </button>
     </form>

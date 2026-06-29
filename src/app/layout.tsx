@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Archivo, Inter } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/site/Header";
-import Footer from "@/components/site/Footer";
 import { settings } from "@/data";
 
 // Matches the approved design prototype: Archivo (display) + Inter (body).
@@ -42,15 +40,12 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+/* Root layout: only <html>/<body> + fonts. Public chrome lives in (site)/layout;
+ * the admin panel has its own layout under /admin. */
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${display.variable} ${body.variable}`}>
-      <body className="flex min-h-screen flex-col">
-        <a href="#main" className="skip-link">Skip to content</a>
-        <Header />
-        <main id="main" className="flex-1">{children}</main>
-        <Footer />
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

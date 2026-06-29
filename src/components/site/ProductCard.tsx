@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Well from "./Well";
 import { formatPKR } from "@/lib/utils";
-import { categoryName } from "@/data";
 import type { Product } from "@/data";
 
 /** Reusable product card used across home, products, category and related rails. */
@@ -24,7 +23,7 @@ export default function ProductCard({ product, showCategory = false }: { product
       </div>
       <div className="flex flex-1 flex-col p-4 pb-[17px]">
         {showCategory && (
-          <div className="text-[11px] font-bold uppercase tracking-[0.08em] text-ink-faint">{categoryName(product.category)}</div>
+          <div className="text-[11px] font-bold uppercase tracking-[0.08em] text-ink-faint">{product.category}</div>
         )}
         <h3 className="mt-0.5 font-display text-lg font-extrabold text-ink">{product.name}</h3>
         <div className="mt-auto flex items-end justify-between pt-3.5">

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { settings } from "@/data";
+import type { Settings } from "@/data";
 import { telHref } from "@/lib/utils";
 
 const EXPLORE = [
@@ -17,13 +17,13 @@ const COMPANY = [
   { href: "/careers", label: "Careers" },
   { href: "/contact", label: "Contact" },
 ];
-const SOCIALS = [
-  { mark: "f", name: "Facebook", url: `https://${settings.facebook}` },
-  { mark: "X", name: "Twitter", url: `https://${settings.twitter}` },
-  { mark: "IG", name: "Instagram", url: `https://${settings.instagram}` },
-];
 
-export default function Footer() {
+export default function Footer({ settings }: { settings: Settings }) {
+  const SOCIALS = [
+    { mark: "f", name: "Facebook", url: `https://${settings.facebook}` },
+    { mark: "X", name: "Twitter", url: `https://${settings.twitter}` },
+    { mark: "IG", name: "Instagram", url: `https://${settings.instagram}` },
+  ];
   return (
     <footer className="mt-auto bg-suzuki-darker text-[#C3D2EA]">
       <div className="container-site grid grid-cols-2 gap-8 pt-14 text-center lg:grid-cols-[1.4fr_1fr_1fr_1.2fr] lg:gap-9 lg:text-left">

@@ -1,0 +1,215 @@
+// Suzuki Central Motors — database schema (Neon Postgres).
+// Public site reads through src/data facade; admin panel writes here.
+//
+//   DATABASE_URL = Neon POOLED connection (…-pooler… host) — app runtime.
+//   DIRECT_URL   = Neon DIRECT connection (no -pooler)      — prisma migrate.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+/* ------------------------------------------------------------------ *
+ * Auth & users
+ * ------------------------------------------------------------------ */
+model User {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  name         String
+  passwordHash String
+  role         Role       @default(EDITOR)
+  isActive     Boolean    @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  auditLogs    AuditLog[]
+  newsPosts    NewsPost[]
+  resetTokens  PasswordResetToken[]
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  EDITOR
+}
+
+/// Single-use, expiring tokens for the admin password-reset flow.
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String    @unique // sha256 of the raw token; raw token only goes in the email
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+}
+
+/* ------------------------------------------------------------------ *
+ * Catalogue
+ * ------------------------------------------------------------------ */
+model Category {
+  id        String    @id @default(cuid())
+  slug      String    @unique
+  name      String
+  blurb     String?
+  order     Int       @default(0)
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Product {
+  id          String         @id @default(cuid())
+  slug        String         @unique
+  name        String
+  categoryId  String
+  category    Category       @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  tag         String? // "Hatchback", "SUV", "Van"
+  description String?
+  startPrice  Int            @default(0) // denormalised = min(variant price)
+  status      ProductStatus  @default(IN_STOCK)
+  brochureUrl String?
+  featured    Boolean        @default(false)
+  published   Boolean        @default(true)
+  order       Int            @default(0)
+  variants    Variant[]
+  features    Feature[]
+  images      ProductImage[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  deletedAt   DateTime?
+
+  @@index([categoryId, published, order])
+}
+
+enum ProductStatus {
+  IN_STOCK
+  COMING_SOON
+  DISCONTINUED
+}
+
+model Variant {
+  id        String  @id @default(cuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  name      String
+  price     Int
+  order     Int     @default(0)
+}
+
+model Feature {
+  id        String  @id @default(cuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  label     String
+  order     Int     @default(0)
+}
+
+model ProductImage {
+  id        String  @id @default(cuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url       String
+  publicId  String? // Cloudinary id, for transforms/deletes
+  blurData  String? // base64 blur placeholder
+  alt       String?
+  order     Int     @default(0)
+}
+
+/* ------------------------------------------------------------------ *
+ * News
+ * ------------------------------------------------------------------ */
+model NewsPost {
+  id            String    @id @default(cuid())
+  slug          String    @unique
+  title         String
+  excerpt       String?
+  body          String? // sanitised HTML (TipTap)
+  imageUrl      String?
+  imagePublicId String?
+  authorId      String?
+  author        User?     @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  published     Boolean   @default(false)
+  publishedAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([published, publishedAt])
+}
+
+/* ------------------------------------------------------------------ *
+ * Team / Management
+ * ------------------------------------------------------------------ */
+model TeamMember {
+  id        String    @id @default(cuid())
+  name      String
+  title     String
+  group     TeamGroup
+  phone     String?
+  photoUrl  String?
+  order     Int       @default(0)
+  published Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+enum TeamGroup {
+  TOP_MANAGEMENT
+  GENERAL_MANAGERS
+  MANAGERS
+}
+
+/* ------------------------------------------------------------------ *
+ * Leads / submissions (Inquiries module)
+ * ------------------------------------------------------------------ */
+model Submission {
+  id          String           @id @default(cuid())
+  kind        String // contact | inquiry | appointment
+  name        String?
+  email       String?
+  phone       String?
+  message     String?
+  payload     Json
+  status      SubmissionStatus @default(NEW)
+  productSlug String? // "interested in" link
+  handledById String?
+  handledAt   DateTime?
+  createdAt   DateTime         @default(now())
+
+  @@index([kind, status, createdAt])
+}
+
+enum SubmissionStatus {
+  NEW
+  IN_PROGRESS
+  RESOLVED
+}
+
+/* ------------------------------------------------------------------ *
+ * Settings (key/value) & audit
+ * ------------------------------------------------------------------ */
+model Setting {
+  key       String   @id // siteName, address, smtpHost, fromEmail…
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    String // "product.update", "auth.login"
+  entity    String? // "Product:cuid"
+  meta      Json?
+  ip        String?
+  createdAt DateTime @default(now())
+
+  @@index([entity, createdAt])
+}

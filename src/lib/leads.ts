@@ -1,7 +1,38 @@
 import { NextResponse } from "next/server";
 import { sendLeadEmail } from "./email";
+import { db } from "./db";
 
 export type LeadKind = "contact" | "inquiry" | "appointment";
+
+/** Pulls a best-effort display name from a form payload (varies by form). */
+function displayName(body: Record<string, string>): string {
+  return (
+    body.name ||
+    [body.firstName, body.lastName].filter(Boolean).join(" ") ||
+    ""
+  ).trim();
+}
+
+/** Persists a submission. Returns the row id, or null if the write fails. */
+async function saveSubmission(kind: LeadKind, body: Record<string, string>) {
+  try {
+    const row = await db.submission.create({
+      data: {
+        kind,
+        name: displayName(body) || null,
+        email: body.email || null,
+        phone: body.phone || null,
+        message: body.message || null,
+        productSlug: body.product || body.model || null,
+        payload: body,
+      },
+    });
+    return row.id;
+  } catch (err) {
+    console.error(`[lead:${kind}] failed to persist submission:`, err);
+    return null;
+  }
+}
 
 /** Max characters accepted for any single field (defence against abuse). */
 const MAX_FIELD_LEN = 4000;
@@ -100,6 +131,9 @@ export function createLeadHandler(kind: LeadKind, required: string[]) {
     if (body.email && !EMAIL_RE.test(body.email)) {
       return NextResponse.json({ error: "Please enter a valid email address." }, { status: 400 });
     }
+
+    // Persist first — a saved lead is never lost, even if email later fails.
+    await saveSubmission(kind, body);
 
     try {
       await sendLeadEmail({ kind, data: body });

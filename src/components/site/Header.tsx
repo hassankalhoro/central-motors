@@ -5,7 +5,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import { settings } from "@/data";
+import type { Settings } from "@/data";
 
 const NAV = [
   { href: "/products", label: "Products" },
@@ -17,7 +17,7 @@ const NAV = [
   { href: "/contact", label: "Contact" },
 ];
 
-export default function Header() {
+export default function Header({ settings }: { settings: Settings }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);

@@ -1,9 +1,11 @@
 import type { MetadataRoute } from "next";
-import { products, categories, news, jobs } from "@/data";
+import { jobs } from "@/data";
+import { getProducts, getCategories, getNews } from "@/data/db";
 
 const base = process.env.NEXT_PUBLIC_SITE_URL || "https://centralmotors.com.pk";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const [products, categories, news] = await Promise.all([getProducts(), getCategories(), getNews()]);
   const staticRoutes = [
     "", "/products", "/about", "/management", "/media-center", "/services",
     "/customer-care", "/genuine-parts", "/careers", "/contact", "/online-inquiry", "/service-appointment",
