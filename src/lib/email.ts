@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
 import type { LeadKind } from "./leads";
+import { getEmailConfig } from "@/server/services/settingsService";
 
 /* ------------------------------------------------------------------ *
  * SMTP transport (Titan Email by default)
@@ -28,35 +29,22 @@ function unsubscribeMailto(): string {
   return `mailto:${admin}?subject=${encodeURIComponent("Unsubscribe: website form notifications")}`;
 }
 
-let cached: nodemailer.Transporter | null = null;
-
-function getTransport(): nodemailer.Transporter {
-  if (cached) return cached;
-  const host = process.env.SMTP_HOST || "smtp.titan.email";
-  const port = Number(process.env.SMTP_PORT || 465);
-  const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
-  if (!user || !pass) {
-    throw new Error("SMTP_USER / SMTP_PASS are not configured.");
-  }
-  cached = nodemailer.createTransport({
-    host,
-    port,
-    secure: port === 465, // 465 = implicit TLS, 587 = STARTTLS
-    auth: { user, pass },
-    pool: true, // reuse connections across submissions
-    maxConnections: 3,
-    maxMessages: 50,
-    connectionTimeout: 10_000,
-    greetingTimeout: 8_000,
+/** Builds an SMTP transport from the admin-configured email settings (DB). */
+function buildTransport(cfg: { host: string; port: number; secure: boolean; user: string; pass: string }) {
+  return nodemailer.createTransport({
+    host: cfg.host,
+    port: cfg.port,
+    secure: cfg.secure, // 465 = implicit TLS, 587 = STARTTLS
+    auth: cfg.user ? { user: cfg.user, pass: cfg.pass } : undefined,
+    connectionTimeout: 12_000,
+    greetingTimeout: 10_000,
     socketTimeout: 15_000,
   });
-  return cached;
 }
 
 /** Confirms the SMTP credentials/connection are valid. */
 export async function verifyTransport(): Promise<void> {
-  await getTransport().verify();
+  await buildTransport(await getEmailConfig()).verify();
 }
 
 /* ------------------------------------------------------------------ *
@@ -264,16 +252,18 @@ export function renderLeadEmail({ kind, data }: RenderInput): {
   return { subject, html, text };
 }
 
-/** Sends a lead notification email. Throws on SMTP failure. */
+/** Sends a lead notification email using the admin-configured SMTP (DB). Throws on failure. */
 export async function sendLeadEmail(input: RenderInput): Promise<void> {
+  const cfg = await getEmailConfig();
+  if (!cfg.user || !cfg.pass) {
+    throw new Error("Email is not configured. Set SMTP details in Admin → Settings.");
+  }
   const { subject, html, text } = renderLeadEmail(input);
-  const from =
-    process.env.MAIL_FROM ||
-    `Suzuki Central Motors <${process.env.SMTP_USER}>`;
-  const to = process.env.MAIL_TO || process.env.SMTP_USER!;
+  const from = `${cfg.fromName} <${cfg.fromEmail}>`;
+  const to = cfg.notifyTo || cfg.fromEmail || cfg.user; // dealership inbox
   const replyTo = String(input.data.email ?? "").trim() || undefined;
 
-  await getTransport().sendMail({
+  await buildTransport(cfg).sendMail({
     from,
     to,
     subject,
@@ -282,7 +272,7 @@ export async function sendLeadEmail(input: RenderInput): Promise<void> {
     replyTo,
     // RFC 2369 — lets mail clients surface a native unsubscribe control.
     headers: {
-      "List-Unsubscribe": `<${unsubscribeMailto()}>`,
+      "List-Unsubscribe": `<mailto:${to}?subject=${encodeURIComponent("Unsubscribe: website form notifications")}>`,
       "Auto-Submitted": "auto-generated",
     },
   });
