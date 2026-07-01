@@ -7,11 +7,7 @@ import { Spinner } from "@/components/admin/ui";
 export default function LoginForm() {
   const router = useRouter();
   const params = useSearchParams();
-  // Default landing is Settings (the dashboard is hidden for now). A deep-link
-  // the user was sent to (?from=) is still honoured.
-  const DEFAULT_DEST = "/admin/settings";
-  const fromParam = params.get("from");
-  const from = fromParam && fromParam.startsWith("/admin") && fromParam !== "/admin" ? fromParam : DEFAULT_DEST;
+  const from = params.get("from") || "/admin";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

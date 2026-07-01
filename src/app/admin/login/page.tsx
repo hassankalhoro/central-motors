@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 };
 
 export default async function AdminLoginPage() {
-  // Already signed in → go to Settings (dashboard is hidden for now).
-  if (await getSession()) redirect("/admin/settings");
+  // Already signed in → go to the dashboard.
+  if (await getSession()) redirect("/admin");
 
   return (
     <div className="flex min-h-screen bg-white">

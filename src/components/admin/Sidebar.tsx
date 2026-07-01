@@ -6,19 +6,18 @@ import { usePathname } from "next/navigation";
 import type { Role } from "@prisma/client";
 import { cn } from "@/lib/utils";
 import {
-  // DashboardIcon, ProductsIcon, CategoriesIcon, NewsIcon, InquiriesIcon, // uncomment with the hidden NAV items below
+  DashboardIcon, ProductsIcon, CategoriesIcon, NewsIcon, InquiriesIcon,
   SettingsIcon, UsersIcon, StoreIcon, CloseIcon,
 } from "./icons";
 
 type Item = { href: string; label: string; icon: (p: { className?: string }) => JSX.Element; exact?: boolean };
 
 const NAV: Item[] = [
-  // Temporarily hidden — uncomment to restore these sections in the sidebar.
-  // { href: "/admin", label: "Dashboard", icon: DashboardIcon, exact: true },
-  // { href: "/admin/products", label: "Products", icon: ProductsIcon },
-  // { href: "/admin/categories", label: "Categories", icon: CategoriesIcon },
-  // { href: "/admin/news", label: "News", icon: NewsIcon },
-  // { href: "/admin/inquiries", label: "Inquiries", icon: InquiriesIcon },
+  { href: "/admin", label: "Dashboard", icon: DashboardIcon, exact: true },
+  { href: "/admin/products", label: "Products", icon: ProductsIcon },
+  { href: "/admin/categories", label: "Categories", icon: CategoriesIcon },
+  { href: "/admin/news", label: "News", icon: NewsIcon },
+  { href: "/admin/inquiries", label: "Inquiries", icon: InquiriesIcon },
   { href: "/admin/settings", label: "Settings", icon: SettingsIcon },
 ];
 const SUPER_ITEM: Item = { href: "/admin/users", label: "Users", icon: UsersIcon };
