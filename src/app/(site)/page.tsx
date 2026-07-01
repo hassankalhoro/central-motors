@@ -27,9 +27,8 @@ export default async function Home() {
     blur: fronx?.blur?.[c.imageIndex] ?? fronx?.blur?.[0],
     tone: c.tone,
   }));
-  const [featuredRaw, news] = await Promise.all([getFeaturedProducts(8), getNewsPaged(1, 6)]);
-  // Show the Fronx first in the lineup grid, keep the rest in their order.
-  const featured = [...featuredRaw].sort((a, b) => (a.slug === "fronx" ? -1 : b.slug === "fronx" ? 1 : 0));
+  // Lineup order is managed from the admin panel (Products → Order arrows).
+  const [featured, news] = await Promise.all([getFeaturedProducts(8), getNewsPaged(1, 6)]);
 
   return (
     <>

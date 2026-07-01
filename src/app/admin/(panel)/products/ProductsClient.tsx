@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { PageHeader, LinkButton, StatusPill, EmptyState, Spinner } from "@/components/admin/ui";
 import { PlusIcon, EditIcon, TrashIcon, SearchIcon } from "@/components/admin/icons";
 import { formatPKR } from "@/lib/utils";
-import { removeProduct } from "./actions";
+import { removeProduct, reorderProduct } from "./actions";
 
 type Row = {
   id: string;
@@ -48,6 +48,23 @@ export default function ProductsClient({
   const router = useRouter();
   const [pending, start] = useTransition();
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [movingId, setMovingId] = useState<string | null>(null);
+
+  // Reordering acts on the full sequence, so it's only offered on the unfiltered list.
+  const canReorder = canEdit && !search && !categoryId;
+
+  function onMove(id: string, dir: "up" | "down") {
+    setMovingId(id);
+    start(async () => {
+      const res = await reorderProduct(id, dir);
+      setMovingId(null);
+      if (!res.ok) {
+        alert(res.error);
+        return;
+      }
+      router.refresh();
+    });
+  }
 
   function navigate(next: { category?: string; q?: string; page?: number }) {
     const params = new URLSearchParams();
@@ -121,6 +138,7 @@ export default function ProductsClient({
           <table className="w-full text-left">
             <thead>
               <tr className="border-b border-line bg-paper text-xs font-bold uppercase tracking-wide text-ink-muted">
+                {canReorder && <th className="py-4 pl-5 pr-1">Order</th>}
                 <th className="px-6 py-4">Image</th>
                 <th className="px-6 py-4">Model</th>
                 <th className="hidden px-6 py-4 md:table-cell">Category</th>
@@ -130,10 +148,30 @@ export default function ProductsClient({
               </tr>
             </thead>
             <tbody className="divide-y divide-line">
-              {rows.map((r) => {
+              {rows.map((r, idx) => {
                 const s = STATUS[r.status];
+                const isFirst = page === 1 && idx === 0;
+                const isLast = page === pages && idx === rows.length - 1;
+                const arrowCls =
+                  "grid h-6 w-7 place-items-center rounded-md border border-line bg-white text-ink-muted transition hover:border-suzuki-blue hover:text-suzuki-blue disabled:pointer-events-none disabled:opacity-30";
                 return (
                   <tr key={r.id} className="hover:bg-paper/60">
+                    {canReorder && (
+                      <td className="py-3 pl-5 pr-1">
+                        {movingId === r.id ? (
+                          <Spinner className="h-5 w-5 text-ink-muted" />
+                        ) : (
+                          <div className="flex flex-col gap-1">
+                            <button type="button" onClick={() => onMove(r.id, "up")} disabled={pending || isFirst} aria-label={`Move ${r.name} up`} className={arrowCls}>
+                              <svg viewBox="0 0 20 20" fill="none" className="h-3 w-3"><path d="M4 12.5L10 6.5l6 6" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                            </button>
+                            <button type="button" onClick={() => onMove(r.id, "down")} disabled={pending || isLast} aria-label={`Move ${r.name} down`} className={arrowCls}>
+                              <svg viewBox="0 0 20 20" fill="none" className="h-3 w-3"><path d="M4 7.5l6 6 6-6" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                            </button>
+                          </div>
+                        )}
+                      </td>
+                    )}
                     <td className="px-6 py-3">
                       <div className="relative h-12 w-20 overflow-hidden rounded-lg bg-paper">
                         {r.image && <Image src={r.image} alt={r.name} fill sizes="80px" className="object-contain" />}

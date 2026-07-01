@@ -23,6 +23,18 @@ export async function listProducts(opts: { categoryId?: string; search?: string;
 
 export const getProduct = (id: string) => productRepo.byId(id);
 
+/** Move a product one step up/down in the display sequence (renumbers 1..n, so duplicates self-heal). */
+export async function moveProduct(id: string, dir: "up" | "down") {
+  const all = await productRepo.allOrderedIds();
+  const i = all.findIndex((p) => p.id === id);
+  if (i === -1) throw new ServiceError("Product not found.");
+  const j = dir === "up" ? i - 1 : i + 1;
+  if (j < 0 || j >= all.length) return; // already first/last
+  const ordered = [...all];
+  [ordered[i], ordered[j]] = [ordered[j], ordered[i]];
+  await productRepo.setOrders(ordered.map((p, idx) => ({ id: p.id, order: idx + 1 })));
+}
+
 function startPrice(variants: { price: number }[]): number {
   return variants.length ? Math.min(...variants.map((v) => v.price)) : 0;
 }

@@ -38,13 +38,28 @@ export const productSpecsSchema = z
         note: z.string().trim().max(300).optional(),
       })
       .optional(),
+    announcement: z
+      .object({
+        enabled: z.boolean(),
+        phrases: z.array(z.string().trim().min(1).max(80)).max(20).default([]),
+      })
+      .optional(),
+    tax: z
+      .object({
+        filer: z.coerce.number().int().min(1, "Enter the filer tax amount."),
+        nonFiler: z.coerce.number().int().min(1, "Enter the non-filer tax amount."),
+      })
+      .optional(),
     colors: z
       .array(
         z.object({
           name: z.string().trim().min(1, "Colour name is required.").max(60),
           hex: z.string().regex(/^#[0-9a-fA-F]{6}$/, "Colour must be a hex value like #1A2B3C."),
           roofHex: z.string().regex(/^#[0-9a-fA-F]{6}$/).optional(),
-          image: z.string().url().nullable().optional(),
+          images: z
+            .array(z.string().refine((v) => v.startsWith("/") || /^https?:\/\//.test(v), "Must be an image URL or path."))
+            .max(12)
+            .optional(),
           discontinued: z.boolean().optional(),
         }),
       )

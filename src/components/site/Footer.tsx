@@ -36,7 +36,7 @@ export default function Footer({ settings }: { settings: Settings }) {
             className="mx-auto h-[52px] w-auto rounded-md lg:mx-0"
           />
           <p className="mx-auto mt-4 max-w-[300px] text-[13.5px] leading-relaxed text-[#90A6C9] lg:mx-0 lg:max-w-[280px]">
-            {settings.tagline}. Your authorised Suzuki 7S dealership in Rawalpindi.
+            {settings.tagline}. New cars, service, genuine parts and body shop, all under one roof.
           </p>
           <div className="mt-[18px] flex justify-center gap-2.5 lg:justify-start">
             {SOCIALS.map((s) => (

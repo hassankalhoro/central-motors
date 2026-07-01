@@ -5,7 +5,7 @@ import { requireRole } from "@/server/auth";
 import { rolesFor } from "@/server/rbac";
 import { writeAudit } from "@/server/audit";
 import { productSchema } from "@/server/validators/product";
-import { createProduct, updateProduct, deleteProduct } from "@/server/services/productService";
+import { createProduct, updateProduct, deleteProduct, moveProduct } from "@/server/services/productService";
 import { ServiceError } from "@/server/services/categoryService";
 import type { ActionResult } from "@/lib/action-result";
 
@@ -34,6 +34,19 @@ export async function saveProduct(input: unknown & { id?: string }): Promise<Act
     return { ok: true };
   } catch (e) {
     if (e instanceof ServiceError) return { ok: false, error: e.message, field: e.field };
+    throw e;
+  }
+}
+
+export async function reorderProduct(id: string, dir: "up" | "down"): Promise<ActionResult> {
+  const session = await requireRole(...rolesFor("content.edit"));
+  try {
+    await moveProduct(id, dir);
+    await writeAudit({ userId: session.sub, action: "product.reorder", entity: `Product:${id}` });
+    revalidateAll();
+    return { ok: true };
+  } catch (e) {
+    if (e instanceof ServiceError) return { ok: false, error: e.message };
     throw e;
   }
 }

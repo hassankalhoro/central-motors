@@ -1,7 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/admin/ui";
+import ImageUploader from "@/components/admin/ImageUploader";
+import IconLibrary from "@/components/admin/IconLibrary";
+import FeatureIcon from "@/components/site/FeatureIcon";
 import { PlusIcon, TrashIcon } from "@/components/admin/icons";
 import type { ProductSpecs, SpecColumn, SpecGroup, SpecValue, ProductColor } from "@/data/types";
 
@@ -70,12 +74,16 @@ export default function SpecsEditor({
 }) {
   const comparison = value?.comparison;
   const colors = value?.colors ?? [];
+  const [libraryFor, setLibraryFor] = useState<number | null>(null);
 
   function patch(p: Partial<ProductSpecs>) {
     const next = { ...(value ?? {}), ...p };
-    if (!next.comparison && !(next.colors && next.colors.length)) onChange(null);
+    if (!next.comparison && !(next.colors && next.colors.length) && !next.announcement && !next.tax) onChange(null);
     else onChange(next);
   }
+
+  // Absent = default behaviour (banner shown with auto-generated text).
+  const announcement = value?.announcement ?? { enabled: true, phrases: [] };
 
   /* ── comparison helpers ── */
   function startComparison() {
@@ -193,12 +201,20 @@ export default function SpecsEditor({
                 <div className="mt-3 space-y-2.5">
                   {g.rows.map((r, ri) => (
                     <div key={ri} className="flex flex-wrap items-start gap-3 rounded-lg border border-line bg-white px-3 py-2.5">
-                      <input
-                        value={r.label}
-                        onChange={(e) => setGroup(gi, { ...g, rows: g.rows.map((x, idx) => (idx === ri ? { ...x, label: e.target.value } : x)) })}
-                        placeholder="Feature (e.g. Cruise Control)"
-                        className={cn(miniInputCls, "w-[190px]")}
-                      />
+                      <div className="flex items-center gap-2">
+                        <span
+                          title="Icon shown on the website (picked automatically from the feature name)"
+                          className="grid h-8 w-8 flex-shrink-0 place-items-center rounded-lg bg-suzuki-dark/[.05] text-suzuki-dark"
+                        >
+                          <FeatureIcon label={r.label} className="h-[18px] w-[18px]" />
+                        </span>
+                        <input
+                          value={r.label}
+                          onChange={(e) => setGroup(gi, { ...g, rows: g.rows.map((x, idx) => (idx === ri ? { ...x, label: e.target.value } : x)) })}
+                          placeholder="Feature (e.g. Cruise Control)"
+                          className={cn(miniInputCls, "w-[190px]")}
+                        />
+                      </div>
                       <div className="flex flex-wrap items-start gap-3">
                         {comparison.columns.map((c, ci) => (
                           <div key={ci} className="flex flex-col items-center gap-1">
@@ -231,13 +247,34 @@ export default function SpecsEditor({
                     </div>
                   ))}
                 </div>
-                <button
-                  type="button"
-                  onClick={() => setGroup(gi, { ...g, rows: [...g.rows, { label: "", values: comparison.columns.map(() => true) }] })}
-                  className="mt-2.5 inline-flex items-center gap-1.5 text-[12.5px] font-bold text-suzuki-blue"
-                >
-                  <PlusIcon className="h-3.5 w-3.5" /> Add feature row
-                </button>
+                <div className="mt-2.5 flex flex-wrap items-center gap-4">
+                  <button
+                    type="button"
+                    onClick={() => setGroup(gi, { ...g, rows: [...g.rows, { label: "", values: comparison.columns.map(() => true) }] })}
+                    className="inline-flex items-center gap-1.5 text-[12.5px] font-bold text-suzuki-blue"
+                  >
+                    <PlusIcon className="h-3.5 w-3.5" /> Add feature row
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setLibraryFor((cur) => (cur === gi ? null : gi))}
+                    className={cn("inline-flex items-center gap-1.5 text-[12.5px] font-bold", libraryFor === gi ? "text-suzuki-red" : "text-suzuki-blue")}
+                  >
+                    <PlusIcon className="h-3.5 w-3.5" /> {libraryFor === gi ? "Close icon library" : "Add from icon library"}
+                  </button>
+                </div>
+                {libraryFor === gi && (
+                  <div className="mt-3">
+                    <IconLibrary
+                      onPick={(label) =>
+                        setGroup(gi, {
+                          ...g,
+                          rows: [...g.rows.filter((r) => r.label.trim()), { label, values: comparison.columns.map(() => true) }],
+                        })
+                      }
+                    />
+                  </div>
+                )}
               </div>
             ))}
             <Button
@@ -263,6 +300,108 @@ export default function SpecsEditor({
         )}
       </section>
 
+      {/* ── Registration tax (Filer / Non-Filer) ───────────── */}
+      <section className="rounded-2xl border border-line bg-white p-6 shadow-card">
+        <h2 className="font-display text-lg font-bold text-suzuki-dark">Registration tax (Filer / Non-Filer)</h2>
+        <p className="mt-1 text-[13px] text-ink-muted">
+          The advance tax (u/s 231B) shown beside the price on the car&apos;s page. Leave both fields empty to hide the section.
+        </p>
+        <div className="mt-4 flex flex-wrap gap-4">
+          <div>
+            <label className="flabel">Filer amount (PKR)</label>
+            <input
+              type="number"
+              min={0}
+              value={value?.tax?.filer || ""}
+              onChange={(e) => {
+                const filer = Number(e.target.value) || 0;
+                const nonFiler = value?.tax?.nonFiler ?? 0;
+                patch({ tax: filer || nonFiler ? { filer, nonFiler } : undefined });
+              }}
+              placeholder="e.g. 120000"
+              className={cn(miniInputCls, "w-[180px]")}
+            />
+          </div>
+          <div>
+            <label className="flabel">Non-Filer amount (PKR)</label>
+            <input
+              type="number"
+              min={0}
+              value={value?.tax?.nonFiler || ""}
+              onChange={(e) => {
+                const nonFiler = Number(e.target.value) || 0;
+                const filer = value?.tax?.filer ?? 0;
+                patch({ tax: filer || nonFiler ? { filer, nonFiler } : undefined });
+              }}
+              placeholder="e.g. 360000"
+              className={cn(miniInputCls, "w-[180px]")}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ── Announcement banner ────────────────────────────── */}
+      <section className="rounded-2xl border border-line bg-white p-6 shadow-card">
+        <div className="mb-1 flex items-center justify-between gap-3">
+          <h2 className="font-display text-lg font-bold text-suzuki-dark">Announcement banner</h2>
+          <label className="flex flex-shrink-0 cursor-pointer items-center gap-2 text-sm font-medium text-ink-soft">
+            <input
+              type="checkbox"
+              checked={announcement.enabled}
+              onChange={(e) => patch({ announcement: { ...announcement, enabled: e.target.checked } })}
+              className="h-4 w-4 rounded border-line text-suzuki-red focus:ring-suzuki-red"
+            />
+            Show on page
+          </label>
+        </div>
+        <p className="text-[13px] text-ink-muted">
+          The scrolling ticker above &ldquo;Key features&rdquo; on the car&apos;s page. Leave the list empty to auto-generate it from the car&apos;s name, price and features.
+        </p>
+
+        {announcement.enabled && (
+          <>
+            <div className="mt-4 space-y-2.5">
+              {announcement.phrases.map((p, i) => (
+                <div key={i} className="flex items-center gap-2">
+                  <input
+                    value={p}
+                    onChange={(e) =>
+                      patch({ announcement: { ...announcement, phrases: announcement.phrases.map((x, idx) => (idx === i ? e.target.value : x)) } })
+                    }
+                    placeholder="e.g. Bold by design"
+                    className={cn(miniInputCls, "w-full max-w-[420px]")}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => patch({ announcement: { ...announcement, phrases: announcement.phrases.filter((_, idx) => idx !== i) } })}
+                    aria-label="Remove phrase"
+                    className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-md text-ink-faint transition hover:bg-suzuki-red/10 hover:text-suzuki-red"
+                  >
+                    <TrashIcon className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              ))}
+            </div>
+            {announcement.phrases.length < 20 && (
+              <button
+                type="button"
+                onClick={() => patch({ announcement: { ...announcement, phrases: [...announcement.phrases, ""] } })}
+                className="mt-2.5 inline-flex items-center gap-1.5 text-[12.5px] font-bold text-suzuki-blue"
+              >
+                <PlusIcon className="h-3.5 w-3.5" /> Add phrase
+              </button>
+            )}
+            {announcement.phrases.some((p) => p.trim()) && (
+              <div className="mt-4 overflow-hidden rounded-lg bg-suzuki-dark px-4 py-3">
+                <div className="truncate font-display text-[14px] font-black uppercase italic tracking-wide text-white">
+                  {announcement.phrases.filter((p) => p.trim()).join("  ✦  ")}
+                </div>
+              </div>
+            )}
+          </>
+        )}
+      </section>
+
       {/* ── Colours ────────────────────────────────────────── */}
       <section className="rounded-2xl border border-line bg-white p-6 shadow-card">
         <div className="mb-1 flex items-center justify-between">
@@ -278,7 +417,8 @@ export default function SpecsEditor({
         {colors.length > 0 && (
           <div className="mt-4 space-y-2.5">
             {colors.map((c, i) => (
-              <div key={i} className="flex flex-wrap items-center gap-3 rounded-lg border border-line bg-paper/40 px-3 py-2.5">
+              <div key={i} className="rounded-lg border border-line bg-paper/40 px-3 py-2.5">
+                <div className="flex flex-wrap items-center gap-3">
                 <input value={c.name} onChange={(e) => setColor(i, { name: e.target.value })} placeholder="Colour name" className={cn(miniInputCls, "w-[190px]")} />
                 <label className="flex items-center gap-1.5 text-[12.5px] font-medium text-ink-soft">
                   Body
@@ -311,6 +451,20 @@ export default function SpecsEditor({
                 >
                   <TrashIcon className="h-3.5 w-3.5" />
                 </button>
+                </div>
+                <details className="mt-2">
+                  <summary className="cursor-pointer text-[12.5px] font-bold text-suzuki-blue">
+                    Photos in this colour ({c.images?.length ?? 0})
+                  </summary>
+                  <div className="mt-3 rounded-lg border border-line bg-white p-3">
+                    <ImageUploader
+                      value={(c.images ?? []).map((url) => ({ url }))}
+                      onChange={(imgs) => setColor(i, { images: imgs.map((x) => x.url) })}
+                      folder="suzuki-central-motors/products/colors"
+                    />
+                    <p className="mt-2 text-[12px] text-ink-faint">Shown in the gallery when a visitor selects this colour. Leave empty to fall back to the standard photos.</p>
+                  </div>
+                </details>
               </div>
             ))}
           </div>

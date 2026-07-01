@@ -39,6 +39,14 @@ export const productRepo = {
     const last = await db.product.findFirst({ where: { deletedAt: null }, orderBy: { order: "desc" } });
     return (last?.order ?? 0) + 1;
   },
+  allOrderedIds: () =>
+    db.product.findMany({
+      where: { deletedAt: null },
+      orderBy: [{ order: "asc" }, { createdAt: "desc" }],
+      select: { id: true },
+    }),
+  setOrders: (pairs: { id: string; order: number }[]) =>
+    db.$transaction(pairs.map((p) => db.product.update({ where: { id: p.id }, data: { order: p.order } }))),
   replaceVariants: async (productId: string, variants: { name: string; price: number }[]) => {
     await db.variant.deleteMany({ where: { productId } });
     if (variants.length)

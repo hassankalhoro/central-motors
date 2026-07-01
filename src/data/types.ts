@@ -25,13 +25,17 @@ export type ProductColor = {
   name: string; // "Solid White"
   hex: string; // body colour swatch
   roofHex?: string; // set for two-tone (roof colour)
-  image?: string | null; // optional photo of the car in this colour
+  images?: string[]; // photos of the car in this colour (shown in the gallery)
   discontinued?: boolean;
 };
 
 export type ProductSpecs = {
   comparison?: { columns: SpecColumn[]; groups: SpecGroup[]; note?: string };
   colors?: ProductColor[];
+  /** Scrolling announcement banner on the car's page. Absent = shown with auto-generated text. */
+  announcement?: { enabled: boolean; phrases: string[] };
+  /** Advance registration tax (u/s 231B). Absent = section hidden on the page. */
+  tax?: { filer: number; nonFiler: number };
 };
 
 export type Product = {

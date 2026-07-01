@@ -5,7 +5,8 @@ import ProductGallery from "@/components/site/ProductGallery";
 import ProductCard from "@/components/site/ProductCard";
 import Reveal from "@/components/site/Reveal";
 import VariantComparison from "@/components/site/VariantComparison";
-import ColorOptions from "@/components/site/ColorOptions";
+import FeatureHighlights from "@/components/site/FeatureHighlights";
+import TagMarquee from "@/components/site/TagMarquee";
 import { formatPKR } from "@/lib/utils";
 import { getProductBySlug, getRelatedProducts, getAdjacentProducts, categoryName } from "@/data/db";
 
@@ -67,7 +68,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
       )}
 
       <section className="container-site grid grid-cols-1 items-start gap-[38px] pt-[18px] lg:grid-cols-[1.1fr_.9fr]">
-        <ProductGallery images={product.images ?? []} blur={product.blur ?? []} name={product.name} category={catName} />
+        <ProductGallery images={product.images ?? []} blur={product.blur ?? []} name={product.name} category={catName} colors={colors} />
 
         <div>
           <div className="text-[12.5px] font-bold uppercase tracking-[0.1em] text-suzuki-blue">Suzuki {catName}</div>
@@ -77,6 +78,32 @@ export default async function ProductPage({ params }: { params: { slug: string }
             <span className="font-display text-[28px] font-extrabold text-suzuki-red">{formatPKR(product.startPrice)}</span>
           </div>
           <p className="mt-4 text-[15.5px] leading-relaxed text-ink-soft">{product.desc}</p>
+
+          {product.specs?.tax && (
+            <div className="mt-5">
+              <div className="grid grid-cols-2 gap-2.5">
+                <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-center">
+                  <div className="text-[11.5px] font-bold uppercase tracking-wide text-emerald-700">Filer tax</div>
+                  <div className="mt-0.5 font-display text-[17px] font-extrabold text-emerald-700">{formatPKR(product.specs.tax.filer)}</div>
+                </div>
+                <div className="rounded-xl border border-suzuki-red/20 bg-suzuki-red/[.05] px-4 py-3 text-center">
+                  <div className="text-[11.5px] font-bold uppercase tracking-wide text-suzuki-red">Non-Filer tax</div>
+                  <div className="mt-0.5 font-display text-[17px] font-extrabold text-suzuki-red">{formatPKR(product.specs.tax.nonFiler)}</div>
+                </div>
+              </div>
+              <details className="mt-2 rounded-xl border border-line bg-paper/60 px-4 py-2.5">
+                <summary className="cursor-pointer text-[13px] font-bold text-suzuki-blue">What do Filer and Non-Filer mean?</summary>
+                <div className="pb-1.5 pt-2 text-[13px] leading-relaxed text-ink-muted">
+                  <p>
+                    This is the advance income tax (Section 231B) collected once at vehicle registration, on top of the price shown.
+                    A <span className="font-bold text-ink">Filer</span> is someone on FBR&apos;s Active Taxpayer List, meaning they filed
+                    their annual income tax return. A <span className="font-bold text-ink">Non-Filer</span> is not on that list and pays
+                    a much higher rate. Becoming a filer before booking can save you a significant amount, and our team can guide you on both.
+                  </p>
+                </div>
+              </details>
+            </div>
+          )}
 
           <div className="mt-[22px] overflow-hidden rounded-[14px] border border-line">
             <div className="bg-paper px-4 py-[11px] text-xs font-bold uppercase tracking-[0.05em] text-ink-muted">Variants &amp; pricing</div>
@@ -100,17 +127,33 @@ export default async function ProductPage({ params }: { params: { slug: string }
         </div>
       </section>
 
+      {/* announcement ticker, managed per car from the admin panel */}
+      {(product.specs?.announcement?.enabled ?? true) && (
+        <div className="mt-[54px]">
+          <TagMarquee
+            phrases={
+              product.specs?.announcement?.phrases?.length
+                ? product.specs.announcement.phrases
+                : [
+                    `Suzuki ${product.name}`,
+                    product.tag ? `The ${product.tag}, redefined` : "Built for every road",
+                    "Bold by design",
+                    `Starting at ${formatPKR(product.startPrice)}`,
+                    "Engineered to impress",
+                    ...product.features.slice(0, 3),
+                    "Book a test drive today",
+                  ]
+            }
+          />
+        </div>
+      )}
+
       {product.features.length > 0 && (
         <section className="container-site pt-[54px]">
           <div className="eyebrow">Specifications</div>
           <h2 className="mt-2.5 font-display text-2xl font-extrabold tracking-tight text-ink">Key features</h2>
-          <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-            {product.features.map((f) => (
-              <div key={f} className="flex items-center gap-2.5 rounded-xl border border-line bg-white px-4 py-3 text-sm font-medium text-ink shadow-card">
-                <span className="grid h-5 w-5 flex-shrink-0 place-items-center rounded-full bg-suzuki-blue/10 text-[11px] font-bold text-suzuki-blue">✓</span>
-                {f}
-              </div>
-            ))}
+          <div className="mt-6">
+            <FeatureHighlights features={product.features} />
           </div>
           <p className="mt-3 text-xs text-ink-muted">Features vary by variant. Please confirm the exact specification with our sales team.</p>
         </section>
@@ -118,23 +161,23 @@ export default async function ProductPage({ params }: { params: { slug: string }
 
       {comparison && comparison.columns.length > 0 && (
         <section className="container-site pt-[54px]">
-          <div className="eyebrow">Which one is right for you?</div>
-          <h2 className="mt-2.5 font-display text-2xl font-extrabold tracking-tight text-ink">Compare {product.name} variants</h2>
+          {comparison.columns.length === 1 ? (
+            <>
+              <div className="eyebrow">Everything included</div>
+              <h2 className="mt-2.5 font-display text-2xl font-extrabold tracking-tight text-ink">What the {product.name} comes with</h2>
+            </>
+          ) : (
+            <>
+              <div className="eyebrow">Which one is right for you?</div>
+              <h2 className="mt-2.5 font-display text-2xl font-extrabold tracking-tight text-ink">Compare {product.name} variants</h2>
+            </>
+          )}
           <div className="mt-6">
             <VariantComparison columns={comparison.columns} groups={comparison.groups} note={comparison.note} />
           </div>
         </section>
       )}
 
-      {colors.length > 0 && (
-        <section className="container-site pt-[54px]">
-          <div className="eyebrow">Make it yours</div>
-          <h2 className="mt-2.5 font-display text-2xl font-extrabold tracking-tight text-ink">Available colours</h2>
-          <div className="mt-6">
-            <ColorOptions colors={colors} carName={product.name} />
-          </div>
-        </section>
-      )}
 
       {related.length > 0 && (
         <section className="container-site pb-20 pt-[60px]">

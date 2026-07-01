@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/admin/ui";
 import ImageUploader, { type UploadedImage } from "@/components/admin/ImageUploader";
 import SpecsEditor from "@/components/admin/SpecsEditor";
+import IconLibrary from "@/components/admin/IconLibrary";
+import FeatureIcon from "@/components/site/FeatureIcon";
 import { PlusIcon, TrashIcon } from "@/components/admin/icons";
 import { saveProduct } from "@/app/admin/(panel)/products/actions";
 import type { ProductSpecs } from "@/data/types";
@@ -54,6 +56,7 @@ export default function ProductForm({
   const [features, setFeatures] = useState<string[]>(product?.features.length ? product.features : [""]);
   const [images, setImages] = useState<UploadedImage[]>(product?.images ?? []);
   const [specs, setSpecs] = useState<ProductSpecs | null>(product?.specs ?? null);
+  const [brochureUrl, setBrochureUrl] = useState(product?.brochureUrl ?? "");
 
   function setVariant(i: number, patch: Partial<Variant>) {
     setVariants((vs) => vs.map((v, idx) => (idx === i ? { ...v, ...patch } : v)));
@@ -79,7 +82,14 @@ export default function ProductForm({
     }
     const colors = (s.colors ?? []).filter((c) => c.name.trim()).map((c) => ({ ...c, name: c.name.trim() }));
     if (colors.length) out.colors = colors;
-    return out.comparison || out.colors ? out : null;
+    if (s.announcement) {
+      const phrases = s.announcement.phrases.map((p) => p.trim()).filter(Boolean);
+      // only persist when it changes the default (hidden, or custom text)
+      if (!s.announcement.enabled || phrases.length) out.announcement = { enabled: s.announcement.enabled, phrases };
+    }
+    // both amounts required, otherwise the section stays hidden
+    if (s.tax && s.tax.filer > 0 && s.tax.nonFiler > 0) out.tax = s.tax;
+    return out.comparison || out.colors || out.announcement || out.tax ? out : null;
   }
 
   function submit(e: React.FormEvent) {
@@ -95,7 +105,7 @@ export default function ProductForm({
       status,
       featured,
       published,
-      brochureUrl: product?.brochureUrl ?? "",
+      brochureUrl: brochureUrl.trim(),
       specs: cleanSpecs(specs),
       variants: variants
         .filter((v) => v.name.trim())
@@ -157,6 +167,10 @@ export default function ProductForm({
               <option value="DISCONTINUED">Discontinued</option>
             </select>
           </div>
+          <div>
+            <label className="flabel">Brochure PDF link <span className="text-ink-faint">(optional)</span></label>
+            <input value={brochureUrl} onChange={(e) => setBrochureUrl(e.target.value)} placeholder="https://…/brochure.pdf" className="field" />
+          </div>
           <div className="flex items-end gap-6 pb-1">
             <label className="flex items-center gap-2 text-sm font-medium text-ink-soft">
               <input type="checkbox" checked={featured} onChange={(e) => setFeatured(e.target.checked)} className="h-4 w-4 rounded border-line text-suzuki-red focus:ring-suzuki-red" />
@@ -201,7 +215,13 @@ export default function ProductForm({
         </div>
         <div className="space-y-3">
           {features.map((f, i) => (
-            <div key={i} className="flex gap-3">
+            <div key={i} className="flex items-center gap-3">
+              <span
+                title="Icon shown on the website (picked automatically from the feature name)"
+                className="grid h-10 w-10 flex-shrink-0 place-items-center rounded-lg bg-suzuki-dark/[.05] text-suzuki-dark"
+              >
+                <FeatureIcon label={f} className="h-5 w-5" />
+              </span>
               <input value={f} onChange={(e) => setFeatures((fs) => fs.map((x, idx) => (idx === i ? e.target.value : x)))} placeholder="e.g. ABS with EBD" className="field flex-1" />
               <button type="button" onClick={() => setFeatures((fs) => fs.filter((_, idx) => idx !== i))} className="px-2 text-suzuki-red hover:text-suzuki-red-dk" aria-label="Remove feature">
                 <TrashIcon className="h-5 w-5" />
@@ -209,6 +229,12 @@ export default function ProductForm({
             </div>
           ))}
         </div>
+        <details className="mt-4">
+          <summary className="cursor-pointer text-[13px] font-bold text-suzuki-blue">Browse the icon library</summary>
+          <div className="mt-3">
+            <IconLibrary onPick={(label) => setFeatures((fs) => [...fs.filter((f) => f.trim()), label])} />
+          </div>
+        </details>
       </section>
 
       {/* Comparison & colours */}
