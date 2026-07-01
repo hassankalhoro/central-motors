@@ -94,7 +94,7 @@ export function createLeadHandler(kind: LeadKind, required: string[]) {
   return async function POST(req: Request) {
     if (rateLimited(clientIp(req))) {
       return NextResponse.json(
-        { error: "Too many requests — please try again in a minute." },
+        { error: "Too many requests, please try again in a minute." },
         { status: 429 },
       );
     }
@@ -109,7 +109,7 @@ export function createLeadHandler(kind: LeadKind, required: string[]) {
       return NextResponse.json({ error: "Invalid request." }, { status: 400 });
     }
 
-    // honeypot — silently accept bots (don't tip them off)
+    // honeypot, silently accept bots (don't tip them off)
     if (typeof raw.company === "string" && raw.company.trim()) {
       return NextResponse.json({ ok: true });
     }
@@ -127,18 +127,18 @@ export function createLeadHandler(kind: LeadKind, required: string[]) {
       );
     }
 
-    // light format validation — email is the channel we reply on
+    // light format validation, email is the channel we reply on
     if (body.email && !EMAIL_RE.test(body.email)) {
       return NextResponse.json({ error: "Please enter a valid email address." }, { status: 400 });
     }
 
-    // Persist first — a saved lead is never lost, even if email later fails.
+    // Persist first, a saved lead is never lost, even if email later fails.
     await saveSubmission(kind, body);
 
     try {
       await sendLeadEmail({ kind, data: body });
     } catch (err) {
-      // Never block the user on a mail failure — log for ops to follow up.
+      // Never block the user on a mail failure, log for ops to follow up.
       console.error(`[lead:${kind}] email notification failed:`, err);
     }
 

@@ -14,7 +14,7 @@ import { getEmailConfig } from "@/server/services/settingsService";
  *   MAIL_TO     destination inbox for notifications
  * ------------------------------------------------------------------ */
 
-/* Compliance / footer config — env-overridable, with defaults matching the
+/* Compliance / footer config, env-overridable, with defaults matching the
  * dealership's published details (kept here so this module stays self-contained
  * and the preview/test scripts can import it without the Next path alias). */
 const DEALER_NAME = "Suzuki Central Motors";
@@ -48,7 +48,7 @@ export async function verifyTransport(): Promise<void> {
 }
 
 /* ------------------------------------------------------------------ *
- * Field label maps — keep the email readable regardless of raw keys.
+ * Field label maps, keep the email readable regardless of raw keys.
  * Order here = order in the email.
  * ------------------------------------------------------------------ */
 const LABELS: Record<LeadKind, { field: string; label: string }[]> = {
@@ -108,7 +108,7 @@ export function renderLeadEmail({ kind, data }: RenderInput): {
   const title = KIND_TITLE[kind];
   const rows = LABELS[kind].filter((f) => String(data[f.field] ?? "").trim());
 
-  // Subject line — pull a useful identifier into the subject.
+  // Subject line, pull a useful identifier into the subject.
   const who =
     String(data.name ?? "").trim() ||
     [data.firstName, data.lastName].filter(Boolean).join(" ").trim() ||
@@ -118,17 +118,17 @@ export function renderLeadEmail({ kind, data }: RenderInput): {
   const serviceType = String(data.serviceType ?? "").trim();
   const subject =
     kind === "inquiry" && model
-      ? `${title}: ${model} — ${who}`
+      ? `${title}: ${model}, ${who}`
       : kind === "appointment" && serviceType
-        ? `${title}: ${serviceType} — ${who}`
-        : `${title} — ${who}`;
+        ? `${title}: ${serviceType}, ${who}`
+        : `${title}, ${who}`;
 
   const text =
     `${title}\n` +
     `${"-".repeat(title.length)}\n\n` +
     rows.map((r) => `${r.label}: ${String(data[r.field])}`).join("\n") +
     `\n\n--\n` +
-    `Automated notification to ${DEALER_NAME} staff — a visitor submitted a form on the website.\n` +
+    `Automated notification to ${DEALER_NAME} staff, a visitor submitted a form on the website.\n` +
     `${DEALER_NAME}, ${DEALER_ADDRESS}\n` +
     `Privacy policy: ${PRIVACY_URL}\n` +
     `To stop these notifications, reply with "unsubscribe" or email the site administrator.\n` +
@@ -270,7 +270,7 @@ export async function sendLeadEmail(input: RenderInput): Promise<void> {
     html,
     text,
     replyTo,
-    // RFC 2369 — lets mail clients surface a native unsubscribe control.
+    // RFC 2369, lets mail clients surface a native unsubscribe control.
     headers: {
       "List-Unsubscribe": `<mailto:${to}?subject=${encodeURIComponent("Unsubscribe: website form notifications")}>`,
       "Auto-Submitted": "auto-generated",

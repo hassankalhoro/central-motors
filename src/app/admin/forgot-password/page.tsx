@@ -3,7 +3,7 @@ import AuthScreen from "@/components/admin/AuthScreen";
 import ForgotPasswordForm from "@/components/admin/ForgotPasswordForm";
 
 export const metadata: Metadata = {
-  title: "Forgot password — Dealer Management Portal",
+  title: "Forgot password, Dealer Management Portal",
   robots: { index: false, follow: false },
 };
 

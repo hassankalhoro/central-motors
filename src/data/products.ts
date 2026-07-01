@@ -20,7 +20,7 @@ const seed: Seed[] = [
   },
   {
     slug: "fronx", name: "Fronx", category: "automobiles", tag: "SUV", featured: true, order: 2,
-    desc: "The Fronx redefines presence with a confident front design, sleek coupe-like proportions and a meticulously crafted interior — Suzuki's new XUV, bridging functionality with sophistication. Offered in GL MT, GL AT and GLX 6AT (Mono-Tone & Two-Tone) variants with cruise control, wireless charging and a reversing camera.",
+    desc: "The Fronx redefines presence with a confident front design, sleek coupe-like proportions and a meticulously crafted interior, Suzuki's new XUV, bridging functionality with sophistication. Offered in GL MT, GL AT and GLX 6AT (Mono-Tone & Two-Tone) variants with cruise control, wireless charging and a reversing camera.",
     features: ["Power Steering", "Air Conditioning", "Push Start", "Cruise Control", "Reversing Camera", "Wireless Charger", "Rear AC Vents", "Android Auto / Apple CarPlay", "Alloy Wheels", "Airbags", "EBD", "Hill Hold Control", "Keyless Entry", "Parking Sensors"],
     variants: [{ name: "GL MT", price: 5999999 }, { name: "GL AT", price: 6099999 }, { name: "GLX 6AT (Mono-Tone)", price: 6299999 }, { name: "GLX 6AT (Two-Tone)", price: 6374999 }],
   },

@@ -4,7 +4,7 @@ import { aboutStats, ceo, mission, vision } from "@/data";
 
 export const metadata: Metadata = {
   title: "About Us",
-  description: "Rawalpindi's trusted Suzuki 3S dealership — honest sales, expert service and genuine parts under one roof.",
+  description: "Rawalpindi's trusted Suzuki 7S dealership, honest sales, expert service and genuine parts under one roof.",
 };
 
 export default function AboutPage() {
@@ -15,10 +15,10 @@ export default function AboutPage() {
         <div className="container-site relative">
           <div className="eyebrow-light">Who we are</div>
           <h1 className="mt-2.5 max-w-[760px] font-display text-[clamp(30px,4.4vw,50px)] font-black leading-[1.05] tracking-tight text-white">
-            Rawalpindi&apos;s trusted Suzuki 3S dealership.
+            Rawalpindi&apos;s trusted Suzuki 7S dealership.
           </h1>
           <p className="mt-4 max-w-[620px] text-[17px] leading-relaxed text-[#C3D2EA]">
-            For over a decade, Central Motors has put Suzuki families first — combining honest sales, expert service and genuine parts under one roof on Grand Trunk Road.
+            For over a decade, Central Motors has put Suzuki families first, combining honest sales, expert service and genuine parts under one roof on Grand Trunk Road.
           </p>
         </div>
       </section>

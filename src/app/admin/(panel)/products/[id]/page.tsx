@@ -24,6 +24,7 @@ export default async function EditProductPage({ params }: { params: { id: string
           featured: product.featured,
           published: product.published,
           brochureUrl: product.brochureUrl ?? "",
+          specs: (product.specs as import("@/data/types").ProductSpecs | null) ?? null,
           variants: product.variants.map((v) => ({ name: v.name, price: v.price })),
           features: product.features.map((f) => f.label),
           images: product.images.map((i) => ({ url: i.url, publicId: i.publicId ?? undefined, alt: i.alt ?? undefined })),

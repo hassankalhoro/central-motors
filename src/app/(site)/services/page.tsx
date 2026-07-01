@@ -6,13 +6,13 @@ import { serviceSections } from "@/data";
 
 export const metadata: Metadata = {
   title: "Services",
-  description: "Everything beyond the sale — exchange, certified used cars, extended warranty and car insurance.",
+  description: "Everything beyond the sale, exchange, certified used cars, extended warranty and car insurance.",
 };
 
 export default function ServicesPage() {
   return (
     <>
-      <PageHero eyebrow="After-sales" title="Services" subtitle="Everything beyond the sale — exchange, certified used cars, warranty and insurance." />
+      <PageHero eyebrow="After-sales" title="Services" subtitle="Everything beyond the sale, exchange, certified used cars, warranty and insurance." />
       <section className="mx-auto max-w-[1100px] px-5 py-14 sm:px-8">
         <Reveal>
           <p className="mb-7 max-w-[640px] text-[15px] leading-relaxed text-ink-muted">

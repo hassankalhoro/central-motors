@@ -5,7 +5,7 @@ import type { SessionUser } from "../auth";
 
 /**
  * Verifies credentials. Returns a session payload on success, or null on any
- * failure (bad email, bad password, inactive) — callers must show a generic
+ * failure (bad email, bad password, inactive), callers must show a generic
  * error so accounts can't be enumerated.
  */
 export async function authenticate(email: string, password: string): Promise<SessionUser | null> {

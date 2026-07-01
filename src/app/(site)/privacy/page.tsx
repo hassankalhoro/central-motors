@@ -28,7 +28,7 @@ export default async function PrivacyPage() {
 
           <Block title="1. Who we are">
             <p>
-              {settings.siteName} (&ldquo;we&rdquo;, &ldquo;us&rdquo;) is an authorised 3S Suzuki
+              {settings.siteName} (&ldquo;we&rdquo;, &ldquo;us&rdquo;) is an authorised 7S Suzuki
               dealership in Rawalpindi, Pakistan. We are responsible for the personal information
               you provide through this website. Our address is {settings.address}.
             </p>
@@ -38,7 +38,7 @@ export default async function PrivacyPage() {
             <p>We only collect what you choose to send us through our forms:</p>
             <ul className="ml-5 mt-2 list-disc space-y-1.5">
               <li><strong>Contact form:</strong> your name, email, phone number, preferred contact method, and your message.</li>
-              <li><strong>Online inquiry form:</strong> the model you&apos;re interested in, your name, phone, email, address, and — if you provide them — your CNIC and NTN for booking and invoicing purposes.</li>
+              <li><strong>Online inquiry form:</strong> the model you&apos;re interested in, your name, phone, email, address, and, if you provide them, your CNIC and NTN for booking and invoicing purposes.</li>
             </ul>
             <p className="mt-3">
               Providing your CNIC and NTN is optional. We ask for them only because they may be

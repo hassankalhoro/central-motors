@@ -13,6 +13,6 @@ export const news: NewsPost[] = [
     title: "Maintenance of school vans",
     date: "2018-07-10",
     excerpt: "A dedicated safety and maintenance programme for school transport ahead of the new term.",
-    body: "Ahead of the new academic term, our workshop ran a focused maintenance programme for school vans — brakes, tyres, lights and safety systems were inspected and serviced to keep students safe on the road.",
+    body: "Ahead of the new academic term, our workshop ran a focused maintenance programme for school vans, brakes, tyres, lights and safety systems were inspected and serviced to keep students safe on the road.",
   },
 ];

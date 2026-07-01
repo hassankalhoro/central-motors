@@ -6,7 +6,7 @@ import { initials, telHref } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Management",
-  description: "The team behind Suzuki Central Motors — reachable, accountable and here to help.",
+  description: "The team behind Suzuki Central Motors, reachable, accountable and here to help.",
 };
 
 export const dynamic = "force-dynamic";
@@ -15,7 +15,7 @@ export default async function ManagementPage() {
   const groups = await getTeamGrouped();
   return (
     <>
-      <PageHero eyebrow="Our team" title="Management" subtitle="The people behind Central Motors — reachable, accountable and here to help." />
+      <PageHero eyebrow="Our team" title="Management" subtitle="The people behind Central Motors, reachable, accountable and here to help." />
       {groups.map((g) => (
         <section key={g.group} className="container-site pt-12">
           <h2 className="mb-5 flex items-center gap-3 font-display text-[22px] font-extrabold text-ink">

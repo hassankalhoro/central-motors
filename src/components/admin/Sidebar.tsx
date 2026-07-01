@@ -44,7 +44,7 @@ export default function Sidebar({ role, open, onClose }: { role: Role; open: boo
       >
         {/* Brand */}
         <div className="flex items-center justify-between px-5 pb-2 pt-6">
-          <Image src="/brand/logo.png" alt="Suzuki Central Motors" width={160} height={88} className="h-auto w-[150px]" priority />
+          <Image src="/brand/suzuki.png" alt="Suzuki Central Motors" width={431} height={512} className="h-auto w-[150px]" priority />
           <button onClick={onClose} className="text-white/70 hover:text-white lg:hidden" aria-label="Close menu">
             <CloseIcon />
           </button>

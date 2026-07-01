@@ -76,6 +76,7 @@ model Product {
   startPrice  Int            @default(0) // denormalised = min(variant price)
   status      ProductStatus  @default(IN_STOCK)
   brochureUrl String?
+  specs       Json? // flexible per-car data: variant comparison matrix + colour options (managed in admin)
   featured    Boolean        @default(false)
   published   Boolean        @default(true)
   order       Int            @default(0)

@@ -98,7 +98,7 @@ export default function SubmitForm({
       {/* honeypot */}
       <input type="text" name="company" tabIndex={-1} autoComplete="off" value={values["company"] ?? ""} onChange={(e) => set("company", e.target.value)} className="hidden" aria-hidden />
       {status === "error" && (
-        <p className="mt-3 rounded-lg bg-[#FDEEF0] px-4 py-3 text-sm font-medium text-suzuki-red">Something went wrong — please try again or call us.</p>
+        <p className="mt-3 rounded-lg bg-[#FDEEF0] px-4 py-3 text-sm font-medium text-suzuki-red">Something went wrong, please try again or call us.</p>
       )}
       <button type="submit" disabled={status === "sending"} className="mt-[18px] flex w-full items-center justify-center gap-2 rounded-xl bg-suzuki-red py-[15px] text-[15px] font-bold text-white shadow-cta transition hover:bg-suzuki-red-dk disabled:opacity-70">
         {status === "sending" && (

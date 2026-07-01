@@ -41,8 +41,8 @@ export async function replyToInquiry(id: string, userId: string, message: string
   const finalSubject =
     subject?.trim() ||
     (model
-      ? `Re: your inquiry about the Suzuki ${model} — Suzuki Central Motors`
-      : "Re: your inquiry — Suzuki Central Motors");
+      ? `Re: your inquiry about the Suzuki ${model}, Suzuki Central Motors`
+      : "Re: your inquiry, Suzuki Central Motors");
 
   // The message is the full body the staff composed (greeting + signature included).
   await sendMail(cfg, {

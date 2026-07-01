@@ -3,24 +3,33 @@ import HeroCarousel, { type HeroSlide } from "@/components/site/HeroCarousel";
 import ProductCard from "@/components/site/ProductCard";
 import Reveal from "@/components/site/Reveal";
 import ValueProps from "@/components/site/ValueProps";
+import AfterSales from "@/components/site/AfterSales";
 import NewsSlider from "@/components/site/NewsSlider";
 import { formatPKR } from "@/lib/utils";
-import { heroSlides, homeStats, valueProps } from "@/data";
+import { fronxHero, homeStats, valueProps, afterSales } from "@/data";
 import { getFeaturedProducts, getProductBySlug, getNewsPaged } from "@/data/db";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const slides: HeroSlide[] = await Promise.all(
-    heroSlides.map(async (h) => {
-      const p = await getProductBySlug(h.slug);
-      return {
-        slug: h.slug, name: p?.name ?? h.slug, cat: h.cat, tagline: h.tagline, specs: h.specs,
-        priceLabel: formatPKR(p?.startPrice ?? 0), image: p?.images?.[0] ?? null, blur: p?.blur?.[0],
-      };
-    }),
-  );
-  const [featured, news] = await Promise.all([getFeaturedProducts(8), getNewsPaged(1, 6)]);
+  // Full-bleed cinematic hero, Fronx only, rotating through creative headlines.
+  const fronx = await getProductBySlug("fronx");
+  const price = formatPKR(fronx?.startPrice ?? 0);
+  const slides: HeroSlide[] = fronxHero.map((c) => ({
+    slug: c.slug,
+    name: fronx?.name ?? "Fronx",
+    kicker: c.kicker,
+    lead: c.lead,
+    big: c.big,
+    sub: c.sub,
+    price,
+    image: fronx?.images?.[c.imageIndex] ?? fronx?.images?.[0] ?? null,
+    blur: fronx?.blur?.[c.imageIndex] ?? fronx?.blur?.[0],
+    tone: c.tone,
+  }));
+  const [featuredRaw, news] = await Promise.all([getFeaturedProducts(8), getNewsPaged(1, 6)]);
+  // Show the Fronx first in the lineup grid, keep the rest in their order.
+  const featured = [...featuredRaw].sort((a, b) => (a.slug === "fronx" ? -1 : b.slug === "fronx" ? 1 : 0));
 
   return (
     <>
@@ -54,13 +63,30 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* after-sales */}
+      <section className="container-site pt-[70px]">
+        <div className="flex flex-wrap items-end justify-between gap-5">
+          <div>
+            <div className="eyebrow">After-Sales</div>
+            <h2 className="section-title mt-2.5">Care that lasts beyond the sale</h2>
+          </div>
+          <Link href="/services" className="text-sm font-bold text-suzuki-blue">All services →</Link>
+        </div>
+        <p className="mt-3 max-w-[640px] leading-relaxed text-ink-muted">
+          A complete 7S facility covering service, spare-parts and body shop, staffed by certified Suzuki technicians and backed by genuine parts and warranty.
+        </p>
+        <Reveal className="mt-[30px] block">
+          <AfterSales items={afterSales} />
+        </Reveal>
+      </section>
+
       {/* value props */}
       <section className="mt-[70px] border-y border-[#E9EDF3] bg-paper">
         <div className="container-site py-[60px]">
           <div className="mx-auto max-w-[620px] text-center">
             <div className="eyebrow">Value for money</div>
             <h2 className="section-title mt-2.5">More than a showroom</h2>
-            <p className="mt-3 leading-relaxed text-ink-muted">Everything that keeps your Suzuki on the road — from genuine parts to insurance and finance. Tap a card for more.</p>
+            <p className="mt-3 leading-relaxed text-ink-muted">Everything that keeps your Suzuki on the road, from genuine parts to insurance and finance. Tap a card for more.</p>
           </div>
           <Reveal className="mt-[38px] block">
             <ValueProps items={valueProps} />

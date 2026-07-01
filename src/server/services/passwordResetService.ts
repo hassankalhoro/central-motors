@@ -14,7 +14,7 @@ function sha256(s: string): string {
 
 /**
  * Starts a reset: creates a single-use token and emails the user a link.
- * Always resolves (no account enumeration) — callers show a generic message.
+ * Always resolves (no account enumeration), callers show a generic message.
  * Returns whether an email was actually sent (for logging only).
  */
 export async function requestPasswordReset(
@@ -36,7 +36,7 @@ export async function requestPasswordReset(
 
   const cfg = await getEmailConfig();
   if (!cfg.user || !cfg.pass) {
-    console.error("[reset] SMTP not configured — cannot email reset link.");
+    console.error("[reset] SMTP not configured, cannot email reset link.");
     return { found: true, emailed: false };
   }
 
@@ -67,7 +67,7 @@ function resetEmail(name: string, link: string, fromName: string): { subject: st
     `Hello ${name},\n\n` +
     `We received a request to reset your admin password. Open the link below to choose a new one (valid for 1 hour):\n\n` +
     `${link}\n\n` +
-    `If you didn't request this, you can safely ignore this email — your password won't change.\n\n— ${fromName}`;
+    `If you didn't request this, you can safely ignore this email, your password won't change.\n\n— ${fromName}`;
   const html = `<!DOCTYPE html><html><body style="margin:0;background:#eef1f7;padding:24px 12px;font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center">
     <table role="presentation" width="100%" style="max-width:520px;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(6,36,92,.12);">
@@ -80,7 +80,7 @@ function resetEmail(name: string, link: string, fromName: string): { subject: st
         <p style="margin:0 0 20px;font:400 15px/1.6 sans-serif;color:#5e6e8c;">Hello ${esc(name)}, we received a request to reset your admin password. Click below to choose a new one. This link is valid for <strong>1 hour</strong>.</p>
         <a href="${esc(link)}" style="display:inline-block;background:#E11622;color:#fff;font:700 14px sans-serif;text-decoration:none;padding:13px 26px;border-radius:10px;">Reset password</a>
         <p style="margin:22px 0 0;font:400 13px/1.6 sans-serif;color:#8090ad;">If the button doesn't work, copy this link into your browser:<br><a href="${esc(link)}" style="color:#1E55A8;word-break:break-all;">${esc(link)}</a></p>
-        <p style="margin:18px 0 0;font:400 13px/1.6 sans-serif;color:#8090ad;">Didn't request this? You can safely ignore this email — your password won't change.</p>
+        <p style="margin:18px 0 0;font:400 13px/1.6 sans-serif;color:#8090ad;">Didn't request this? You can safely ignore this email, your password won't change.</p>
       </td></tr>
       <tr><td style="padding:16px 30px;background:#f6f8fc;border-top:1px solid #eef1f6;font:400 12px/1.6 sans-serif;color:#8090ad;">${esc(fromName)} · Automated message</td></tr>
     </table>

@@ -4,7 +4,7 @@ import AuthScreen from "@/components/admin/AuthScreen";
 import ResetPasswordForm from "@/components/admin/ResetPasswordForm";
 
 export const metadata: Metadata = {
-  title: "Reset password — Dealer Management Portal",
+  title: "Reset password, Dealer Management Portal",
   robots: { index: false, follow: false },
 };
 

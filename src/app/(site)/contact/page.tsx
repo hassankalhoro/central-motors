@@ -57,7 +57,7 @@ export default async function ContactPage() {
             className="well-stripe mt-4 flex h-[200px] flex-col items-center justify-center gap-2 rounded-[18px] border border-line bg-gradient-to-br from-[#EEF2F8] to-[#E2E9F3]"
           >
             <span aria-hidden className="text-[30px]">📍</span>
-            <span className="text-xs font-semibold text-ink-muted">G.T. Road, Soan, Rawalpindi — open in Maps</span>
+            <span className="text-xs font-semibold text-ink-muted">G.T. Road, Soan, Rawalpindi, open in Maps</span>
           </a>
         </div>
       </section>

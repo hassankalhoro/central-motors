@@ -1,7 +1,7 @@
 import type { Role } from "@prisma/client";
 
 /* Capability-based RBAC. UI hides what a role can't do; every server action also
- * calls `can()` (or requireRole) — UI hiding is never the security boundary. */
+ * calls `can()` (or requireRole), UI hiding is never the security boundary. */
 
 export type Capability =
   | "content.view" // see admin + lists
@@ -30,7 +30,7 @@ export function can(role: Role, cap: Capability): boolean {
   return MATRIX[role]?.includes(cap) ?? false;
 }
 
-/** Roles allowed for a capability — handy for `requireRole(...rolesFor("x"))`. */
+/** Roles allowed for a capability, handy for `requireRole(...rolesFor("x"))`. */
 export function rolesFor(cap: Capability): Role[] {
   return (Object.keys(MATRIX) as Role[]).filter((r) => can(r, cap));
 }

@@ -36,7 +36,7 @@ export default async function OnlineInquiryPage({ searchParams }: { searchParams
             defaultValues={{ product: preselect }}
             submitLabel="Submit inquiry"
             successTitle="Inquiry submitted"
-            successMessage="Thanks — we've received your inquiry and our sales team will contact you shortly."
+            successMessage="Thanks, we've received your inquiry and our sales team will contact you shortly."
             resetLabel="New inquiry"
           />
         </div>

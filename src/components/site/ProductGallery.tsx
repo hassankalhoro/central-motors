@@ -26,7 +26,7 @@ export default function ProductGallery({
         {hasImages ? (
           <Image
             src={images[active]}
-            alt={`${name} — image ${active + 1}`}
+            alt={`${name}, image ${active + 1}`}
             fill
             priority
             sizes="(max-width:1024px) 100vw, 55vw"

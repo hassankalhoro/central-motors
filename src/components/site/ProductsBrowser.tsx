@@ -29,7 +29,7 @@ export default function ProductsBrowser({ products, types }: { products: Product
 
   return (
     <div className="container-site grid grid-cols-1 gap-8 pb-20 lg:grid-cols-[1fr_250px]">
-      {/* Filter sidebar — right on desktop, top on mobile; sticky on scroll */}
+      {/* Filter sidebar, right on desktop, top on mobile; sticky on scroll */}
       <aside className="lg:order-2">
         <div className="lg:sticky lg:top-[88px]">
           <div className="card p-5">

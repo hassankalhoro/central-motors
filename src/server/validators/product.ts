@@ -5,6 +5,54 @@ export const variantSchema = z.object({
   price: z.coerce.number().int().min(0, "Price must be 0 or more."),
 });
 
+/** Flexible per-car comparison matrix + colour options (Product.specs JSON). */
+const specValueSchema = z.union([z.boolean(), z.string().trim().max(80), z.null()]);
+export const productSpecsSchema = z
+  .object({
+    comparison: z
+      .object({
+        columns: z
+          .array(
+            z.object({
+              name: z.string().trim().min(1, "Column name is required.").max(60),
+              price: z.coerce.number().int().min(0).optional(),
+              discontinued: z.boolean().optional(),
+            }),
+          )
+          .max(8),
+        groups: z
+          .array(
+            z.object({
+              title: z.string().trim().min(1, "Group title is required.").max(80),
+              rows: z
+                .array(
+                  z.object({
+                    label: z.string().trim().min(1, "Row label is required.").max(80),
+                    values: z.array(specValueSchema).max(8),
+                  }),
+                )
+                .max(50),
+            }),
+          )
+          .max(12),
+        note: z.string().trim().max(300).optional(),
+      })
+      .optional(),
+    colors: z
+      .array(
+        z.object({
+          name: z.string().trim().min(1, "Colour name is required.").max(60),
+          hex: z.string().regex(/^#[0-9a-fA-F]{6}$/, "Colour must be a hex value like #1A2B3C."),
+          roofHex: z.string().regex(/^#[0-9a-fA-F]{6}$/).optional(),
+          image: z.string().url().nullable().optional(),
+          discontinued: z.boolean().optional(),
+        }),
+      )
+      .max(24)
+      .optional(),
+  })
+  .nullable();
+
 export const productSchema = z.object({
   name: z.string().trim().min(1, "Name is required.").max(120),
   slug: z
@@ -20,6 +68,7 @@ export const productSchema = z.object({
   featured: z.coerce.boolean().optional().default(false),
   published: z.coerce.boolean().optional().default(true),
   brochureUrl: z.string().trim().url().optional().or(z.literal("")),
+  specs: productSpecsSchema.optional(),
   variants: z.array(variantSchema).min(1, "Add at least one variant."),
   features: z.array(z.string().trim().min(1)).default([]),
   images: z

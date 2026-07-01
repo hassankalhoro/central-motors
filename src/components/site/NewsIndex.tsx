@@ -38,7 +38,7 @@ export default function NewsIndex({
   }
 
   if (items.length === 0) {
-    return <p className="py-16 text-center text-ink-muted">No news yet — check back soon.</p>;
+    return <p className="py-16 text-center text-ink-muted">No news yet, check back soon.</p>;
   }
 
   return (

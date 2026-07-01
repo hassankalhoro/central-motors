@@ -30,7 +30,7 @@ export default function ServicesExplorer({ services }: { services: Service[] }) 
               isOpen ? "shadow-lift ring-1 ring-suzuki-blue/15" : "hover:-translate-y-1 hover:shadow-lift",
             )}
           >
-            {/* header — clickable */}
+            {/* header, clickable */}
             <button
               type="button"
               onClick={() => setOpen(isOpen ? -1 : i)}
@@ -79,7 +79,7 @@ export default function ServicesExplorer({ services }: { services: Service[] }) 
               </span>
             </button>
 
-            {/* expandable detail — animated via grid-rows 0fr→1fr */}
+            {/* expandable detail, animated via grid-rows 0fr→1fr */}
             <div
               className="grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(.2,.7,.3,1)]"
               style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}

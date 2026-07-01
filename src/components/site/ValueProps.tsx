@@ -16,7 +16,7 @@ export type ValueProp = {
 const EASE = [0.22, 0.7, 0.25, 1] as const;
 
 /* Interactive value-prop grid with FLIP layout animation (framer-motion).
-   Click a card to expand it into a larger 2×2 tile — it grows in every direction
+   Click a card to expand it into a larger 2×2 tile, it grows in every direction
    from where it sits, while the remaining cards smoothly glide around it.
    Calm by default: neutral navy-tinted tiles, red reserved for the open card. */
 export default function ValueProps({ items }: { items: ValueProp[] }) {
@@ -55,7 +55,7 @@ export default function ValueProps({ items }: { items: ValueProp[] }) {
                 />
 
                 <motion.div layout="position" className="flex items-start justify-between gap-3">
-                  {/* icon tile — neutral by default, red only when open */}
+                  {/* icon tile, neutral by default, red only when open */}
                   <span
                     className={cn(
                       "relative grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-xl transition-colors duration-500",

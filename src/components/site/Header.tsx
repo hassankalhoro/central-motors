@@ -42,10 +42,10 @@ export default function Header({ settings }: { settings: Settings }) {
       <div className="container-site flex h-[72px] items-center gap-6">
         <Link href="/" className="flex flex-shrink-0 items-center" aria-label={`${settings.siteName} home`}>
           <Image
-            src="/brand/logo.png"
+            src="/brand/suzuki.png"
             alt={settings.siteName}
-            width={176}
-            height={83}
+            width={431}
+            height={512}
             priority
             className="h-12 w-auto"
           />
@@ -90,7 +90,7 @@ export default function Header({ settings }: { settings: Settings }) {
         <div className="fixed inset-0 z-[150] bg-[rgba(6,17,36,.55)] backdrop-blur-sm lg:hidden" onClick={() => setOpen(false)}>
           <div className="absolute right-0 top-0 bottom-0 flex w-[min(86vw,340px)] flex-col overflow-y-auto bg-white p-5 shadow-[-12px_0_40px_rgba(0,0,0,.2)]" onClick={(e) => e.stopPropagation()}>
             <div className="mb-4 flex items-center justify-between">
-              <Image src="/brand/logo.png" alt={settings.siteName} width={176} height={83} className="h-9 w-auto" />
+              <Image src="/brand/suzuki.png" alt={settings.siteName} width={431} height={512} className="h-9 w-auto" />
               <button onClick={() => setOpen(false)} aria-label="Close" className="grid h-[38px] w-[38px] place-items-center rounded-[9px] border border-line text-lg text-ink-soft">✕</button>
             </div>
             {NAV.map((n) => (

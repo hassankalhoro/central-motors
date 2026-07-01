@@ -5,7 +5,7 @@ import { getProducts, getBodyTypes } from "@/data/db";
 
 export const metadata: Metadata = {
   title: "All Suzuki Models",
-  description: "Browse the current Suzuki Central Motors lineup — Alto, WagonR, Cultus, Swift, Every and Fronx with starting prices.",
+  description: "Browse the current Suzuki Central Motors lineup, Alto, WagonR, Cultus, Swift, Every and Fronx with starting prices.",
 };
 
 export const dynamic = "force-dynamic";

@@ -156,8 +156,8 @@ export default function InquiriesClient({
     const model = item.productSlug ? prettyModel(item.productSlug) : "";
     setReplySubject(
       model
-        ? `Re: your inquiry about the Suzuki ${model} — Suzuki Central Motors`
-        : `Re: your ${item.kind} — Suzuki Central Motors`,
+        ? `Re: your inquiry about the Suzuki ${model}, Suzuki Central Motors`
+        : `Re: your ${item.kind}, Suzuki Central Motors`,
     );
     const lines = [`Dear ${item.name},`, ""];
     if (model) lines.push(`Thank you for your interest in the Suzuki ${model}.`, "");
@@ -330,7 +330,7 @@ export default function InquiriesClient({
                     {selected.email ? (
                       <Button onClick={() => openCompose(selected)}>Reply by Email</Button>
                     ) : (
-                      <p className="text-sm text-ink-muted">No email on file — contact this customer by phone.</p>
+                      <p className="text-sm text-ink-muted">No email on file, contact this customer by phone.</p>
                     )}
                   </div>
                 )}
@@ -340,7 +340,7 @@ export default function InquiriesClient({
         </div>
       </div>
 
-      {/* Compose email — sends via the dealership SMTP (caisol), no desktop mail app needed. */}
+      {/* Compose email, sends via the dealership SMTP (caisol), no desktop mail app needed. */}
       <SlideOver
         open={composeOpen}
         onClose={() => setComposeOpen(false)}

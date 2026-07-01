@@ -4,8 +4,10 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/admin/ui";
 import ImageUploader, { type UploadedImage } from "@/components/admin/ImageUploader";
+import SpecsEditor from "@/components/admin/SpecsEditor";
 import { PlusIcon, TrashIcon } from "@/components/admin/icons";
 import { saveProduct } from "@/app/admin/(panel)/products/actions";
+import type { ProductSpecs } from "@/data/types";
 
 type Variant = { name: string; price: string };
 type Status = "IN_STOCK" | "COMING_SOON" | "DISCONTINUED";
@@ -24,6 +26,7 @@ export type ProductFormData = {
   variants: { name: string; price: number }[];
   features: string[];
   images: UploadedImage[];
+  specs?: ProductSpecs | null;
 };
 
 export default function ProductForm({
@@ -50,9 +53,33 @@ export default function ProductForm({
   );
   const [features, setFeatures] = useState<string[]>(product?.features.length ? product.features : [""]);
   const [images, setImages] = useState<UploadedImage[]>(product?.images ?? []);
+  const [specs, setSpecs] = useState<ProductSpecs | null>(product?.specs ?? null);
 
   function setVariant(i: number, patch: Partial<Variant>) {
     setVariants((vs) => vs.map((v, idx) => (idx === i ? { ...v, ...patch } : v)));
+  }
+
+  /** Drop half-filled rows/groups/colours so saving never trips validation on blanks. */
+  function cleanSpecs(s: ProductSpecs | null): ProductSpecs | null {
+    if (!s) return null;
+    const out: ProductSpecs = {};
+    if (s.comparison) {
+      const columns = s.comparison.columns.filter((c) => c.name.trim());
+      const groups = s.comparison.groups
+        .map((g) => ({
+          title: g.title.trim(),
+          rows: g.rows
+            .filter((r) => r.label.trim())
+            .map((r) => ({ label: r.label.trim(), values: columns.map((_, ci) => r.values[ci] ?? null) })),
+        }))
+        .filter((g) => g.title && g.rows.length);
+      if (columns.length && groups.length) {
+        out.comparison = { columns, groups, note: s.comparison.note?.trim() || undefined };
+      }
+    }
+    const colors = (s.colors ?? []).filter((c) => c.name.trim()).map((c) => ({ ...c, name: c.name.trim() }));
+    if (colors.length) out.colors = colors;
+    return out.comparison || out.colors ? out : null;
   }
 
   function submit(e: React.FormEvent) {
@@ -69,6 +96,7 @@ export default function ProductForm({
       featured,
       published,
       brochureUrl: product?.brochureUrl ?? "",
+      specs: cleanSpecs(specs),
       variants: variants
         .filter((v) => v.name.trim())
         .map((v) => ({ name: v.name.trim(), price: Number(v.price) || 0 })),
@@ -182,6 +210,15 @@ export default function ProductForm({
           ))}
         </div>
       </section>
+
+      {/* Comparison & colours */}
+      <SpecsEditor
+        value={specs}
+        onChange={setSpecs}
+        suggestedColumns={variants
+          .filter((v) => v.name.trim())
+          .map((v) => ({ name: v.name.trim(), price: Number(v.price) || undefined }))}
+      />
 
       {/* Images */}
       <section className="rounded-2xl border border-line bg-white p-6 shadow-card">

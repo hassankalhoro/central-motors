@@ -6,7 +6,7 @@ import LoginForm from "@/components/admin/LoginForm";
 import { getSession } from "@/server/auth";
 
 export const metadata: Metadata = {
-  title: "Sign in — Dealer Management Portal",
+  title: "Sign in, Dealer Management Portal",
   robots: { index: false, follow: false },
 };
 
@@ -20,7 +20,7 @@ export default async function AdminLoginPage() {
       <aside className="relative hidden w-[44%] flex-col items-center justify-center overflow-hidden bg-hero p-12 text-white lg:flex">
         <div className="absolute inset-0 bg-gradient-to-b from-suzuki-dark/30 to-suzuki-darker/80" />
         <div className="relative z-10 flex flex-col items-center text-center">
-          <Image src="/brand/logo.png" alt="Suzuki Central Motors" width={220} height={120} className="h-auto w-[200px] drop-shadow" priority />
+          <Image src="/brand/suzuki.png" alt="Suzuki Central Motors" width={431} height={512} className="h-auto w-[200px] drop-shadow" priority />
           <div className="mt-6 h-[3px] w-28 rounded-full bg-suzuki-red" />
           <p className="mt-5 text-lg font-semibold tracking-wide text-white/90">Dealer Management Portal</p>
         </div>

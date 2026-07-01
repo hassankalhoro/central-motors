@@ -10,7 +10,7 @@ import { getSettings } from "@/data/db";
 
 export const metadata: Metadata = {
   title: "Customer Care",
-  description: "A modern 3S workshop, genuine parts and a dedicated care desk — we keep your Suzuki at its best.",
+  description: "A modern 7S workshop, genuine parts and a dedicated care desk, we keep your Suzuki at its best.",
 };
 
 export const dynamic = "force-dynamic";
@@ -19,7 +19,7 @@ export default async function CustomerCarePage() {
   const settings = await getSettings();
   return (
     <>
-      <PageHero eyebrow="3S Workshop" title="Customer Care" subtitle="A modern workshop, genuine parts and a dedicated care desk — we keep your Suzuki at its best." />
+      <PageHero eyebrow="7S Workshop" title="Customer Care" subtitle="A modern workshop, genuine parts and a dedicated care desk, we keep your Suzuki at its best." />
 
       <section className="container-site pt-[50px]">
         <Reveal>

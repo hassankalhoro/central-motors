@@ -25,7 +25,7 @@ export async function signSession(user: SessionUser, maxAgeSec = 60 * 60 * 24 * 
     .sign(secret());
 }
 
-/** Verifies a token (edge-safe — no DB). Returns the session or null. */
+/** Verifies a token (edge-safe, no DB). Returns the session or null. */
 export async function verifySessionToken(token: string | undefined): Promise<SessionUser | null> {
   if (!token) return null;
   try {

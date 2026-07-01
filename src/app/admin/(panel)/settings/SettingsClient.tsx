@@ -114,7 +114,7 @@ export default function SettingsClient({
     setEmailMsg(null);
     start(async () => {
       const res = await sendTestEmail(emailPayload());
-      setEmailMsg(res.ok ? { ok: true, text: "Test email sent — check the inbox." } : { ok: false, text: res.error });
+      setEmailMsg(res.ok ? { ok: true, text: "Test email sent, check the inbox." } : { ok: false, text: res.error });
     });
   }
 

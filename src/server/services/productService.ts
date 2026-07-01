@@ -1,8 +1,16 @@
 import "server-only";
+import { Prisma } from "@prisma/client";
 import { productRepo } from "../repositories/product.repo";
 import { ServiceError } from "./categoryService";
 import { slugify } from "@/lib/slug";
 import type { ProductInput } from "../validators/product";
+
+/** Prisma needs an explicit DbNull to clear a Json column. */
+function specsValue(specs: ProductInput["specs"]) {
+  if (specs === undefined) return undefined; // leave unchanged
+  if (specs === null) return Prisma.DbNull; // clear
+  return specs as Prisma.InputJsonValue;
+}
 
 const PAGE_SIZE = 10;
 
@@ -34,6 +42,7 @@ export async function createProduct(input: ProductInput) {
     featured: input.featured,
     published: input.published,
     brochureUrl: input.brochureUrl || null,
+    specs: specsValue(input.specs),
     startPrice: startPrice(input.variants),
     order: await productRepo.nextOrder(),
   });
@@ -63,6 +72,7 @@ export async function updateProduct(id: string, input: ProductInput) {
     featured: input.featured,
     published: input.published,
     brochureUrl: input.brochureUrl || null,
+    specs: specsValue(input.specs),
     startPrice: startPrice(input.variants),
   });
   await Promise.all([

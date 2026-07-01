@@ -1,7 +1,7 @@
 import "server-only";
 import type { Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
-import type { Product, Category, TeamMember, NewsPost, Settings, CategorySlug } from "./types";
+import type { Product, ProductSpecs, Category, TeamMember, NewsPost, Settings, CategorySlug } from "./types";
 import { settings as defaultSettings } from "./settings";
 
 /* ------------------------------------------------------------------ *
@@ -41,6 +41,8 @@ function toProduct(p: DbProduct): Product {
     images: p.images.map((i) => i.url),
     blur: p.images.map((i) => i.blurData ?? ""),
     brochure: p.brochureUrl ?? null,
+    status: p.status,
+    specs: (p.specs as ProductSpecs | null) ?? null,
   };
 }
 

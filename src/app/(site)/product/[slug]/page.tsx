@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import ProductGallery from "@/components/site/ProductGallery";
 import ProductCard from "@/components/site/ProductCard";
 import Reveal from "@/components/site/Reveal";
+import VariantComparison from "@/components/site/VariantComparison";
+import ColorOptions from "@/components/site/ColorOptions";
 import { formatPKR } from "@/lib/utils";
 import { getProductBySlug, getRelatedProducts, getAdjacentProducts, categoryName } from "@/data/db";
 
@@ -15,7 +17,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   return {
     title: `${p.name} Price in Pakistan`,
     description: p.desc,
-    openGraph: { title: `${p.name} — Suzuki Central Motors`, description: p.desc, images: p.images?.[0] ? [p.images[0]] : [] },
+    openGraph: { title: `${p.name}, Suzuki Central Motors`, description: p.desc, images: p.images?.[0] ? [p.images[0]] : [] },
   };
 }
 
@@ -28,6 +30,8 @@ export default async function ProductPage({ params }: { params: { slug: string }
     getAdjacentProducts(product.slug),
   ]);
   const { prev, next } = adjacent;
+  const comparison = product.specs?.comparison;
+  const colors = product.specs?.colors ?? [];
 
   return (
     <>
@@ -52,6 +56,15 @@ export default async function ProductPage({ params }: { params: { slug: string }
           )}
         </div>
       </div>
+
+      {product.status === "DISCONTINUED" && (
+        <div className="container-site pt-4">
+          <div className="flex items-center gap-3 rounded-xl border border-suzuki-red/25 bg-suzuki-red/[.06] px-5 py-3.5 text-[14px] font-semibold text-suzuki-red">
+            <span className="grid h-5 w-5 flex-shrink-0 place-items-center rounded-full bg-suzuki-red text-[11px] font-bold text-white">!</span>
+            This model has been discontinued. Contact us about remaining stock or a suitable alternative.
+          </div>
+        </div>
+      )}
 
       <section className="container-site grid grid-cols-1 items-start gap-[38px] pt-[18px] lg:grid-cols-[1.1fr_.9fr]">
         <ProductGallery images={product.images ?? []} blur={product.blur ?? []} name={product.name} category={catName} />
@@ -100,6 +113,26 @@ export default async function ProductPage({ params }: { params: { slug: string }
             ))}
           </div>
           <p className="mt-3 text-xs text-ink-muted">Features vary by variant. Please confirm the exact specification with our sales team.</p>
+        </section>
+      )}
+
+      {comparison && comparison.columns.length > 0 && (
+        <section className="container-site pt-[54px]">
+          <div className="eyebrow">Which one is right for you?</div>
+          <h2 className="mt-2.5 font-display text-2xl font-extrabold tracking-tight text-ink">Compare {product.name} variants</h2>
+          <div className="mt-6">
+            <VariantComparison columns={comparison.columns} groups={comparison.groups} note={comparison.note} />
+          </div>
+        </section>
+      )}
+
+      {colors.length > 0 && (
+        <section className="container-site pt-[54px]">
+          <div className="eyebrow">Make it yours</div>
+          <h2 className="mt-2.5 font-display text-2xl font-extrabold tracking-tight text-ink">Available colours</h2>
+          <div className="mt-6">
+            <ColorOptions colors={colors} carName={product.name} />
+          </div>
         </section>
       )}
 

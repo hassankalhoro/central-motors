@@ -43,6 +43,6 @@ export async function POST(req: Request) {
     console.error("[forgot-password] failed:", err);
   }
   // Per request: tell the user when no account exists. (Note: this allows email
-  // enumeration — acceptable for a small internal admin.)
+  // enumeration, acceptable for a small internal admin.)
   return NextResponse.json({ ok: true, found });
 }

@@ -1,6 +1,6 @@
 import type { SVGProps } from "react";
 
-/* Clean, professional line icons (24×24, currentColor stroke) — one per service.
+/* Clean, professional line icons (24×24, currentColor stroke), one per service.
    Stroke-based so they stay crisp on the gradient tiles and inherit text colour. */
 
 type IconProps = SVGProps<SVGSVGElement>;
@@ -14,7 +14,7 @@ const base = {
   strokeLinejoin: "round" as const,
 };
 
-/** Exchange / trade-in — two opposing arrows. */
+/** Exchange / trade-in, two opposing arrows. */
 export function ExchangeIcon(props: IconProps) {
   return (
     <svg {...base} {...props}>
@@ -26,7 +26,7 @@ export function ExchangeIcon(props: IconProps) {
   );
 }
 
-/** Certified used car — car silhouette with an approval check badge. */
+/** Certified used car, car silhouette with an approval check badge. */
 export function CertifiedCarIcon(props: IconProps) {
   return (
     <svg {...base} {...props}>
@@ -41,7 +41,7 @@ export function CertifiedCarIcon(props: IconProps) {
   );
 }
 
-/** Extended warranty — shield with a check. */
+/** Extended warranty, shield with a check. */
 export function WarrantyShieldIcon(props: IconProps) {
   return (
     <svg {...base} {...props}>
@@ -51,7 +51,7 @@ export function WarrantyShieldIcon(props: IconProps) {
   );
 }
 
-/** Car insurance — umbrella of protection over a road. */
+/** Car insurance, umbrella of protection over a road. */
 export function InsuranceIcon(props: IconProps) {
   return (
     <svg {...base} {...props}>
@@ -62,7 +62,7 @@ export function InsuranceIcon(props: IconProps) {
   );
 }
 
-/** Genuine parts — a gear/cog. */
+/** Genuine parts, a gear/cog. */
 export function PartsIcon(props: IconProps) {
   return (
     <svg {...base} {...props}>
@@ -72,7 +72,7 @@ export function PartsIcon(props: IconProps) {
   );
 }
 
-/** Customer care — a support headset. */
+/** Customer care, a support headset. */
 export function CareIcon(props: IconProps) {
   return (
     <svg {...base} {...props}>
@@ -84,7 +84,7 @@ export function CareIcon(props: IconProps) {
   );
 }
 
-/** Finance — a payment card. */
+/** Finance, a payment card. */
 export function FinanceIcon(props: IconProps) {
   return (
     <svg {...base} {...props}>
@@ -95,7 +95,7 @@ export function FinanceIcon(props: IconProps) {
   );
 }
 
-/** Body shop — a wrench/spanner for repair. */
+/** Body shop, a wrench/spanner for repair. */
 export function BodyShopIcon(props: IconProps) {
   return (
     <svg {...base} {...props}>
@@ -104,7 +104,7 @@ export function BodyShopIcon(props: IconProps) {
   );
 }
 
-/** Roadside help — a lifebuoy / rescue ring. */
+/** Roadside help, a lifebuoy / rescue ring. */
 export function RoadsideIcon(props: IconProps) {
   return (
     <svg {...base} {...props}>
@@ -115,7 +115,7 @@ export function RoadsideIcon(props: IconProps) {
   );
 }
 
-/** 3S workshop — a garage / service building with a roller door. */
+/** 7S workshop, a garage / service building with a roller door. */
 export function WorkshopIcon(props: IconProps) {
   return (
     <svg {...base} {...props}>
@@ -127,7 +127,7 @@ export function WorkshopIcon(props: IconProps) {
   );
 }
 
-/** Computerised diagnostics — a monitor with a diagnostic waveform. */
+/** Computerised diagnostics, a monitor with a diagnostic waveform. */
 export function DiagnosticsIcon(props: IconProps) {
   return (
     <svg {...base} {...props}>
@@ -138,7 +138,7 @@ export function DiagnosticsIcon(props: IconProps) {
   );
 }
 
-/** Quality control — an award rosette with a check. */
+/** Quality control, an award rosette with a check. */
 export function QualityIcon(props: IconProps) {
   return (
     <svg {...base} {...props}>

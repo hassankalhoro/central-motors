@@ -45,7 +45,7 @@ export async function POST(req: Request) {
   const { email, password, remember } = parsed.data;
   const user = await authenticate(email, password);
   if (!user) {
-    // Generic message — no account enumeration.
+    // Generic message, no account enumeration.
     return NextResponse.json({ error: "Incorrect email or password." }, { status: 401 });
   }
 
