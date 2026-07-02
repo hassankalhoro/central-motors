@@ -60,7 +60,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
 
   return (
     <section
-      className="relative isolate min-h-[600px] overflow-hidden bg-[#040f28] text-white lg:min-h-[760px]"
+      className="relative isolate min-h-[580px] overflow-hidden bg-[#040f28] text-white sm:min-h-[700px] lg:min-h-[760px]"
       onMouseEnter={() => (paused.current = true)}
       onMouseLeave={() => (paused.current = false)}
     >
@@ -109,7 +109,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
 
             {/* the car */}
             {s.image && (
-              <div className="pointer-events-none absolute z-[1] bottom-[86px] left-0 right-0 top-[36%] sm:top-[32%] lg:bottom-[9%] lg:left-[36%] lg:right-[-2%] lg:top-[3%]">
+              <div className="pointer-events-none absolute z-[1] bottom-[58px] left-0 right-0 top-auto h-[216px] sm:h-[300px] lg:bottom-[9%] lg:left-[36%] lg:right-[-2%] lg:top-[3%] lg:h-auto">
                 <div
                   className="absolute left-1/2 top-1/2 h-[64%] w-[80%] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-50 blur-3xl"
                   style={{ background: `radial-gradient(ellipse at center, ${tone.rim}, transparent 62%)` }}
@@ -141,10 +141,10 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
             )}
 
             {/* legibility scrim */}
-            <div className="absolute inset-0 z-[2] bg-[linear-gradient(to_top,#040f28_3%,rgba(4,15,40,.12)_46%,transparent_72%)] lg:bg-[linear-gradient(to_right,#040f28_9%,rgba(4,15,40,.42)_30%,transparent_54%)]" />
+            <div className="absolute inset-0 z-[2] bg-[linear-gradient(to_bottom,rgba(4,15,40,.5),rgba(4,15,40,.15)_42%,transparent_60%)] lg:bg-[linear-gradient(to_right,#040f28_9%,rgba(4,15,40,.42)_30%,transparent_54%)]" />
 
             {/* content */}
-            <div className="relative z-[3] mx-auto flex min-h-[600px] w-full max-w-[1500px] flex-col justify-end px-6 pb-[104px] pt-24 sm:px-8 lg:min-h-[760px] lg:justify-center lg:px-14 lg:pb-24">
+            <div className="relative z-[3] mx-auto flex w-full max-w-[1500px] flex-col justify-start px-6 pb-[300px] pt-7 sm:px-8 sm:pb-[390px] lg:min-h-[760px] lg:justify-center lg:px-14 lg:pb-24 lg:pt-24">
               <div className={cn("max-w-[300px] sm:max-w-[460px]", active ? "pointer-events-auto" : "pointer-events-none")}>
                 <div className={cn("text-[12.5px] font-bold uppercase tracking-[0.22em]", active && "animate-hero-reveal")} style={{ color: tone.accent, animationDelay: "120ms" }}>
                   {s.kicker}
@@ -157,10 +157,10 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
                     {s.big}
                   </span>
                 </h1>
-                <p className={cn("mt-4 max-w-[400px] text-[14px] leading-relaxed text-[#C6D4EC] [text-shadow:0_2px_10px_rgba(0,0,0,.5)] sm:text-[15px]", active && "animate-hero-reveal")} style={{ animationDelay: "430ms" }}>
+                <p className={cn("mt-3 line-clamp-2 max-w-[400px] text-[14px] leading-relaxed text-[#C6D4EC] [text-shadow:0_2px_10px_rgba(0,0,0,.5)] sm:text-[15px] lg:mt-4 lg:line-clamp-none", active && "animate-hero-reveal")} style={{ animationDelay: "430ms" }}>
                   {s.sub}
                 </p>
-                <div className={cn("mt-7 flex flex-wrap items-center gap-3", active && "animate-hero-reveal")} style={{ animationDelay: "530ms" }}>
+                <div className={cn("mt-5 flex flex-wrap items-center gap-3 lg:mt-7", active && "animate-hero-reveal")} style={{ animationDelay: "530ms" }}>
                   <Link href={`/product/${s.slug}`} className="inline-flex items-center gap-2 rounded-full bg-suzuki-red px-7 py-3.5 text-[15px] font-bold text-white shadow-cta transition hover:bg-suzuki-red-dk">
                     Explore {s.name} →
                   </Link>
