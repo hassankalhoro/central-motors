@@ -15,8 +15,9 @@ import type { AppointmentCreateInput, BookingConfig } from "../validators/appoin
      concurrent requests can never overbook.
    ──────────────────────────────────────────────────────────────── */
 
-/** Statuses that hold a place in a slot. */
-const ACTIVE: AppointmentStatus[] = ["PENDING", "CONFIRMED"];
+/** Statuses that hold a place in a slot. A cancellation request keeps its
+ *  slot reserved until the team approves it, so it still counts. */
+const ACTIVE: AppointmentStatus[] = ["PENDING", "CONFIRMED", "CANCEL_REQUESTED"];
 
 export const CONFIG_KEYS = {
   slotMinutes: "bookingSlotMinutes",
@@ -336,12 +337,13 @@ export async function listAppointments(opts: {
 export async function appointmentStats() {
   const { dateStr } = nowPKT();
   const today = toDbDate(dateStr);
-  const [pending, confirmedUpcoming, todayCount] = await Promise.all([
+  const [pending, confirmedUpcoming, todayCount, cancelRequests] = await Promise.all([
     db.appointment.count({ where: { status: "PENDING" } }),
     db.appointment.count({ where: { status: "CONFIRMED", date: { gte: today } } }),
     db.appointment.count({ where: { date: today, status: { in: ACTIVE } } }),
+    db.appointment.count({ where: { status: "CANCEL_REQUESTED" } }),
   ]);
-  return { pending, confirmedUpcoming, todayCount };
+  return { pending, confirmedUpcoming, todayCount, cancelRequests };
 }
 
 export const getAppointment = (id: string) =>
@@ -373,6 +375,29 @@ export async function cancelAppointment(id: string, reason?: string): Promise<Ap
   return db.appointment.update({ where: { id }, data: { status: "CANCELLED", cancelReason: reason || null } });
 }
 
+/** Approve a customer's online cancellation request → the booking is finally cancelled. */
+export async function approveCancellation(id: string): Promise<Appointment> {
+  const appt = await db.appointment.findUnique({ where: { id } });
+  if (!appt) throw new ServiceError("Appointment not found.");
+  if (appt.status !== "CANCEL_REQUESTED") throw new ServiceError("Only cancellation requests can be approved.");
+  return db.appointment.update({
+    where: { id },
+    data: { status: "CANCELLED", cancelReason: appt.cancelReason ?? "Cancelled at the customer's request" },
+  });
+}
+
+/** Decline the request: the booking goes back to the queue as pending (the slot
+ *  was never released, so this can never overbook). */
+export async function declineCancellation(id: string): Promise<Appointment> {
+  const appt = await db.appointment.findUnique({ where: { id } });
+  if (!appt) throw new ServiceError("Appointment not found.");
+  if (appt.status !== "CANCEL_REQUESTED") throw new ServiceError("Only cancellation requests can be declined.");
+  return db.appointment.update({
+    where: { id },
+    data: { status: "PENDING", cancelReason: null, confirmedById: null },
+  });
+}
+
 export async function completeAppointment(id: string): Promise<Appointment> {
   const appt = await db.appointment.findUnique({ where: { id } });
   if (!appt) throw new ServiceError("Appointment not found.");
@@ -398,6 +423,9 @@ export async function findAppointmentForCustomer(code: string, phone: string): P
 
 /** Whether the customer may still cancel/reschedule this booking online. */
 export function selfServiceEligibility(appt: Appointment, minNoticeHours: number): { ok: boolean; reason?: string } {
+  if (appt.status === "CANCEL_REQUESTED") {
+    return { ok: false, reason: "A cancellation request for this booking is already with our team. You will receive an email once it has been reviewed." };
+  }
   if (appt.status !== "PENDING" && appt.status !== "CONFIRMED") {
     return { ok: false, reason: `This booking is ${appt.status.toLowerCase().replace("_", "-")} and can no longer be changed online.` };
   }
@@ -410,6 +438,8 @@ export function selfServiceEligibility(appt: Appointment, minNoticeHours: number
   return { ok: true };
 }
 
+/** The customer can only *request* a cancellation; it takes effect once the
+ *  dealership approves it, so the booking (and its slot) stays in place. */
 export async function selfCancelAppointment(code: string, phone: string): Promise<Appointment> {
   const appt = await findAppointmentForCustomer(code, phone);
   if (!appt) throw new ServiceError("We couldn't find a booking with that reference and phone number.");
@@ -418,7 +448,7 @@ export async function selfCancelAppointment(code: string, phone: string): Promis
   if (!eligible.ok) throw new ServiceError(eligible.reason!);
   return db.appointment.update({
     where: { id: appt.id },
-    data: { status: "CANCELLED", cancelReason: "Cancelled by the customer online" },
+    data: { status: "CANCEL_REQUESTED", cancelReason: "Cancellation requested by the customer online" },
   });
 }
 

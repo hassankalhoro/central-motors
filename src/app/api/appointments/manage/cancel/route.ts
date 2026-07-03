@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { selfCancelAppointment } from "@/server/services/bookingService";
 import { ServiceError } from "@/server/services/categoryService";
-import { sendSelfCancelledEmails } from "@/lib/appointmentEmail";
+import { sendCancelRequestedEmails } from "@/lib/appointmentEmail";
 import { rateLimited, clientIp } from "@/lib/leads";
 
 export const runtime = "nodejs";
@@ -21,9 +21,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Enter your booking reference and phone number." }, { status: 400 });
   }
   try {
+    // Marks the booking CANCEL_REQUESTED; the dealership approves or declines it.
     const appt = await selfCancelAppointment(body.code, body.phone);
     try {
-      await sendSelfCancelledEmails(appt); // customer + dealership
+      await sendCancelRequestedEmails(appt); // customer + dealership
     } catch (err) {
       console.error("[appointments:self-cancel] notification failed:", err);
     }
@@ -31,6 +32,6 @@ export async function POST(req: Request) {
   } catch (err) {
     if (err instanceof ServiceError) return NextResponse.json({ error: err.message }, { status: 409 });
     console.error("[appointments:self-cancel]", err);
-    return NextResponse.json({ error: "Could not cancel the booking, please try again." }, { status: 500 });
+    return NextResponse.json({ error: "Could not send the cancellation request, please try again." }, { status: 500 });
   }
 }

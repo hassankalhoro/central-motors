@@ -7,7 +7,8 @@ import { initials, formatDateShort } from "@/lib/utils";
 
 const STATUS_TONE = { NEW: "red", IN_PROGRESS: "amber", RESOLVED: "green" } as const;
 const STATUS_LABEL = { NEW: "New", IN_PROGRESS: "In Progress", RESOLVED: "Resolved" } as const;
-const APPT_TONE = { PENDING: "amber", CONFIRMED: "green" } as const;
+const APPT_TONE = { PENDING: "amber", CONFIRMED: "green", CANCEL_REQUESTED: "red" } as const;
+const APPT_LABEL = { PENDING: "Pending", CONFIRMED: "Confirmed", CANCEL_REQUESTED: "Cancel requested" } as const;
 
 function prettyModel(s: string): string {
   return s.replace(/[-_]+/g, " ").replace(/\s+/g, " ").trim().replace(/\b\w/g, (c) => c.toUpperCase());
@@ -41,8 +42,9 @@ export default async function DashboardPage() {
     db.submission.count({ where: { createdAt: { gte: weekAgo } } }),
     db.submission.count({ where: { createdAt: { gte: twoWeeksAgo, lt: weekAgo } } }),
     db.submission.count({ where: { status: "NEW" } }),
-    db.appointment.count({ where: { status: "PENDING" } }),
-    db.appointment.count({ where: { date: today, status: { in: ["PENDING", "CONFIRMED"] } } }),
+    // cancel requests need admin action too, so they count as "to review"
+    db.appointment.count({ where: { status: { in: ["PENDING", "CANCEL_REQUESTED"] } } }),
+    db.appointment.count({ where: { date: today, status: { in: ["PENDING", "CONFIRMED", "CANCEL_REQUESTED"] } } }),
     db.product.count({ where: { deletedAt: null, published: true } }),
     db.submission.findMany({ orderBy: { createdAt: "desc" }, take: 6 }),
     db.submission.groupBy({
@@ -53,7 +55,7 @@ export default async function DashboardPage() {
       take: 5,
     }),
     db.appointment.findMany({
-      where: { date: { gte: today }, status: { in: ["PENDING", "CONFIRMED"] } },
+      where: { date: { gte: today }, status: { in: ["PENDING", "CONFIRMED", "CANCEL_REQUESTED"] } },
       orderBy: [{ date: "asc" }, { startTime: "asc" }],
       take: 5,
     }),
@@ -76,7 +78,7 @@ export default async function DashboardPage() {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard label="Leads this week" value={leadsThisWeek} sub={weekSub} tone="blue" icon={<InquiriesIcon />} />
         <StatCard label="New inquiries" value={newInquiries} sub="Awaiting response" tone="red" icon={<InquiriesIcon />} />
-        <StatCard label="Bookings to confirm" value={pendingAppts} sub="Pending appointments" tone="amber" icon={<CalendarIcon />} />
+        <StatCard label="Bookings to review" value={pendingAppts} sub="Pending + cancel requests" tone="amber" icon={<CalendarIcon />} />
         <StatCard label="Today's workshop" value={todayAppts} sub={`${productCount} models live on site`} tone="green" icon={<CalendarIcon />} />
       </div>
 
@@ -160,7 +162,7 @@ export default async function DashboardPage() {
                         <p className="truncate text-sm font-bold text-ink">{a.name}</p>
                         <p className="truncate text-xs text-ink-muted">{a.startTime} · {a.vehicle}</p>
                       </div>
-                      <StatusPill tone={APPT_TONE[a.status as "PENDING" | "CONFIRMED"]}>{a.status === "PENDING" ? "Pending" : "Confirmed"}</StatusPill>
+                      <StatusPill tone={APPT_TONE[a.status as keyof typeof APPT_TONE]}>{APPT_LABEL[a.status as keyof typeof APPT_LABEL]}</StatusPill>
                     </Link>
                   </li>
                 ))}

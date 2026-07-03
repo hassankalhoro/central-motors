@@ -5,8 +5,10 @@ import { cn } from "@/lib/utils";
 
 /* ────────────────────────────────────────────────────────────────
    Customer self-service: look up a booking by reference + phone,
-   then cancel it or move it to another available slot. Every
-   action notifies both the customer and the dealership.
+   then request a cancellation or move it to another available
+   slot. Nothing is final without the dealership's confirmation:
+   cancellations wait for approval, moved slots for re-confirmation.
+   Every action notifies both the customer and the dealership.
    ──────────────────────────────────────────────────────────────── */
 
 type Lookup = {
@@ -17,7 +19,7 @@ type Lookup = {
   date: string;
   startTime: string;
   endTime: string;
-  status: "PENDING" | "CONFIRMED" | "COMPLETED" | "CANCELLED" | "NO_SHOW";
+  status: "PENDING" | "CONFIRMED" | "CANCEL_REQUESTED" | "COMPLETED" | "CANCELLED" | "NO_SHOW";
   canModify: boolean;
   reason: string | null;
 };
@@ -27,6 +29,7 @@ type Slot = { start: string; end: string; remaining: number; available: boolean 
 const STATUS_LABEL: Record<Lookup["status"], string> = {
   PENDING: "Awaiting confirmation",
   CONFIRMED: "Confirmed",
+  CANCEL_REQUESTED: "Cancellation requested",
   COMPLETED: "Completed",
   CANCELLED: "Cancelled",
   NO_SHOW: "Missed",
@@ -95,7 +98,7 @@ export default function ManageBooking({ initialCode = "" }: { initialCode?: stri
 
   async function doCancel() {
     if (!booking) return;
-    if (!confirm(`Cancel booking ${booking.code} on ${prettyFull(booking.date)} at ${booking.startTime}?`)) return;
+    if (!confirm(`Request cancellation of booking ${booking.code} on ${prettyFull(booking.date)} at ${booking.startTime}?\n\nThe booking stays in place until our team confirms the cancellation.`)) return;
     setBusy(true);
     setError(null);
     try {
@@ -106,10 +109,12 @@ export default function ManageBooking({ initialCode = "" }: { initialCode?: stri
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || "Could not cancel.");
+        setError(data.error || "Could not send the cancellation request.");
         return;
       }
-      setDone(`Booking ${booking.code} is cancelled. A confirmation has been sent.`);
+      setDone(
+        `We've received your cancellation request for booking ${booking.code}. It stays in place until our team confirms the cancellation, you'll get an email as soon as it's processed.`,
+      );
       setBooking(null);
     } catch {
       setError("Network problem, please try again.");
@@ -190,7 +195,7 @@ export default function ManageBooking({ initialCode = "" }: { initialCode?: stri
             </div>
             <span className={cn(
               "rounded-full px-2.5 py-1 text-[10.5px] font-bold uppercase tracking-wide",
-              booking.status === "CONFIRMED" ? "bg-emerald-500/20 text-emerald-300" : booking.status === "PENDING" ? "bg-amber-500/20 text-amber-300" : "bg-white/15 text-white/80",
+              booking.status === "CONFIRMED" ? "bg-emerald-500/20 text-emerald-300" : booking.status === "PENDING" || booking.status === "CANCEL_REQUESTED" ? "bg-amber-500/20 text-amber-300" : "bg-white/15 text-white/80",
             )}>
               {STATUS_LABEL[booking.status]}
             </span>
@@ -204,7 +209,7 @@ export default function ManageBooking({ initialCode = "" }: { initialCode?: stri
                 Move to another slot
               </button>
               <button onClick={doCancel} disabled={busy} className="h-12 flex-1 rounded-xl border border-line bg-white text-[14px] font-bold text-ink transition hover:border-suzuki-red hover:text-suzuki-red disabled:opacity-60">
-                Cancel this booking
+                Request cancellation
               </button>
             </div>
           ) : (

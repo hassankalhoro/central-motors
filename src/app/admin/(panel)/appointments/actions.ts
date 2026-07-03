@@ -8,6 +8,8 @@ import { ServiceError } from "@/server/services/categoryService";
 import {
   confirmAppointment,
   cancelAppointment,
+  approveCancellation,
+  declineCancellation,
   completeAppointment,
   markNoShow,
   saveSchedule,
@@ -15,7 +17,7 @@ import {
   addBlackout,
   removeBlackout,
 } from "@/server/services/bookingService";
-import { sendConfirmedEmail, sendCancelledEmail } from "@/lib/appointmentEmail";
+import { sendConfirmedEmail, sendCancelledEmail, sendCancelApprovedEmail, sendCancelDeclinedEmail } from "@/lib/appointmentEmail";
 import { scheduleSchema, bookingConfigSchema, blackoutSchema } from "@/server/validators/appointment";
 import type { ActionResult } from "@/lib/action-result";
 
@@ -53,6 +55,44 @@ export async function cancel(id: string, reason?: string): Promise<ActionResult>
       await sendCancelledEmail(appt);
     } catch (err) {
       console.error("[appointments] cancel email failed:", err);
+    }
+    revalidate();
+    return { ok: true };
+  } catch (e) {
+    if (e instanceof ServiceError) return { ok: false, error: e.message };
+    throw e;
+  }
+}
+
+/** Approve a customer's online cancellation request → booking becomes CANCELLED. */
+export async function approveCancel(id: string): Promise<ActionResult> {
+  const session = await requireRole(...rolesFor("inquiry.manage"));
+  try {
+    const appt = await approveCancellation(id);
+    await writeAudit({ userId: session.sub, action: "appointment.cancel_approve", entity: `Appointment:${appt.code}` });
+    try {
+      await sendCancelApprovedEmail(appt);
+    } catch (err) {
+      console.error("[appointments] cancel-approve email failed:", err);
+    }
+    revalidate();
+    return { ok: true };
+  } catch (e) {
+    if (e instanceof ServiceError) return { ok: false, error: e.message };
+    throw e;
+  }
+}
+
+/** Decline the request → booking returns to the pending queue, customer is told. */
+export async function declineCancel(id: string, note?: string): Promise<ActionResult> {
+  const session = await requireRole(...rolesFor("inquiry.manage"));
+  try {
+    const appt = await declineCancellation(id);
+    await writeAudit({ userId: session.sub, action: "appointment.cancel_decline", entity: `Appointment:${appt.code}`, meta: { note } });
+    try {
+      await sendCancelDeclinedEmail(appt, note);
+    } catch (err) {
+      console.error("[appointments] cancel-decline email failed:", err);
     }
     revalidate();
     return { ok: true };

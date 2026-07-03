@@ -21,14 +21,23 @@ const WEEKDAYS_MON = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const STATUS_STYLE: Record<string, string> = {
   PENDING: "bg-amber-100 text-amber-800 border-amber-200",
   CONFIRMED: "bg-green-100 text-green-800 border-green-200",
+  CANCEL_REQUESTED: "bg-purple-100 text-purple-800 border-purple-200",
   COMPLETED: "bg-suzuki-blue/10 text-suzuki-blue border-suzuki-blue/20",
   NO_SHOW: "bg-suzuki-red/10 text-suzuki-red border-suzuki-red/20",
 };
 const DOT: Record<string, string> = {
   PENDING: "bg-amber-500",
   CONFIRMED: "bg-green-500",
+  CANCEL_REQUESTED: "bg-purple-500",
   COMPLETED: "bg-suzuki-blue",
   NO_SHOW: "bg-suzuki-red",
+};
+const STATUS_LABEL: Record<string, string> = {
+  PENDING: "Pending",
+  CONFIRMED: "Confirmed",
+  CANCEL_REQUESTED: "Cancel requested",
+  COMPLETED: "Completed",
+  NO_SHOW: "No-show",
 };
 
 function todayPKTStr(): string {
@@ -138,9 +147,9 @@ export default async function CalendarPage({
 
       {/* legend */}
       <div className="mb-4 flex flex-wrap gap-4 text-[12px] font-semibold text-ink-muted">
-        {(["PENDING", "CONFIRMED", "COMPLETED", "NO_SHOW"] as const).map((s) => (
+        {(["PENDING", "CONFIRMED", "CANCEL_REQUESTED", "COMPLETED", "NO_SHOW"] as const).map((s) => (
           <span key={s} className="inline-flex items-center gap-1.5">
-            <span className={cn("h-2.5 w-2.5 rounded-full", DOT[s])} /> {s === "NO_SHOW" ? "No-show" : s.charAt(0) + s.slice(1).toLowerCase()}
+            <span className={cn("h-2.5 w-2.5 rounded-full", DOT[s])} /> {STATUS_LABEL[s]}
           </span>
         ))}
       </div>
@@ -238,12 +247,12 @@ export default async function CalendarPage({
                       {closed && inMonth && <span className="text-[9.5px] font-bold uppercase text-suzuki-red/60">{blackoutMap.get(d) ? "Holiday" : "Closed"}</span>}
                     </div>
                     <div className="mt-1.5 space-y-1">
-                      {(["PENDING", "CONFIRMED", "COMPLETED", "NO_SHOW"] as const).map(
+                      {(["PENDING", "CONFIRMED", "CANCEL_REQUESTED", "COMPLETED", "NO_SHOW"] as const).map(
                         (s) =>
                           counts[s] ? (
                             <div key={s} className="flex items-center gap-1.5 text-[11px] font-semibold text-ink-soft">
                               <span className={cn("h-2 w-2 flex-shrink-0 rounded-full", DOT[s])} />
-                              {counts[s]} {s === "NO_SHOW" ? "no-show" : s.toLowerCase()}
+                              {counts[s]} {STATUS_LABEL[s].toLowerCase()}
                             </div>
                           ) : null,
                       )}

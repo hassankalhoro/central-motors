@@ -158,30 +158,64 @@ export async function sendCancelledEmail(a: Appointment): Promise<void> {
   });
 }
 
-/** Customer cancelled online → confirm to the customer AND alert the dealership. */
-export async function sendSelfCancelledEmails(a: Appointment): Promise<void> {
+/** Customer asked to cancel online → the booking is NOT cancelled yet. Alert the
+ *  dealership to approve or decline, and acknowledge the request to the customer. */
+export async function sendCancelRequestedEmails(a: Appointment): Promise<void> {
   await sendMail({
     to: await notificationInbox(),
-    subject: `Cancelled by customer: ${a.code}, ${a.name} · ${prettyDate(a.date)} ${a.startTime}`,
+    subject: `Cancellation requested: ${a.code}, ${a.name} · ${prettyDate(a.date)} ${a.startTime}`,
     html: shell(
-      "Booking cancelled by the customer",
-      `<p style="color:#3A4458;font-size:14px;">The customer cancelled this booking online, the slot is free again.</p>${detailsTable(a)}`,
+      "Customer requests a cancellation",
+      `<p style="color:#3A4458;font-size:14px;line-height:1.6;">The customer asked to cancel this booking online. The slot stays reserved until you <b>approve or decline</b> the request in the admin panel.</p>
+       ${detailsTable(a)}
+       <a href="${SITE_URL}/admin/appointments?status=CANCEL_REQUESTED" style="display:inline-block;background:#E11622;color:#fff;text-decoration:none;font-weight:bold;font-size:14px;padding:11px 22px;border-radius:999px;margin-top:6px;">Review request</a>`,
     ),
-    text: `The customer cancelled this booking online.\n\n${textDetails(a)}`,
+    text: `The customer asked to cancel this booking online. It stays reserved until you approve or decline the request.\n\n${textDetails(a)}\n\nReview: ${SITE_URL}/admin/appointments?status=CANCEL_REQUESTED`,
     replyTo: a.email || undefined,
   });
   if (a.email) {
     await sendMail({
       to: a.email,
-      subject: `Your appointment ${a.code} is cancelled, ${DEALER}`,
+      subject: `We received your cancellation request ${a.code}, ${DEALER}`,
       html: shell(
-        "Your booking is cancelled",
-        `<p style="color:#3A4458;font-size:14px;line-height:1.6;">As requested, your appointment <b>${esc(a.code)}</b> for ${esc(prettyDate(a.date))} at ${esc(a.startTime)} has been cancelled. We hope to see you another time.</p>
-         <a href="${SITE_URL}/service-appointment" style="display:inline-block;background:#E11622;color:#fff;text-decoration:none;font-weight:bold;font-size:14px;padding:11px 22px;border-radius:999px;">Book a new appointment</a>`,
+        "Cancellation request received",
+        `<p style="color:#3A4458;font-size:14px;line-height:1.6;">We've received your request to cancel appointment <b>${esc(a.code)}</b> for ${esc(prettyDate(a.date))} at ${esc(a.startTime)}. Our team will review it shortly and you'll get an email as soon as it's processed.</p>
+         <p style="color:#6B7587;font-size:12.5px;">Until then the booking remains in place. If this was a mistake, please call the workshop.</p>`,
       ),
-      text: `As requested, your appointment ${a.code} for ${prettyDate(a.date)} at ${a.startTime} has been cancelled.\n\nBook again: ${SITE_URL}/service-appointment`,
+      text: `We've received your request to cancel appointment ${a.code} for ${prettyDate(a.date)} at ${a.startTime}. Our team will review it shortly and email you once it's processed. Until then the booking remains in place.`,
     });
   }
+}
+
+/** Dealership approved the cancellation request → final confirmation to the customer. */
+export async function sendCancelApprovedEmail(a: Appointment): Promise<void> {
+  if (!a.email) return;
+  await sendMail({
+    to: a.email,
+    subject: `Your appointment ${a.code} is now cancelled, ${DEALER}`,
+    html: shell(
+      "Your booking is cancelled",
+      `<p style="color:#3A4458;font-size:14px;line-height:1.6;">As requested, your appointment <b>${esc(a.code)}</b> for ${esc(prettyDate(a.date))} at ${esc(a.startTime)} has been cancelled. We hope to see you another time.</p>
+       <a href="${SITE_URL}/service-appointment" style="display:inline-block;background:#E11622;color:#fff;text-decoration:none;font-weight:bold;font-size:14px;padding:11px 22px;border-radius:999px;">Book a new appointment</a>`,
+    ),
+    text: `As requested, your appointment ${a.code} for ${prettyDate(a.date)} at ${a.startTime} has been cancelled.\n\nBook again: ${SITE_URL}/service-appointment`,
+  });
+}
+
+/** Dealership declined the request → tell the customer the booking still stands. */
+export async function sendCancelDeclinedEmail(a: Appointment, note?: string): Promise<void> {
+  if (!a.email) return;
+  await sendMail({
+    to: a.email,
+    subject: `About your cancellation request ${a.code}, ${DEALER}`,
+    html: shell(
+      "Your booking is still in place",
+      `<p style="color:#3A4458;font-size:14px;line-height:1.6;">We couldn't process your request to cancel appointment <b>${esc(a.code)}</b>${note ? `: <i>${esc(note)}</i>` : "."} Your booking for ${esc(prettyDate(a.date))} at ${esc(a.startTime)} remains in place.</p>
+       ${detailsTable(a)}
+       <p style="color:#6B7587;font-size:12.5px;">If you still need to cancel or move it, please call the workshop and we'll sort it out.</p>`,
+    ),
+    text: `We couldn't process your request to cancel appointment ${a.code}${note ? `: ${note}` : "."} Your booking remains in place.\n\n${textDetails(a)}\n\nIf you still need to cancel or move it, please call the workshop.`,
+  });
 }
 
 /** Customer moved the booking online → notify both sides (slot needs re-confirmation). */

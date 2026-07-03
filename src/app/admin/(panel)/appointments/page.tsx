@@ -4,7 +4,7 @@ import { getSession } from "@/server/auth";
 import { can } from "@/server/rbac";
 import AppointmentsClient from "./AppointmentsClient";
 
-const STATUSES: AppointmentStatus[] = ["PENDING", "CONFIRMED", "COMPLETED", "CANCELLED", "NO_SHOW"];
+const STATUSES: AppointmentStatus[] = ["PENDING", "CONFIRMED", "CANCEL_REQUESTED", "COMPLETED", "CANCELLED", "NO_SHOW"];
 
 export default async function AppointmentsPage({
   searchParams,

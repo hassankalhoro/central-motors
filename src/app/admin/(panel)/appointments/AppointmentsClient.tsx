@@ -6,7 +6,14 @@ import type { AppointmentStatus } from "@prisma/client";
 import { PageHeader, LinkButton, StatCard, StatusPill, EmptyState, Spinner } from "@/components/admin/ui";
 import { CalendarIcon, SearchIcon, SettingsIcon } from "@/components/admin/icons";
 import { cn } from "@/lib/utils";
-import { confirm as confirmAction, cancel as cancelAction, complete as completeAction, noShow as noShowAction } from "./actions";
+import {
+  confirm as confirmAction,
+  cancel as cancelAction,
+  approveCancel as approveCancelAction,
+  declineCancel as declineCancelAction,
+  complete as completeAction,
+  noShow as noShowAction,
+} from "./actions";
 
 type Row = {
   id: string;
@@ -28,6 +35,7 @@ type Row = {
 const STATUS_META: Record<AppointmentStatus, { tone: "amber" | "green" | "blue" | "slate" | "red"; label: string }> = {
   PENDING: { tone: "amber", label: "Pending" },
   CONFIRMED: { tone: "green", label: "Confirmed" },
+  CANCEL_REQUESTED: { tone: "red", label: "Cancel requested" },
   COMPLETED: { tone: "blue", label: "Completed" },
   CANCELLED: { tone: "slate", label: "Cancelled" },
   NO_SHOW: { tone: "red", label: "No-show" },
@@ -37,6 +45,7 @@ const FILTERS: { value: string; label: string }[] = [
   { value: "", label: "All" },
   { value: "PENDING", label: "Pending" },
   { value: "CONFIRMED", label: "Confirmed" },
+  { value: "CANCEL_REQUESTED", label: "Cancel requests" },
   { value: "COMPLETED", label: "Completed" },
   { value: "CANCELLED", label: "Cancelled" },
   { value: "NO_SHOW", label: "No-show" },
@@ -59,7 +68,7 @@ export default function AppointmentsClient({
   canSchedule,
 }: {
   rows: Row[];
-  stats: { pending: number; confirmedUpcoming: number; todayCount: number };
+  stats: { pending: number; confirmedUpcoming: number; todayCount: number; cancelRequests: number };
   total: number;
   page: number;
   pages: number;
@@ -105,6 +114,17 @@ export default function AppointmentsClient({
     run(r.id, () => cancelAction(r.id, reason.trim() || undefined));
   }
 
+  function onApproveCancel(r: Row) {
+    if (!confirm(`Approve the cancellation of ${r.code} for ${r.name}?\n\nThe booking will be cancelled and the customer notified.`)) return;
+    run(r.id, () => approveCancelAction(r.id));
+  }
+
+  function onDeclineCancel(r: Row) {
+    const note = prompt(`Keep booking ${r.code} for ${r.name}?\n\nThe request will be declined and the booking returns to Pending.\nOptional note for the customer:`);
+    if (note === null) return; // dismissed
+    run(r.id, () => declineCancelAction(r.id, note.trim() || undefined));
+  }
+
   const btn = "rounded-full px-3 py-1.5 text-[12px] font-bold transition disabled:opacity-40";
 
   return (
@@ -121,10 +141,11 @@ export default function AppointmentsClient({
       </PageHeader>
 
       {/* stats */}
-      <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <StatCard label="Awaiting confirmation" value={stats.pending} tone="red" icon={<CalendarIcon />} sub="Pending requests" />
+      <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <StatCard label="Awaiting confirmation" value={stats.pending} tone="amber" icon={<CalendarIcon />} sub="Pending requests" />
+        <StatCard label="Cancellation requests" value={stats.cancelRequests} tone="red" icon={<CalendarIcon />} sub="Approve or decline" />
         <StatCard label="Confirmed upcoming" value={stats.confirmedUpcoming} tone="green" icon={<CalendarIcon />} sub="From today onwards" />
-        <StatCard label="Today's bookings" value={stats.todayCount} tone="blue" icon={<CalendarIcon />} sub="Pending + confirmed" />
+        <StatCard label="Today's bookings" value={stats.todayCount} tone="blue" icon={<CalendarIcon />} sub="Active bookings" />
       </div>
 
       {/* filters */}
@@ -200,7 +221,9 @@ export default function AppointmentsClient({
                     <td className="px-5 py-4">
                       <StatusPill tone={meta.tone}>{meta.label}</StatusPill>
                       {r.status === "CONFIRMED" && r.confirmedBy && <div className="mt-1 text-[11.5px] text-ink-faint">by {r.confirmedBy}</div>}
-                      {r.status === "CANCELLED" && r.cancelReason && <div className="mt-1 max-w-[160px] text-[11.5px] text-ink-faint">{r.cancelReason}</div>}
+                      {(r.status === "CANCELLED" || r.status === "CANCEL_REQUESTED") && r.cancelReason && (
+                        <div className="mt-1 max-w-[160px] text-[11.5px] text-ink-faint">{r.cancelReason}</div>
+                      )}
                     </td>
                     {canManage && (
                       <td className="px-5 py-4">
@@ -215,6 +238,16 @@ export default function AppointmentsClient({
                                 </button>
                                 <button disabled={pending} onClick={() => onCancel(r)} className={cn(btn, "border border-line bg-white text-ink-soft hover:border-suzuki-red hover:text-suzuki-red")}>
                                   Cancel
+                                </button>
+                              </>
+                            )}
+                            {r.status === "CANCEL_REQUESTED" && (
+                              <>
+                                <button disabled={pending} onClick={() => onApproveCancel(r)} className={cn(btn, "bg-suzuki-red text-white hover:bg-suzuki-red-dk")}>
+                                  Approve cancel
+                                </button>
+                                <button disabled={pending} onClick={() => onDeclineCancel(r)} className={cn(btn, "border border-line bg-white text-ink-soft hover:border-emerald-600 hover:text-emerald-700")}>
+                                  Keep booking
                                 </button>
                               </>
                             )}

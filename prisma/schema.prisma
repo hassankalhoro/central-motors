@@ -244,6 +244,7 @@ model Appointment {
 enum AppointmentStatus {
   PENDING
   CONFIRMED
+  CANCEL_REQUESTED // customer asked to cancel online, awaiting the team's approval
   COMPLETED
   CANCELLED
   NO_SHOW
