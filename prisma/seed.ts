@@ -153,8 +153,8 @@ async function main() {
     servicePhone: settings.servicePhone,
     warrantyPhone: settings.warrantyPhone,
     facebook: settings.facebook,
-    twitter: settings.twitter,
     instagram: settings.instagram,
+    youtube: settings.youtube,
   };
   for (const [key, value] of Object.entries(siteRows)) {
     await db.setting.upsert({ where: { key }, update: { value }, create: { key, value } });

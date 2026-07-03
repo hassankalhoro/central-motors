@@ -196,8 +196,8 @@ export const getSettings = cached(async (): Promise<Settings> => {
     servicePhone: m.servicePhone || defaultSettings.servicePhone,
     warrantyPhone: m.warrantyPhone || defaultSettings.warrantyPhone,
     facebook: m.facebook || defaultSettings.facebook,
-    twitter: m.twitter || defaultSettings.twitter,
     instagram: m.instagram || defaultSettings.instagram,
+    youtube: m.youtube || defaultSettings.youtube,
   };
 }, "settings");
 

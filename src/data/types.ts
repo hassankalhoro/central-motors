@@ -108,6 +108,6 @@ export type Settings = {
   servicePhone: string;
   warrantyPhone: string;
   facebook: string;
-  twitter: string;
   instagram: string;
+  youtube: string;
 };

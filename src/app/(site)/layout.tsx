@@ -1,5 +1,6 @@
 import Header from "@/components/site/Header";
 import Footer from "@/components/site/Footer";
+import SocialRail from "@/components/site/SocialRail";
 import JsonLd from "@/components/site/JsonLd";
 import { getSettings } from "@/data/db";
 import { getLang } from "@/lib/lang";
@@ -40,7 +41,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       closes: "17:00",
     },
     brand: { "@type": "Brand", name: "Suzuki" },
-    sameAs: [`https://${settings.facebook}`, `https://${settings.twitter}`, `https://${settings.instagram}`],
+    sameAs: [`https://${settings.facebook}`, `https://${settings.instagram}`, `https://${settings.youtube}`],
   };
 
   return (
@@ -48,6 +49,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       <JsonLd data={dealerLd} />
       <a href="#main" className="skip-link">Skip to content</a>
       <Header settings={settings} lang={lang} />
+      <SocialRail settings={settings} />
       <main id="main" className="flex-1">{children}</main>
       <Footer settings={settings} lang={lang} />
     </div>

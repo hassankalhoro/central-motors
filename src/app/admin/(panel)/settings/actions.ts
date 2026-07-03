@@ -15,7 +15,7 @@ import type { ActionResult } from "@/lib/action-result";
 
 const SITE_KEYS = [
   "siteName", "tagline", "address", "phone", "uan", "tel", "fax",
-  "email", "email2", "servicePhone", "warrantyPhone", "facebook", "twitter", "instagram",
+  "email", "email2", "servicePhone", "warrantyPhone", "facebook", "instagram", "youtube",
 ];
 
 export async function saveSiteSettings(input: Record<string, string>): Promise<ActionResult> {

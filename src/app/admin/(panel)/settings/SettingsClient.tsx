@@ -150,6 +150,7 @@ export default function SettingsClient({
               <Field label="Secondary email" value={s.email2 ?? ""} onChange={set("email2")} disabled={ro} />
               <Field label="Facebook" value={s.facebook ?? ""} onChange={set("facebook")} disabled={ro} />
               <Field label="Instagram" value={s.instagram ?? ""} onChange={set("instagram")} disabled={ro} />
+              <Field label="YouTube" value={s.youtube ?? ""} onChange={set("youtube")} disabled={ro} />
             </div>
             {canManage && (
               <div className="mt-5 flex items-center gap-4">

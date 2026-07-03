@@ -12,7 +12,7 @@ export const settings: Settings = {
   email2: "scm.rwp@gmail.com",
   servicePhone: "0315-8709624",
   warrantyPhone: "0315-8709631",
-  facebook: "facebook.com/suzuki.centralmotors",
-  twitter: "twitter.com/suzuki.centralmotors",
-  instagram: "instagram.com/suzuki.centralmotors",
+  facebook: "facebook.com/suzukicentralmotorsrwp",
+  instagram: "instagram.com/suzukicentralmotors",
+  youtube: "youtube.com/@suzukicentralmotorsrwp",
 };

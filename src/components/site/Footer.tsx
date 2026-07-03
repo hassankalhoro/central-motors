@@ -23,8 +23,8 @@ const COMPANY = [
 const FacebookIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4"><path d="M13.5 21v-7h2.4l.4-3h-2.8V9.1c0-.9.3-1.5 1.6-1.5h1.3V4.9c-.3 0-1.1-.1-2-.1-2.1 0-3.5 1.3-3.5 3.6V11H8.5v3h2.4v7h2.6z" /></svg>
 );
-const XIcon = () => (
-  <svg viewBox="0 0 24 24" fill="currentColor" className="h-3.5 w-3.5"><path d="M17.8 3h3l-6.7 7.7L22 21h-6.2l-4.8-6.3L5.4 21h-3l7.2-8.2L2 3h6.3l4.4 5.8L17.8 3zm-1.1 16.2h1.7L7.4 4.7H5.6l11.1 14.5z" /></svg>
+const YouTubeIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className="h-[18px] w-[18px]"><path d="M21.6 7.2a2.5 2.5 0 0 0-1.76-1.77C18.28 5 12 5 12 5s-6.28 0-7.84.43A2.5 2.5 0 0 0 2.4 7.2 26.2 26.2 0 0 0 2 12a26.2 26.2 0 0 0 .4 4.8 2.5 2.5 0 0 0 1.76 1.77C5.72 19 12 19 12 19s6.28 0 7.84-.43a2.5 2.5 0 0 0 1.76-1.77A26.2 26.2 0 0 0 22 12a26.2 26.2 0 0 0-.4-4.8zM10 15.2V8.8L15.6 12 10 15.2z" /></svg>
 );
 const InstagramIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-4 w-4">
@@ -49,8 +49,8 @@ export default function Footer({ settings, lang = "en" }: { settings: Settings; 
   const lc = langClass(lang);
   const SOCIALS = [
     { Icon: FacebookIcon, name: "Facebook", url: `https://${settings.facebook}` },
-    { Icon: XIcon, name: "Twitter / X", url: `https://${settings.twitter}` },
     { Icon: InstagramIcon, name: "Instagram", url: `https://${settings.instagram}` },
+    { Icon: YouTubeIcon, name: "YouTube", url: `https://${settings.youtube}` },
   ];
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${settings.siteName}, ${settings.address}`)}`;
 
