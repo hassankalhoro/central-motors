@@ -150,6 +150,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
                   {s.kicker}
                 </div>
                 <h1 className="mt-3 font-display font-black uppercase leading-[.92] tracking-tight">
+                  <span className="sr-only">Suzuki {s.name} price in Pakistan, new Suzuki cars at Central Motors Rawalpindi</span>
                   <span className={cn("block text-[clamp(20px,2.4vw,30px)] text-white/65", active && "animate-hero-reveal")} style={{ animationDelay: "220ms" }}>
                     {s.lead}
                   </span>

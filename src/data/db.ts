@@ -1,4 +1,5 @@
 import "server-only";
+import { unstable_cache } from "next/cache";
 import type { Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
 import type { Product, ProductSpecs, Category, TeamMember, NewsPost, Settings, CategorySlug } from "./types";
@@ -9,6 +10,14 @@ import { settings as defaultSettings } from "./settings";
  * static modules so public pages/components are unchanged apart from
  * `await`. Only published, non-deleted records are exposed.
  * ------------------------------------------------------------------ */
+
+/* Public reads are cached in-process and revalidated either by time or
+ * instantly via revalidateTag(PUBLIC_CACHE_TAG) from every admin write.
+ * This is what makes page-to-page navigation fast: a navigation renders
+ * from cache instead of paying multiple Neon round-trips. */
+export const PUBLIC_CACHE_TAG = "public-data";
+const cached = <A extends unknown[], R>(fn: (...args: A) => Promise<R>, key: string) =>
+  unstable_cache(fn, [key], { revalidate: 300, tags: [PUBLIC_CACHE_TAG] });
 
 const TEAM_LABEL: Record<string, TeamMember["group"]> = {
   TOP_MANAGEMENT: "Top Management",
@@ -47,18 +56,17 @@ function toProduct(p: DbProduct): Product {
 }
 
 /* ---- Products ----------------------------------------------------- */
-export async function getProducts(): Promise<Product[]> {
+export const getProducts = cached(async (): Promise<Product[]> => {
   const rows = await db.product.findMany({
     where: { deletedAt: null, published: true },
     include: productInclude,
     orderBy: { order: "asc" },
   });
   return rows.map(toProduct);
-}
+}, "products");
 
 export async function getProductBySlug(slug: string): Promise<Product | undefined> {
-  const p = await db.product.findFirst({ where: { slug, deletedAt: null, published: true }, include: productInclude });
-  return p ? toProduct(p) : undefined;
+  return (await getProducts()).find((p) => p.slug === slug);
 }
 
 export async function getProductsByCategory(slug: string): Promise<Product[]> {
@@ -90,17 +98,17 @@ export async function getProductNames(): Promise<string[]> {
 }
 
 /* ---- Categories --------------------------------------------------- */
-export async function getCategories(): Promise<Category[]> {
+export const getCategories = cached(async (): Promise<Category[]> => {
   const rows = await db.category.findMany({ orderBy: { order: "asc" } });
   return rows.map((c) => ({ slug: c.slug as CategorySlug, name: c.name, glyph: c.name[0] ?? "A", blurb: c.blurb ?? "" }));
-}
+}, "categories");
 
 export async function getCategoryBySlug(slug: string): Promise<Category | undefined> {
   return (await getCategories()).find((c) => c.slug === slug);
 }
 
 export async function getCategoryCount(slug: string): Promise<number> {
-  return db.product.count({ where: { deletedAt: null, published: true, category: { slug } } });
+  return (await getProducts()).filter((p) => p.category === slug).length;
 }
 
 export async function categoryName(slug: string): Promise<string> {
@@ -117,7 +125,7 @@ export async function getProductGroups() {
 }
 
 /* ---- Team --------------------------------------------------------- */
-export async function getTeamGrouped(): Promise<{ group: string; members: TeamMember[] }[]> {
+export const getTeamGrouped = cached(async (): Promise<{ group: string; members: TeamMember[] }[]> => {
   const rows = await db.teamMember.findMany({ where: { published: true }, orderBy: { order: "asc" } });
   const members: TeamMember[] = rows.map((m) => ({
     name: m.name,
@@ -128,7 +136,7 @@ export async function getTeamGrouped(): Promise<{ group: string; members: TeamMe
   return TEAM_GROUPS.map((group) => ({ group, members: members.filter((m) => m.group === group) })).filter(
     (g) => g.members.length > 0,
   );
-}
+}, "team");
 
 /* ---- News --------------------------------------------------------- */
 function toNews(n: { slug: string; title: string; publishedAt: Date | null; createdAt: Date; excerpt: string | null; body: string | null; imageUrl: string | null }): NewsPost {
@@ -142,18 +150,21 @@ function toNews(n: { slug: string; title: string; publishedAt: Date | null; crea
   };
 }
 
-export async function getNews(limit?: number): Promise<NewsPost[]> {
+const getAllNews = cached(async (): Promise<NewsPost[]> => {
   const rows = await db.newsPost.findMany({
     where: { published: true },
     orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
-    ...(limit ? { take: limit } : {}),
   });
   return rows.map(toNews);
+}, "news");
+
+export async function getNews(limit?: number): Promise<NewsPost[]> {
+  const all = await getAllNews();
+  return limit ? all.slice(0, limit) : all;
 }
 
 export async function getNewsBySlug(slug: string): Promise<NewsPost | undefined> {
-  const n = await db.newsPost.findFirst({ where: { slug, published: true } });
-  return n ? toNews(n) : undefined;
+  return (await getAllNews()).find((n) => n.slug === slug);
 }
 
 /** Paginated published news for the home slider and the /news index. */
@@ -161,21 +172,14 @@ export async function getNewsPaged(
   page = 1,
   pageSize = 6,
 ): Promise<{ items: NewsPost[]; total: number; hasMore: boolean }> {
+  const all = await getAllNews();
   const skip = (Math.max(1, page) - 1) * pageSize;
-  const [rows, total] = await Promise.all([
-    db.newsPost.findMany({
-      where: { published: true },
-      orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
-      skip,
-      take: pageSize,
-    }),
-    db.newsPost.count({ where: { published: true } }),
-  ]);
-  return { items: rows.map(toNews), total, hasMore: skip + rows.length < total };
+  const items = all.slice(skip, skip + pageSize);
+  return { items, total: all.length, hasMore: skip + items.length < all.length };
 }
 
 /* ---- Settings ----------------------------------------------------- */
-export async function getSettings(): Promise<Settings> {
+export const getSettings = cached(async (): Promise<Settings> => {
   const rows = await db.setting.findMany();
   const m = Object.fromEntries(rows.map((r) => [r.key, r.value]));
   // Fall back to the static defaults for any key not yet in the DB.
@@ -195,4 +199,14 @@ export async function getSettings(): Promise<Settings> {
     twitter: m.twitter || defaultSettings.twitter,
     instagram: m.instagram || defaultSettings.instagram,
   };
+}, "settings");
+
+/* ---- Careers ------------------------------------------------------- */
+export const getJobs = cached(async (): Promise<{ slug: string; title: string; location: string; type: string; description: string }[]> => {
+  const rows = await db.job.findMany({ where: { published: true }, orderBy: [{ order: "asc" }, { createdAt: "desc" }] });
+  return rows.map((j) => ({ slug: j.slug, title: j.title, location: j.location, type: j.type, description: j.description }));
+}, "jobs");
+
+export async function getJobBySlug(slug: string) {
+  return (await getJobs()).find((j) => j.slug === slug);
 }

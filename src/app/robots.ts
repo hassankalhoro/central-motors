@@ -4,7 +4,11 @@ const base = process.env.NEXT_PUBLIC_SITE_URL || "https://centralmotors.com.pk";
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: { userAgent: "*", allow: "/", disallow: ["/api/"] },
+    rules: {
+      userAgent: "*",
+      allow: "/",
+      disallow: ["/api/", "/admin/", "/manage-booking"],
+    },
     sitemap: `${base}/sitemap.xml`,
   };
 }

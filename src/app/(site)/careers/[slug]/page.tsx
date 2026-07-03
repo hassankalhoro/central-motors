@@ -1,20 +1,18 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { jobs, getJobBySlug } from "@/data";
+import { getJobBySlug } from "@/data/db";
 
-export function generateStaticParams() {
-  return jobs.map((j) => ({ slug: j.slug }));
-}
+export const dynamic = "force-dynamic";
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const j = getJobBySlug(params.slug);
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const j = await getJobBySlug(params.slug);
   if (!j) return { title: "Vacancy not found" };
-  return { title: j.title, description: j.description };
+  return { title: j.title, description: j.description.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 160) };
 }
 
-export default function JobPage({ params }: { params: { slug: string } }) {
-  const job = getJobBySlug(params.slug);
+export default async function JobPage({ params }: { params: { slug: string } }) {
+  const job = await getJobBySlug(params.slug);
   if (!job) notFound();
   return (
     <section className="mx-auto max-w-[840px] px-5 py-[34px] pb-20 sm:px-8">
@@ -26,7 +24,11 @@ export default function JobPage({ params }: { params: { slug: string } }) {
       </div>
       <div className="mt-6 card p-7">
         <h2 className="mb-2.5 font-display text-lg font-bold text-ink">Role overview</h2>
-        <p className="text-[15px] leading-[1.7] text-ink-soft">{job.description}</p>
+        {/* Sanitised server-side (DOMPurify) before storage. */}
+        <div
+          className="text-[15px] leading-[1.7] text-ink-soft [&_h2]:mt-5 [&_h2]:font-display [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-ink [&_h3]:mt-4 [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-ink [&_ul]:my-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:my-3 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:my-2.5 [&_a]:text-suzuki-blue [&_a]:underline [&_blockquote]:border-l-4 [&_blockquote]:border-line [&_blockquote]:pl-4 [&_blockquote]:italic"
+          dangerouslySetInnerHTML={{ __html: job.description }}
+        />
       </div>
       <Link href="/contact" className="btn-primary mt-6">Apply for this role</Link>
     </section>

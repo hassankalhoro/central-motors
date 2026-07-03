@@ -4,8 +4,11 @@ import ProductsBrowser from "@/components/site/ProductsBrowser";
 import { getProducts, getBodyTypes } from "@/data/db";
 
 export const metadata: Metadata = {
-  title: "All Suzuki Models",
-  description: "Browse the current Suzuki Central Motors lineup, Alto, WagonR, Cultus, Swift, Every and Fronx with starting prices.",
+  title: "Suzuki Car Prices in Pakistan, All New Models",
+  description:
+    "Compare all new Suzuki car prices in Pakistan: Fronx, Swift, Cultus, Alto and Every. Official variants, specs and starting prices at Central Motors, authorised Suzuki dealer in Rawalpindi.",
+  keywords: ["Suzuki car prices Pakistan", "new Suzuki models", "Suzuki Fronx price", "Suzuki Swift price", "Suzuki Alto price", "Suzuki Cultus price"],
+  alternates: { canonical: "/products" },
 };
 
 export const dynamic = "force-dynamic";

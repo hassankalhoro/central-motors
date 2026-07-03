@@ -1,15 +1,30 @@
 import Link from "next/link";
 import Well from "./Well";
-import { formatPKR } from "@/lib/utils";
+import { cn, formatPKR } from "@/lib/utils";
 import type { Product } from "@/data";
 
 /** Reusable product card used across home, products, category and related rails. */
 export default function ProductCard({ product, showCategory = false }: { product: Product; showCategory?: boolean }) {
+  // Spotlight treatment (badge + accent ring), toggled per car from the admin panel.
+  const spotlight = product.specs?.highlight?.enabled ? product.specs.highlight : null;
+
   return (
     <Link
       href={`/product/${product.slug}`}
-      className="card card-lift flex flex-col overflow-hidden hover:!shadow-lift"
+      className={cn(
+        "card card-lift relative flex flex-col overflow-hidden hover:!shadow-lift",
+        spotlight && "shadow-lift ring-2 ring-suzuki-red/70 hover:ring-suzuki-red",
+      )}
     >
+      {spotlight && (
+        <span className="absolute left-3 top-3 z-[2] inline-flex items-center gap-1.5 rounded-full bg-suzuki-red px-3 py-1 text-[10.5px] font-black uppercase tracking-[0.1em] text-white shadow-cta">
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-white" />
+          </span>
+          {spotlight.label}
+        </span>
+      )}
       <div className="relative">
         <Well
           src={product.images?.[0]}

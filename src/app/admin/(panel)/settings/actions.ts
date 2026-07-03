@@ -1,6 +1,7 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
+import { PUBLIC_CACHE_TAG } from "@/data/db";
 import bcrypt from "bcryptjs";
 import { requireRole, requireSession } from "@/server/auth";
 import { rolesFor } from "@/server/rbac";
@@ -23,6 +24,7 @@ export async function saveSiteSettings(input: Record<string, string>): Promise<A
   for (const k of SITE_KEYS) if (typeof input[k] === "string") map[k] = input[k];
   await updateSettings(map);
   await writeAudit({ userId: session.sub, action: "settings.update", meta: { keys: Object.keys(map) } });
+  revalidateTag(PUBLIC_CACHE_TAG); // header/footer read settings from the public cache
   revalidatePath("/");
   revalidatePath("/admin/settings");
   return { ok: true };

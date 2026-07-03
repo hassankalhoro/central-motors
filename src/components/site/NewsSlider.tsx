@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
-import Well from "./Well";
+import NewsCover from "./NewsCover";
 import { formatDateShort } from "@/lib/utils";
 
 export type NewsItem = { slug: string; title: string; date: string; excerpt: string; image?: string | null };
@@ -77,9 +77,9 @@ export default function NewsSlider({
           <Link
             key={post.slug}
             href={`/news/${post.slug}`}
-            className="card card-lift flex w-[300px] shrink-0 snap-start flex-col overflow-hidden hover:!shadow-lift sm:w-[360px]"
+            className="group card card-lift flex w-[300px] shrink-0 snap-start flex-col overflow-hidden hover:!shadow-lift sm:w-[360px]"
           >
-            <Well src={post.image} alt={post.title} glyph="S" gradient className="h-[180px]" />
+            <NewsCover src={post.image} alt={post.title} className="h-[180px]" />
             <div className="flex flex-1 flex-col p-5">
               <div className="text-[11.5px] font-bold uppercase tracking-[0.06em] text-suzuki-red">{formatDateShort(post.date)}</div>
               <h3 className="mt-1.5 font-display text-[17px] font-bold leading-tight text-ink">{post.title}</h3>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import PageHero from "@/components/site/PageHero";
 import SubmitForm, { type Field } from "@/components/site/SubmitForm";
+import GoogleMap from "@/components/site/GoogleMap";
 import { getSettings } from "@/data/db";
 import { telHref } from "@/lib/utils";
 
@@ -50,14 +51,14 @@ export default async function ContactPage() {
             </div>
             <div className="mt-2.5 text-sm"><span className="text-[#7E96BC]">Hours</span><br /><span className="font-semibold text-white">Mon–Sat · 9:00am – 7:00pm</span></div>
           </div>
+          <GoogleMap className="mt-4 h-[260px]" />
           <a
             href={`https://maps.google.com/?q=${encodeURIComponent(settings.address)}`}
             target="_blank"
             rel="noreferrer"
-            className="well-stripe mt-4 flex h-[200px] flex-col items-center justify-center gap-2 rounded-[18px] border border-line bg-gradient-to-br from-[#EEF2F8] to-[#E2E9F3]"
+            className="mt-2.5 block text-center text-[12.5px] font-bold text-suzuki-blue transition hover:text-suzuki-dark"
           >
-            <span aria-hidden className="text-[30px]">📍</span>
-            <span className="text-xs font-semibold text-ink-muted">G.T. Road, Soan, Rawalpindi, open in Maps</span>
+            Open in Google Maps for directions →
           </a>
         </div>
       </section>

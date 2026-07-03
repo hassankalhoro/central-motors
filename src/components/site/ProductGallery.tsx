@@ -56,6 +56,15 @@ export default function ProductGallery({
     setActive(0);
   }
 
+  // blur-up loading for photos without a pre-baked blur placeholder (colour sets)
+  const [loadedSrcs, setLoadedSrcs] = useState<Record<string, boolean>>({});
+  const markLoaded = useCallback((src: string) => {
+    setLoadedSrcs((m) => (m[src] ? m : { ...m, [src]: true }));
+  }, []);
+  const activeSrc = shown[active];
+  const activeHasBlur = !!shownBlur[active];
+  const activeLoaded = activeHasBlur || !!loadedSrcs[activeSrc];
+
   // touch swipe (mobile)
   const [touchX, setTouchX] = useState<number | null>(null);
   const swipe = {
@@ -93,18 +102,27 @@ export default function ProductGallery({
       <div {...swipe} className="well-stripe group relative flex h-[280px] items-center justify-center overflow-hidden rounded-[20px] border border-line bg-gradient-to-br from-[#F4F6F9] to-[#E7EDF5] sm:h-[360px]">
         <span aria-hidden className="absolute select-none font-display text-[150px] font-black italic leading-[.8] text-[rgba(6,36,92,.06)]">{glyph}</span>
         {hasImages ? (
-          <Image
-            key={`${colorIdx ?? "all"}-${active}`}
-            src={shown[active]}
-            alt={`${name}${sel ? ` in ${sel.name}` : ""}, photo ${active + 1}`}
-            fill
-            priority
-            sizes="(max-width:1024px) 100vw, 55vw"
-            quality={78}
-            placeholder={shownBlur[active] ? "blur" : "empty"}
-            blurDataURL={shownBlur[active]}
-            className="object-contain p-3"
-          />
+          <>
+            {!activeLoaded && (
+              <div aria-hidden className="absolute inset-4 animate-pulse rounded-2xl bg-gradient-to-br from-ink/[.04] via-ink/[.09] to-ink/[.04]" />
+            )}
+            <Image
+              key={`${colorIdx ?? "all"}-${active}`}
+              src={activeSrc}
+              alt={`${name}${sel ? ` in ${sel.name}` : ""}, photo ${active + 1}`}
+              fill
+              priority
+              sizes="(max-width:1024px) 100vw, 55vw"
+              quality={78}
+              placeholder={activeHasBlur ? "blur" : "empty"}
+              blurDataURL={shownBlur[active]}
+              onLoad={() => markLoaded(activeSrc)}
+              className={cn(
+                "object-contain p-3 transition-[opacity,filter,transform] duration-500 ease-out",
+                activeLoaded ? "opacity-100 blur-0 scale-100" : "opacity-0 blur-md scale-[1.03]",
+              )}
+            />
+          </>
         ) : (
           <div className="relative text-center">
             <div className="font-display text-[34px] font-black text-suzuki-dark">{name}</div>
@@ -233,14 +251,21 @@ export default function ProductGallery({
           <div {...swipe} className="relative z-[1] mx-4 mb-3 flex-1 sm:mx-10" onClick={(e) => e.stopPropagation()}>
             {/* ground shadow */}
             <div aria-hidden className="pointer-events-none absolute bottom-[8%] left-1/2 h-[30px] w-[56%] -translate-x-1/2 rounded-[100%] bg-suzuki-dark/20 blur-2xl" />
+            {!loadedSrcs[`fs:${activeSrc}`] && (
+              <div aria-hidden className="absolute inset-x-[10%] inset-y-[16%] animate-pulse rounded-3xl bg-gradient-to-br from-ink/[.05] via-ink/[.1] to-ink/[.05]" />
+            )}
             <Image
               key={`fs-${colorIdx ?? "all"}-${active}`}
-              src={shown[active]}
+              src={activeSrc}
               alt={`${name}, photo ${active + 1}`}
               fill
               sizes="100vw"
               quality={90}
-              className="object-contain drop-shadow-[0_30px_35px_rgba(6,36,92,.22)]"
+              onLoad={() => markLoaded(`fs:${activeSrc}`)}
+              className={cn(
+                "object-contain drop-shadow-[0_30px_35px_rgba(6,36,92,.22)] transition-[opacity,filter,transform] duration-500 ease-out",
+                loadedSrcs[`fs:${activeSrc}`] ? "opacity-100 blur-0 scale-100" : "opacity-0 blur-md scale-[1.02]",
+              )}
             />
             {n > 1 && (
               <>

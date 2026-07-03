@@ -21,6 +21,7 @@ const config: Config = {
       fontFamily: {
         display: ["var(--font-display)", "system-ui", "sans-serif"],
         body: ["var(--font-body)", "system-ui", "sans-serif"],
+        urdu: ["var(--font-urdu)", "var(--font-body)", "system-ui", "sans-serif"],
       },
       boxShadow: {
         card: "0 1px 3px rgba(16,22,31,.06)",

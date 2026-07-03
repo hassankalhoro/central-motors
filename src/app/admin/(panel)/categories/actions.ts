@@ -1,6 +1,7 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
+import { PUBLIC_CACHE_TAG } from "@/data/db";
 import { requireRole } from "@/server/auth";
 import { rolesFor } from "@/server/rbac";
 import { writeAudit } from "@/server/audit";
@@ -9,6 +10,7 @@ import { createCategory, updateCategory, deleteCategory, ServiceError } from "@/
 import type { ActionResult } from "@/lib/action-result";
 
 function revalidateAll() {
+  revalidateTag(PUBLIC_CACHE_TAG); // public pages re-read the DB on next request
   revalidatePath("/products");
   revalidatePath("/admin/categories");
 }

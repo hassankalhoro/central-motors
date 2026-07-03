@@ -48,6 +48,38 @@ export async function verifyTransport(): Promise<void> {
 }
 
 /* ------------------------------------------------------------------ *
+ * Generic outbound mail, used by the appointment notifications and any
+ * future transactional email. Uses the same admin-configured transport.
+ * ------------------------------------------------------------------ */
+export type OutgoingMail = {
+  to: string;
+  subject: string;
+  html: string;
+  text: string;
+  replyTo?: string;
+  /** Calendar invite attachment (e.g. a confirmed appointment). */
+  icalEvent?: { filename: string; method: "REQUEST" | "PUBLISH" | "CANCEL"; content: string };
+};
+
+export async function sendMail(mail: OutgoingMail): Promise<void> {
+  const cfg = await getEmailConfig();
+  if (!cfg.user || !cfg.pass) {
+    throw new Error("Email is not configured. Set SMTP details in Admin → Settings.");
+  }
+  await buildTransport(cfg).sendMail({
+    from: `${cfg.fromName} <${cfg.fromEmail}>`,
+    ...mail,
+    headers: { "Auto-Submitted": "auto-generated" },
+  });
+}
+
+/** The dealership inbox that receives operational notifications. */
+export async function notificationInbox(): Promise<string> {
+  const cfg = await getEmailConfig();
+  return cfg.notifyTo || cfg.fromEmail || cfg.user;
+}
+
+/* ------------------------------------------------------------------ *
  * Field label maps, keep the email readable regardless of raw keys.
  * Order here = order in the email.
  * ------------------------------------------------------------------ */

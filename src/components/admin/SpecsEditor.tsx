@@ -78,9 +78,11 @@ export default function SpecsEditor({
 
   function patch(p: Partial<ProductSpecs>) {
     const next = { ...(value ?? {}), ...p };
-    if (!next.comparison && !(next.colors && next.colors.length) && !next.announcement && !next.tax) onChange(null);
+    if (!next.comparison && !(next.colors && next.colors.length) && !next.announcement && !next.tax && !next.highlight) onChange(null);
     else onChange(next);
   }
+
+  const highlight = value?.highlight ?? { enabled: false, label: "New Launch" };
 
   // Absent = default behaviour (banner shown with auto-generated text).
   const announcement = value?.announcement ?? { enabled: true, phrases: [] };
@@ -296,6 +298,44 @@ export default function SpecsEditor({
                 className={inputCls}
               />
             </div>
+          </div>
+        )}
+      </section>
+
+      {/* ── Listing spotlight ──────────────────────────────── */}
+      <section className="rounded-2xl border border-line bg-white p-6 shadow-card">
+        <div className="mb-1 flex items-center justify-between gap-3">
+          <h2 className="font-display text-lg font-bold text-suzuki-dark">Listing spotlight</h2>
+          <label className="flex flex-shrink-0 cursor-pointer items-center gap-2 text-sm font-medium text-ink-soft">
+            <input
+              type="checkbox"
+              checked={highlight.enabled}
+              onChange={(e) => patch({ highlight: { ...highlight, enabled: e.target.checked } })}
+              className="h-4 w-4 rounded border-line text-suzuki-red focus:ring-suzuki-red"
+            />
+            Spotlight this car
+          </label>
+        </div>
+        <p className="text-[13px] text-ink-muted">
+          Makes this car stand out in the lineup and listing grids with a badge and a red accent ring. Great for new launches.
+        </p>
+        {highlight.enabled && (
+          <div className="mt-4 flex flex-wrap items-center gap-3">
+            <div>
+              <label className="flabel">Badge text</label>
+              <input
+                value={highlight.label}
+                onChange={(e) => patch({ highlight: { ...highlight, label: e.target.value } })}
+                placeholder="e.g. New Launch"
+                maxLength={30}
+                className={cn(miniInputCls, "mt-1 w-[220px]")}
+              />
+            </div>
+            {/* live preview */}
+            <span className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-suzuki-red px-3 py-1 text-[10.5px] font-black uppercase tracking-[0.1em] text-white shadow-cta">
+              <span className="h-1.5 w-1.5 rounded-full bg-white" />
+              {highlight.label.trim() || "New Launch"}
+            </span>
           </div>
         )}
       </section>

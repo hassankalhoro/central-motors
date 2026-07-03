@@ -30,6 +30,7 @@ model User {
   auditLogs    AuditLog[]
   newsPosts    NewsPost[]
   resetTokens  PasswordResetToken[]
+  appointments Appointment[]
 }
 
 enum Role {
@@ -194,6 +195,61 @@ enum SubmissionStatus {
 }
 
 /* ------------------------------------------------------------------ *
+ * Appointments & workshop scheduling
+ *   Slot duration, capacity, booking window and notice hours live in
+ *   Setting keys (booking*) so the admin panel can tune them.
+ * ------------------------------------------------------------------ */
+model ScheduleDay {
+  weekday    Int      @id // 0 = Sunday … 6 = Saturday
+  isOpen     Boolean  @default(true)
+  startTime  String   @default("09:00")
+  endTime    String   @default("17:00")
+  breakStart String? // e.g. "13:00" (no slots inside the break)
+  breakEnd   String?
+  updatedAt  DateTime @updatedAt
+}
+
+model BlackoutDate {
+  id        String   @id @default(cuid())
+  date      DateTime @unique @db.Date
+  reason    String? // "Eid holiday"
+  createdAt DateTime @default(now())
+}
+
+model Appointment {
+  id            String            @id @default(cuid())
+  code          String            @unique // customer-facing reference, e.g. SCM-4F7K2A
+  name          String
+  phone         String
+  email         String?
+  vehicle       String
+  registration  String?
+  serviceType   String
+  notes         String?
+  date          DateTime          @db.Date
+  startTime     String // "10:00"
+  endTime       String // "11:00"
+  status        AppointmentStatus @default(PENDING)
+  adminNote     String?
+  cancelReason  String?
+  confirmedById String?
+  confirmedBy   User?             @relation(fields: [confirmedById], references: [id], onDelete: SetNull)
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  @@index([date, startTime, status])
+  @@index([status, date])
+}
+
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+/* ------------------------------------------------------------------ *
  * Settings (key/value) & audit
  * ------------------------------------------------------------------ */
 model Setting {
@@ -213,4 +269,22 @@ model AuditLog {
   createdAt DateTime @default(now())
 
   @@index([entity, createdAt])
+}
+
+/* ------------------------------------------------------------------ *
+ * Careers (admin-managed job postings)
+ * ------------------------------------------------------------------ */
+model Job {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  location    String
+  type        String // "Permanent", "Contract", "Internship"…
+  description String
+  published   Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([published, order])
 }

@@ -48,7 +48,7 @@ const WINDOW_MS = 60_000;
 const MAX_PER_WINDOW = 5;
 const hits = new Map<string, number[]>();
 
-function rateLimited(ip: string): boolean {
+export function rateLimited(ip: string): boolean {
   const now = Date.now();
   const recent = (hits.get(ip) ?? []).filter((t) => now - t < WINDOW_MS);
   recent.push(now);
@@ -60,7 +60,7 @@ function rateLimited(ip: string): boolean {
   return recent.length > MAX_PER_WINDOW;
 }
 
-function clientIp(req: Request): string {
+export function clientIp(req: Request): string {
   const xff = req.headers.get("x-forwarded-for");
   return (xff?.split(",")[0] || req.headers.get("x-real-ip") || "unknown").trim();
 }

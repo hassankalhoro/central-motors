@@ -89,7 +89,8 @@ export default function ProductForm({
     }
     // both amounts required, otherwise the section stays hidden
     if (s.tax && s.tax.filer > 0 && s.tax.nonFiler > 0) out.tax = s.tax;
-    return out.comparison || out.colors || out.announcement || out.tax ? out : null;
+    if (s.highlight?.enabled) out.highlight = { enabled: true, label: s.highlight.label.trim() || "New Launch" };
+    return out.comparison || out.colors || out.announcement || out.tax || out.highlight ? out : null;
   }
 
   function submit(e: React.FormEvent) {

@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import {
   DashboardIcon, ProductsIcon, CategoriesIcon, NewsIcon, InquiriesIcon,
   SettingsIcon, UsersIcon, StoreIcon, CloseIcon,
+  CalendarIcon, BriefcaseIcon,
 } from "./icons";
 
 type Item = { href: string; label: string; icon: (p: { className?: string }) => JSX.Element; exact?: boolean };
@@ -17,7 +18,10 @@ const NAV: Item[] = [
   { href: "/admin/products", label: "Products", icon: ProductsIcon },
   { href: "/admin/categories", label: "Categories", icon: CategoriesIcon },
   { href: "/admin/news", label: "News", icon: NewsIcon },
+  { href: "/admin/team", label: "Team", icon: UsersIcon },
+  { href: "/admin/careers", label: "Careers", icon: BriefcaseIcon },
   { href: "/admin/inquiries", label: "Inquiries", icon: InquiriesIcon },
+  { href: "/admin/appointments", label: "Appointments", icon: CalendarIcon },
   { href: "/admin/settings", label: "Settings", icon: SettingsIcon },
 ];
 const SUPER_ITEM: Item = { href: "/admin/users", label: "Users", icon: UsersIcon };
@@ -43,8 +47,21 @@ export default function Sidebar({ role, open, onClose }: { role: Role; open: boo
         )}
       >
         {/* Brand */}
-        <div className="flex items-center justify-between px-5 pb-2 pt-6">
-          <Image src="/brand/suzuki.png" alt="Suzuki Central Motors" width={431} height={512} className="h-auto w-[150px]" priority />
+        <div className="flex items-center justify-between gap-3 px-5 pb-2 pt-6">
+          <div className="flex items-center gap-3">
+            <Image
+              src="/brand/suzuki.png"
+              alt="Suzuki Central Motors"
+              width={431}
+              height={512}
+              priority
+              className="h-10 w-auto rounded-[10px] bg-white/95 p-1 shadow-[0_4px_14px_rgba(0,0,0,.35)]"
+            />
+            <div>
+              <div className="font-display text-[14px] font-extrabold leading-tight">Central Motors</div>
+              <div className="mt-0.5 text-[9.5px] font-bold uppercase tracking-[0.16em] text-[#8FA7CC]">Admin Panel</div>
+            </div>
+          </div>
           <button onClick={onClose} className="text-white/70 hover:text-white lg:hidden" aria-label="Close menu">
             <CloseIcon />
           </button>

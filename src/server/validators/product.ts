@@ -50,6 +50,12 @@ export const productSpecsSchema = z
         nonFiler: z.coerce.number().int().min(1, "Enter the non-filer tax amount."),
       })
       .optional(),
+    highlight: z
+      .object({
+        enabled: z.boolean(),
+        label: z.string().trim().min(1).max(30),
+      })
+      .optional(),
     colors: z
       .array(
         z.object({

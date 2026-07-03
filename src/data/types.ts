@@ -36,6 +36,8 @@ export type ProductSpecs = {
   announcement?: { enabled: boolean; phrases: string[] };
   /** Advance registration tax (u/s 231B). Absent = section hidden on the page. */
   tax?: { filer: number; nonFiler: number };
+  /** Spotlight treatment on listing cards (badge + accent ring). Absent = off. */
+  highlight?: { enabled: boolean; label: string };
 };
 
 export type Product = {

@@ -2,15 +2,18 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import PageHero from "@/components/site/PageHero";
 import Reveal from "@/components/site/Reveal";
-import { getJobs, recruitProcess } from "@/data";
+import { recruitProcess } from "@/data";
+import { getJobs } from "@/data/db";
 
 export const metadata: Metadata = {
   title: "Careers",
   description: "Build your career with Rawalpindi's trusted Suzuki dealership. View current vacancies and our recruitment process.",
 };
 
-export default function CareersPage() {
-  const jobs = getJobs();
+export const dynamic = "force-dynamic";
+
+export default async function CareersPage() {
+  const jobs = await getJobs();
   return (
     <>
       <PageHero eyebrow="Join us" title="Careers" subtitle="Build your career with Rawalpindi's trusted Suzuki dealership." />
