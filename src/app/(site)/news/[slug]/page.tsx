@@ -26,7 +26,7 @@ export default async function NewsPage({ params }: { params: { slug: string } })
     datePublished: post.date,
     image: post.image ? [`${SITE_URL}${post.image}`] : undefined,
     url: `${SITE_URL}/news/${post.slug}`,
-    publisher: { "@type": "Organization", name: "Suzuki Central Motors", logo: { "@type": "ImageObject", url: `${SITE_URL}/brand/suzuki.png` } },
+    publisher: { "@type": "Organization", name: "Suzuki Central Motors", logo: { "@type": "ImageObject", url: `${SITE_URL}/brand/suzuki-wordmark.png` } },
   };
   return (
     <article className="mx-auto max-w-[800px] px-5 py-[34px] pb-20 sm:px-8">

@@ -8,7 +8,7 @@ export default function Loading() {
       <div className="flex flex-col items-center gap-4">
         <span className="relative grid h-16 w-16 place-items-center">
           <span className="absolute inset-0 animate-spin rounded-full border-[3px] border-line border-t-suzuki-red" />
-          <Image src="/brand/suzuki.png" alt="Suzuki" width={431} height={512} priority className="h-8 w-auto" />
+          <Image src="/brand/suzuki-mark.png" alt="Suzuki" width={606} height={606} priority className="h-8 w-auto" />
         </span>
         <span className="text-[12.5px] font-bold uppercase tracking-[0.18em] text-ink-faint">Loading</span>
       </div>

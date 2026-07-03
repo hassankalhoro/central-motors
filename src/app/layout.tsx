@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     url: siteUrl,
     title: `Suzuki Cars in Pakistan, Prices & New Models, ${settings.siteName}`,
     description: "Official Suzuki prices in Pakistan: Fronx, Swift, Cultus, Alto and Every. Test drives, service booking and genuine parts in Rawalpindi.",
-    images: [{ url: "/brand/suzuki.png", width: 431, height: 512, alt: settings.siteName }],
+    images: [{ url: "/brand/suzuki-wordmark.png", width: 1912, height: 556, alt: settings.siteName }],
   },
   twitter: { card: "summary_large_image", title: `Suzuki Cars in Pakistan | ${settings.siteName}` },
   robots: {

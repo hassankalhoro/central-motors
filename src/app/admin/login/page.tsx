@@ -42,7 +42,7 @@ export default async function AdminLoginPage() {
           </div>
 
           <div className="relative flex items-center gap-3.5">
-            <Image src="/brand/suzuki.png" alt="Suzuki" width={431} height={512} priority className="h-9 w-auto rounded-lg bg-white/95 p-1 shadow-lg sm:h-11" />
+            <Image src="/brand/suzuki-mark.png" alt="Suzuki" width={606} height={606} priority className="h-9 w-auto drop-shadow-[0_4px_10px_rgba(0,0,0,.35)] sm:h-11" />
             <div>
               <div className="font-display text-[14.5px] font-extrabold leading-tight sm:text-[15.5px]">Suzuki Central Motors</div>
               <div className="mt-0.5 whitespace-nowrap text-[9.5px] font-bold uppercase tracking-[0.14em] text-[#8FA7CC] sm:text-[10.5px] sm:tracking-[0.18em]">Dealer Management Portal</div>

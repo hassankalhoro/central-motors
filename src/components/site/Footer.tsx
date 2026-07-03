@@ -90,7 +90,7 @@ export default function Footer({ settings, lang = "en" }: { settings: Settings; 
       {/* columns */}
       <div className="container-site relative grid grid-cols-2 gap-8 pt-12 text-center lg:grid-cols-[1.4fr_1fr_1fr_1.35fr] lg:gap-9 lg:text-left">
         <div className="col-span-2 lg:col-span-1">
-          <Image src="/brand/suzuki.png" alt={settings.siteName} width={431} height={512} className="mx-auto h-[52px] w-auto rounded-md lg:mx-0" />
+          <Image src="/brand/suzuki-wordmark-white.png" alt={settings.siteName} width={1912} height={556} className="mx-auto h-11 w-auto lg:mx-0" />
           <p className="mx-auto mt-4 max-w-[300px] text-[13.5px] leading-relaxed text-[#90A6C9] lg:mx-0 lg:max-w-[280px]">
             {settings.tagline}. New cars, service, genuine parts and body shop, all under one roof.
           </p>

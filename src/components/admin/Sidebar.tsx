@@ -50,12 +50,12 @@ export default function Sidebar({ role, open, onClose }: { role: Role; open: boo
         <div className="flex items-center justify-between gap-3 px-5 pb-2 pt-6">
           <div className="flex items-center gap-3">
             <Image
-              src="/brand/suzuki.png"
+              src="/brand/suzuki-mark.png"
               alt="Suzuki Central Motors"
-              width={431}
-              height={512}
+              width={606}
+              height={606}
               priority
-              className="h-10 w-auto rounded-[10px] bg-white/95 p-1 shadow-[0_4px_14px_rgba(0,0,0,.35)]"
+              className="h-9 w-auto drop-shadow-[0_3px_8px_rgba(0,0,0,.4)]"
             />
             <div>
               <div className="font-display text-[14px] font-extrabold leading-tight">Central Motors</div>

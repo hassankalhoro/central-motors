@@ -15,7 +15,7 @@ export default function NotFound() {
       <header className="border-b border-line bg-white">
         <div className="container-site flex h-[72px] items-center">
           <Link href="/" aria-label="Suzuki Central Motors home" className="flex items-center">
-            <Image src="/brand/suzuki.png" alt="Suzuki Central Motors" width={431} height={512} priority className="h-12 w-auto" />
+            <Image src="/brand/suzuki-wordmark.png" alt="Suzuki Central Motors" width={1912} height={556} priority className="h-10 w-auto" />
           </Link>
         </div>
       </header>

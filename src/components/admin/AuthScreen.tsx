@@ -15,7 +15,7 @@ export default function AuthScreen({
       <aside className="relative hidden w-[44%] flex-col items-center justify-center overflow-hidden bg-hero p-12 text-white lg:flex">
         <div className="absolute inset-0 bg-gradient-to-b from-suzuki-dark/30 to-suzuki-darker/80" />
         <div className="relative z-10 flex flex-col items-center text-center">
-          <Image src="/brand/suzuki.png" alt="Suzuki Central Motors" width={431} height={512} className="h-auto w-[200px] drop-shadow" priority />
+          <Image src="/brand/suzuki-wordmark-white.png" alt="Suzuki Central Motors" width={1912} height={556} className="h-auto w-[260px] drop-shadow" priority />
           <div className="mt-6 h-[3px] w-28 rounded-full bg-suzuki-red" />
           <p className="mt-5 text-lg font-semibold tracking-wide text-white/90">Dealer Management Portal</p>
         </div>

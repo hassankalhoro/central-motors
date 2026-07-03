@@ -23,7 +23,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
     name: settings.siteName,
     description: settings.tagline,
     url: SITE_URL,
-    logo: `${SITE_URL}/brand/suzuki.png`,
+    logo: `${SITE_URL}/brand/suzuki-wordmark.png`,
     telephone: settings.uan,
     email: settings.email,
     address: {
