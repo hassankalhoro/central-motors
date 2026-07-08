@@ -2,7 +2,7 @@
 
 Public website for Suzuki Central Motors (Authorised 3S Suzuki Dealer, Rawalpindi).
 Static public site backed by a lightweight backend: form submissions persist to a
-database and media is stored on a CDN. No admin panel yet.
+database and media is stored on a CDN. No admin panel yet. 
 
 ## Stack
 - **Next.js 14** (App Router) · **TypeScript** (strict) · **Tailwind CSS**
