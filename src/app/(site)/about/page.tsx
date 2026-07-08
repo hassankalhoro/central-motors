@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Reveal from "@/components/site/Reveal";
 import { aboutStats, ceo, mission, vision } from "@/data";
 
@@ -36,8 +37,18 @@ export default function AboutPage() {
             </div>
           </div>
         </Reveal>
-        <Reveal className="well-stripe flex min-h-[300px] items-center justify-center rounded-[20px] border border-line bg-gradient-to-br from-[#EEF2F8] to-[#E2E9F3]">
-          <span aria-hidden className="font-display text-[120px] font-black italic text-[rgba(6,36,92,.08)]">S</span>
+        <Reveal className="relative min-h-[300px] overflow-hidden rounded-[20px] border border-line shadow-card">
+          <Image
+            src="/images/aftersales/workshop-technician.jpg"
+            alt="Our certified Suzuki technician at work in the workshop"
+            fill
+            sizes="(max-width:1024px) 92vw, 46vw"
+            className="object-cover"
+          />
+          <div aria-hidden className="absolute inset-0 bg-[linear-gradient(to_top,rgba(4,15,40,.55),transparent_46%)]" />
+          <div className="absolute bottom-4 left-4 rounded-full bg-black/35 px-3 py-1.5 text-[12px] font-bold tracking-wide text-white backdrop-blur-sm">
+            Suzuki 7S · Authorised
+          </div>
         </Reveal>
       </section>
 
