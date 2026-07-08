@@ -49,7 +49,7 @@ export default async function ContactPage() {
               <a href={`mailto:${settings.email}`} className="font-semibold text-white">{settings.email}</a>
               {settings.email2 && (<><br /><a href={`mailto:${settings.email2}`} className="font-semibold text-white">{settings.email2}</a></>)}
             </div>
-            <div className="mt-2.5 text-sm"><span className="text-[#7E96BC]">Hours</span><br /><span className="font-semibold text-white">Mon–Sat · 9:00am – 7:00pm</span></div>
+            <div className="mt-2.5 text-sm"><span className="text-[#7E96BC]">Hours</span><br /><span className="font-semibold text-white">Mon–Sun · 9:00am – 6:00pm</span></div>
           </div>
           <GoogleMap className="mt-4 h-[260px]" />
           <a

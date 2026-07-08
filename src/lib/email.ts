@@ -20,7 +20,7 @@ import { getEmailConfig } from "@/server/services/settingsService";
 const DEALER_NAME = "Suzuki Central Motors";
 const DEALER_ADDRESS =
   process.env.DEALER_ADDRESS ||
-  "Opposite Main Entrance 8 & 9, G.T. Road, Soan, Rawalpindi 46000, Pakistan";
+  "Main G.T. Road, Soan Camp, Opposite Toyota Rawal, Rawalpindi 46000, Pakistan";
 const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://centralmotors.com.pk").replace(/\/$/, "");
 const PRIVACY_URL = `${SITE_URL}/privacy`;
 /** Where a recipient asks to stop these internal notifications. */

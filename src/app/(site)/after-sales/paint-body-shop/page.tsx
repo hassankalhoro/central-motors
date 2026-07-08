@@ -15,7 +15,7 @@ const SECTIONS = [
 ];
 
 const STATS = [
-  { num: "13+", label: "Years of body repairs" },
+  { num: "42+", label: "Years of body repairs" },
   { num: "OEM", label: "Genuine Suzuki panels" },
   { num: "100%", label: "Colour-matched paint" },
   { num: "1:1", label: "Factory-standard finish" },

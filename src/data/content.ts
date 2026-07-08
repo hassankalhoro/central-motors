@@ -46,7 +46,7 @@ export const heroSlides = [
 export const homeStats = [
   { num: "6", label: "Current Suzuki models" },
   { num: "7S", label: "Complete dealership facility" },
-  { num: "13+", label: "Years serving Rawalpindi" },
+  { num: "42+", label: "Years serving Rawalpindi" },
 ];
 
 export const valueProps = [
@@ -82,8 +82,8 @@ export const valueProps = [
     icon: "warranty",
     title: "Extended Warranty",
     body: "Protect your Suzuki beyond the standard cover.",
-    detail: "Extend cover beyond the standard 2 years / 30,000 km with a plan tailored to how you actually use your car, serviced and honoured at our authorised 7S workshop.",
-    points: ["Beyond 2 yrs / 30,000 km", "Plans to suit your usage", "Honoured at our 7S workshop"],
+    detail: "Extend cover beyond the standard 3 years / 60,000 km with a plan tailored to how you actually use your car, serviced and honoured at our authorised 7S workshop.",
+    points: ["Beyond 3 yrs / 60,000 km", "Plans to suit your usage", "Honoured at our 7S workshop"],
   },
   {
     icon: "finance",
@@ -131,7 +131,7 @@ export const afterSales = [
   {
     icon: "warranty",
     title: "Extended Warranty",
-    body: "Extend cover beyond the standard 2 years / 30,000 km with a plan tailored to how you drive, serviced and honoured at our authorised 7S workshop.",
+    body: "Extend cover beyond the standard 3 years / 60,000 km with a plan tailored to how you drive, serviced and honoured at our authorised 7S workshop.",
     href: "/after-sales/extended-warranty",
   },
 ];
@@ -160,7 +160,7 @@ export const bodyShopServices = [
 
 export const aboutStats = [
   { num: "6", label: "Suzuki models" },
-  { num: "13+", label: "Years in business" },
+  { num: "42+", label: "Years in business" },
   { num: "7S", label: "Complete dealership facility" },
   { num: "1000s", label: "Happy customers" },
 ];
@@ -193,7 +193,7 @@ export const serviceSections = [
     title: "Extended Warranty",
     body: "Protect your investment beyond the standard manufacturer cover with an extended warranty plan tailored to your usage.",
     highlights: [
-      "Extends cover beyond the standard 2 years / 30,000 km",
+      "Extends cover beyond the standard 3 years / 60,000 km",
       "Plans tailored to how you actually use your car",
       "Serviced and honoured at our authorised 7S workshop",
     ],
@@ -222,7 +222,7 @@ export const facilities = [
 ];
 
 export const warrantyRows = [
-  { item: "New vehicle warranty", term: "2 years / 30,000 km (whichever comes first)" },
+  { item: "New vehicle warranty", term: "3 years / 60,000 km (whichever comes first)" },
   { item: "Engine & transmission", term: "Covered under standard manufacturer terms" },
   { item: "Paint & body", term: "Against manufacturing defects per policy" },
   { item: "Genuine parts (over-counter)", term: "6 months on selected parts" },

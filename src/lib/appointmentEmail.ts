@@ -12,7 +12,7 @@ import { sendMail, notificationInbox } from "./email";
 
 const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://centralmotors.com.pk").replace(/\/$/, "");
 const DEALER = "Suzuki Central Motors";
-const ADDRESS = "Opposite Main Entrance 8 & 9, G.T. Road, Soan, Rawalpindi";
+const ADDRESS = "Main G.T. Road, Soan Camp, Opposite Toyota Rawal, Rawalpindi";
 
 const esc = (s: unknown) =>
   String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");

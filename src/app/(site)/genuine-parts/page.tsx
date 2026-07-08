@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     "100% authentic Suzuki Genuine Parts, Accessories and ECSTAR oils. Engineered to fit, built to last, and available straight from our parts counter in Rawalpindi.",
 };
 
-const PARTS_PHONE = "+92 51 111 111 726";
+const PARTS_PHONE = "+92 308 2010254";
 
 const BADGES = [
   { src: "/brand/suzuki-genuine-parts.png", alt: "Suzuki Genuine Parts", w: 984, h: 337 },

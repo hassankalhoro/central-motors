@@ -125,9 +125,9 @@ export default function Footer({ settings, lang = "en" }: { settings: Settings; 
                 </a>
               </div>
             </div>
-            <a href={telHref(settings.uan)} className="group flex items-center justify-center gap-2.5 lg:justify-start">
+            <a href={telHref(settings.tel)} className="group flex items-center justify-center gap-2.5 lg:justify-start">
               <span className="text-suzuki-sky"><PhoneIcon /></span>
-              <span className="text-[14px] font-semibold text-white transition group-hover:text-suzuki-sky">{settings.uan}</span>
+              <span className="text-[14px] font-semibold text-white transition group-hover:text-suzuki-sky">{settings.tel}</span>
             </a>
             <a href={`mailto:${settings.email}`} className="group flex items-center justify-center gap-2.5 lg:justify-start">
               <span className="text-suzuki-sky"><MailIcon /></span>

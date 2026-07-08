@@ -9,13 +9,13 @@ import { telHref, cn } from "@/lib/utils";
 export const metadata: Metadata = {
   title: "Extended Warranty",
   description:
-    "Extend your Suzuki's cover beyond the standard 2 years / 30,000 km. Plans tailored to your usage, serviced and honoured at our authorised 7S workshop.",
+    "Extend your Suzuki's cover beyond the standard 3 years / 60,000 km. Plans tailored to your usage, serviced and honoured at our authorised 7S workshop.",
 };
 
-const WARRANTY_PHONE = "0315-8709631";
+const WARRANTY_PHONE = "0315-8709623";
 
 const BENEFITS = [
-  { icon: "warranty", title: "Beyond standard cover", body: "Protection that continues after the manufacturer's 2 years / 30,000 km period ends." },
+  { icon: "warranty", title: "Beyond standard cover", body: "Protection that continues after the manufacturer's 3 years / 60,000 km period ends." },
   { icon: "workshop", title: "Honoured at our workshop", body: "Claims handled in-house by certified Suzuki technicians using genuine parts." },
   { icon: "finance", title: "Plans to suit your usage", body: "Pick a term that matches how far and how often you actually drive." },
   { icon: "certified", title: "Stronger at resale", body: "A documented, transferable warranty adds buyer confidence and resale value." },
@@ -47,9 +47,9 @@ export default function ExtendedWarrantyPage() {
         </Reveal>
         <Reveal delay={80}>
           <div className="rounded-2xl bg-suzuki-dark px-7 py-6 text-white">
-            <div className="font-display text-[40px] font-black leading-none">2 yrs+</div>
+            <div className="font-display text-[40px] font-black leading-none">3 yrs+</div>
             <div className="mt-2 text-[13.5px] leading-relaxed text-[#C3D2EA]">
-              Extend beyond the standard <span className="font-bold text-white">2 years / 30,000 km</span> with a plan built around your driving.
+              Extend beyond the standard <span className="font-bold text-white">3 years / 60,000 km</span> with a plan built around your driving.
             </div>
           </div>
         </Reveal>

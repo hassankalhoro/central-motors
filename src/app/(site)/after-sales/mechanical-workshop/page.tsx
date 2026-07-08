@@ -15,7 +15,7 @@ const SECTIONS = [
 ];
 
 const STATS = [
-  { num: "13+", label: "Years serving Rawalpindi" },
+  { num: "42+", label: "Years serving Rawalpindi" },
   { num: "7S", label: "Complete dealership facility" },
   { num: "100%", label: "Genuine Suzuki parts" },
   { num: "1000s", label: "Cars serviced" },
@@ -33,7 +33,7 @@ export default function MechanicalWorkshopPage() {
       tone="cool"
       chips={["Certified technicians", "Genuine parts", "Warranty on work", "Factory-grade tools"]}
       book={{ href: "/service-appointment", label: "Book an appointment" }}
-      callPhone="0315-8709624"
+      callPhone="0315-8709631"
       stats={STATS}
       servicesHeading="Our complete workshop services"
       servicesIntro="Everything your Suzuki needs under one roof, carried out by certified technicians using genuine Suzuki parts and ECSTAR oils."
