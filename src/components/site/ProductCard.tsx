@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Well from "./Well";
 import { cn, formatPKR } from "@/lib/utils";
@@ -8,12 +11,40 @@ export default function ProductCard({ product, showCategory = false }: { product
   // Spotlight treatment (badge + accent ring), toggled per car from the admin panel.
   const spotlight = product.specs?.highlight?.enabled ? product.specs.highlight : null;
 
+  // On mobile, whichever card is nearest the vertical centre of the screen
+  // auto-highlights as you scroll, so the "current" car is obvious at a glance.
+  const ref = useRef<HTMLAnchorElement | null>(null);
+  const [focused, setFocused] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const mq = window.matchMedia("(max-width: 639px)");
+    let io: IntersectionObserver | null = null;
+
+    const setup = () => {
+      io?.disconnect();
+      if (!mq.matches) { setFocused(false); return; }
+      io = new IntersectionObserver(([entry]) => setFocused(entry.isIntersecting), {
+        rootMargin: "-42% 0px -42% 0px",
+        threshold: 0,
+      });
+      io.observe(el);
+    };
+
+    setup();
+    mq.addEventListener("change", setup);
+    return () => { io?.disconnect(); mq.removeEventListener("change", setup); };
+  }, []);
+
   return (
     <Link
+      ref={ref}
       href={`/product/${product.slug}`}
       className={cn(
         "card card-lift relative flex flex-col overflow-hidden hover:!shadow-lift",
         spotlight && "shadow-lift ring-2 ring-suzuki-red/70 hover:ring-suzuki-red",
+        !spotlight && focused && "scale-[1.02] shadow-lift ring-2 ring-suzuki-blue/60",
       )}
     >
       {spotlight && (
