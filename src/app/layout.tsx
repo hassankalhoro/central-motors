@@ -29,7 +29,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://centralmotors.com.p
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: `Suzuki Motors Rawalpindi & Islamabad, Cars, Prices & New Models | ${settings.siteName}`,
+    default: `${settings.siteName} | Suzuki Cars, Prices, Rawalpindi & Islamabad`,
     template: `%s | ${settings.siteName}`,
   },
   description:
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     siteName: settings.siteName,
     locale: "en_PK",
     url: siteUrl,
-    title: `Suzuki Motors Rawalpindi & Islamabad | ${settings.siteName}`,
+    title: `${settings.siteName} | Suzuki Cars, Rawalpindi & Islamabad`,
     description: "Official Suzuki prices in Pakistan: Fronx, Swift, Cultus, Alto and Every. Test drives, service booking and genuine parts, serving Rawalpindi and Islamabad.",
     images: [{ url: "/brand/suzuki-wordmark.png", width: 1912, height: 556, alt: settings.siteName }],
   },

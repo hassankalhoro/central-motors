@@ -48,8 +48,8 @@ export default async function ContactPage() {
             <div className="mt-2.5 text-sm"><span className="text-[#7E96BC]">Fax</span><br /><span className="font-semibold text-white">{settings.fax}</span></div>
             <div className="mt-2.5 text-sm">
               <span className="text-[#7E96BC]">Email</span><br />
-              <a href={`mailto:${settings.email}`} className="font-semibold text-white">{settings.email}</a>
-              {settings.email2 && (<><br /><a href={`mailto:${settings.email2}`} className="font-semibold text-white">{settings.email2}</a></>)}
+              <a href={`mailto:${settings.email}`} className="inline-block py-1 font-semibold text-white">{settings.email}</a>
+              {settings.email2 && (<><br /><a href={`mailto:${settings.email2}`} className="inline-block py-1 font-semibold text-white">{settings.email2}</a></>)}
             </div>
             <div className="mt-2.5 text-sm"><span className="text-[#7E96BC]">Hours</span><br /><span className="font-semibold text-white">Mon–Sun · 9:00am – 6:00pm</span></div>
           </div>

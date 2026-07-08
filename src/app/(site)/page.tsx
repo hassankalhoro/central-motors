@@ -16,7 +16,7 @@ import { t, langClass } from "@/lib/i18n";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Suzuki Motors Rawalpindi & Islamabad, Cars, Prices & New Models",
+  title: { absolute: "Suzuki Central Motors | Suzuki Cars, Prices, Rawalpindi & Islamabad" },
   description:
     "Suzuki Central Motors, an authorised 7S Suzuki Motor Company dealership serving Rawalpindi and Islamabad. Buy Suzuki Fronx, Swift, Cultus, Alto and Every at official prices, book test drives, workshop service, genuine parts and warranty.",
   keywords: [
