@@ -10,7 +10,7 @@ export const settings: Settings = {
   fax: "+92 51 4917114",
   email: "info@centralmotors.com.pk",
   email2: "scm.rwp@gmail.com",
-  servicePhone: "0315-8709624",
+  servicePhone: "0315-8709631",
   warrantyPhone: "0315-8709623",
   facebook: "facebook.com/suzukicentralmotorsrwp",
   instagram: "instagram.com/suzukicentralmotors",
