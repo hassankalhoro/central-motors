@@ -29,31 +29,40 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://centralmotors.com.p
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: `Suzuki Cars in Pakistan, Prices & New Models, ${settings.siteName} Rawalpindi`,
+    default: `Suzuki Motors Rawalpindi & Islamabad, Cars, Prices & New Models | ${settings.siteName}`,
     template: `%s | ${settings.siteName}`,
   },
   description:
-    "Buy Suzuki cars in Pakistan at official prices: Suzuki Fronx, Swift, Cultus, Alto and Every. Authorised 7S Suzuki dealership in Rawalpindi with test drives, workshop booking, genuine parts and warranty.",
+    "Suzuki Central Motors, an authorised 7S Suzuki Motor Company dealership serving Rawalpindi and Islamabad. Buy Suzuki Fronx, Swift, Cultus, Alto and Every at official prices, book test drives, workshop service, genuine parts and warranty.",
   keywords: [
+    "Suzuki", "Suzuki Pakistan", "Suzuki Motor", "Suzuki Motors", "Suzuki Motor Company",
     "Suzuki cars Pakistan", "Suzuki Pakistan price", "Suzuki Fronx", "Suzuki Fronx price in Pakistan",
     "Suzuki Swift price", "Suzuki Alto price", "Suzuki Cultus price", "Suzuki Every",
-    "Suzuki dealer Rawalpindi", "Suzuki dealer Islamabad", "Suzuki showroom Rawalpindi",
-    "Suzuki service center Rawalpindi", "Central Motors", "new Suzuki models Pakistan",
+    "Suzuki dealer Rawalpindi", "Suzuki dealer Islamabad", "Suzuki Islamabad", "Suzuki showroom Rawalpindi",
+    "Suzuki showroom Islamabad", "Suzuki service center Rawalpindi", "Suzuki service center Islamabad",
+    "Central Motors", "Suzuki Central Motors", "new Suzuki models Pakistan",
   ],
   applicationName: settings.siteName,
   category: "automotive",
-  icons: { icon: "/favicon.png", apple: "/favicon.png" },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+    ],
+    apple: "/apple-icon.png",
+    shortcut: "/favicon.ico",
+  },
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     siteName: settings.siteName,
     locale: "en_PK",
     url: siteUrl,
-    title: `Suzuki Cars in Pakistan, Prices & New Models, ${settings.siteName}`,
-    description: "Official Suzuki prices in Pakistan: Fronx, Swift, Cultus, Alto and Every. Test drives, service booking and genuine parts in Rawalpindi.",
+    title: `Suzuki Motors Rawalpindi & Islamabad | ${settings.siteName}`,
+    description: "Official Suzuki prices in Pakistan: Fronx, Swift, Cultus, Alto and Every. Test drives, service booking and genuine parts, serving Rawalpindi and Islamabad.",
     images: [{ url: "/brand/suzuki-wordmark.png", width: 1912, height: 556, alt: settings.siteName }],
   },
-  twitter: { card: "summary_large_image", title: `Suzuki Cars in Pakistan | ${settings.siteName}` },
+  twitter: { card: "summary_large_image", title: `Suzuki Motors Rawalpindi & Islamabad | ${settings.siteName}` },
   robots: {
     index: true,
     follow: true,

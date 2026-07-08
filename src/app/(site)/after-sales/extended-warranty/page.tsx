@@ -9,7 +9,9 @@ import { telHref, cn } from "@/lib/utils";
 export const metadata: Metadata = {
   title: "Extended Warranty",
   description:
-    "Extend your Suzuki's cover beyond the standard 3 years / 60,000 km. Plans tailored to your usage, serviced and honoured at our authorised 7S workshop.",
+    "Extend your Suzuki's cover beyond the standard 3 years / 60,000 km. Plans tailored to your usage, serviced and honoured at our authorised 7S workshop serving Rawalpindi and Islamabad.",
+  keywords: ["Suzuki extended warranty Pakistan", "Suzuki warranty Rawalpindi", "Suzuki warranty Islamabad"],
+  alternates: { canonical: "/after-sales/extended-warranty" },
 };
 
 const WARRANTY_PHONE = "0315-8709623";

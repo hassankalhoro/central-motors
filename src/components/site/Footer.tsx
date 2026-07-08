@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Settings } from "@/data";
-import { telHref } from "@/lib/utils";
+import { telHref, formatTel } from "@/lib/utils";
 import { t, langClass, type Lang } from "@/lib/i18n";
 
 const EXPLORE = [
@@ -90,7 +90,7 @@ export default function Footer({ settings, lang = "en" }: { settings: Settings; 
       {/* columns */}
       <div className="container-site relative grid grid-cols-2 gap-8 pt-12 text-center lg:grid-cols-[1.4fr_1fr_1fr_1.35fr] lg:gap-9 lg:text-left">
         <div className="col-span-2 lg:col-span-1">
-          <Image src="/brand/suzuki-wordmark-white.png" alt={settings.siteName} width={1912} height={556} className="mx-auto h-11 w-auto lg:mx-0" />
+          <Image src="/brand/suzuki-wordmark-white.png" alt={settings.siteName} width={1912} height={556} sizes="200px" className="mx-auto h-11 w-auto lg:mx-0" />
           <p className="mx-auto mt-4 max-w-[300px] text-[13.5px] leading-relaxed text-[#90A6C9] lg:mx-0 lg:max-w-[280px]">
             {settings.tagline}. New cars, service, genuine parts and body shop, all under one roof.
           </p>
@@ -127,7 +127,7 @@ export default function Footer({ settings, lang = "en" }: { settings: Settings; 
             </div>
             <a href={telHref(settings.tel)} className="group flex items-center justify-center gap-2.5 lg:justify-start">
               <span className="text-suzuki-sky"><PhoneIcon /></span>
-              <span className="text-[14px] font-semibold text-white transition group-hover:text-suzuki-sky">{settings.tel}</span>
+              <span className="text-[14px] font-semibold text-white transition group-hover:text-suzuki-sky">{formatTel(settings.tel, settings.telType)}</span>
             </a>
             <a href={`mailto:${settings.email}`} className="group flex items-center justify-center gap-2.5 lg:justify-start">
               <span className="text-suzuki-sky"><MailIcon /></span>

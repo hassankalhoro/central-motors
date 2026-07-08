@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import HeroCarousel, { type HeroSlide } from "@/components/site/HeroCarousel";
 import ProductCard from "@/components/site/ProductCard";
@@ -13,6 +14,18 @@ import { getLang } from "@/lib/lang";
 import { t, langClass } from "@/lib/i18n";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Suzuki Motors Rawalpindi & Islamabad, Cars, Prices & New Models",
+  description:
+    "Suzuki Central Motors, an authorised 7S Suzuki Motor Company dealership serving Rawalpindi and Islamabad. Buy Suzuki Fronx, Swift, Cultus, Alto and Every at official prices, book test drives, workshop service, genuine parts and warranty.",
+  keywords: [
+    "Suzuki", "Suzuki Pakistan", "Suzuki Motor", "Suzuki Motors", "Suzuki Motor Company",
+    "Suzuki Fronx", "Suzuki Fronx price in Pakistan", "Suzuki dealer Rawalpindi", "Suzuki dealer Islamabad",
+    "Suzuki Islamabad", "Suzuki showroom Rawalpindi", "Suzuki showroom Islamabad", "Suzuki Central Motors",
+  ],
+  alternates: { canonical: "/" },
+};
 
 export default async function Home() {
   const lang = getLang();

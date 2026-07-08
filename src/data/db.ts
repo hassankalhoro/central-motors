@@ -190,6 +190,7 @@ export const getSettings = cached(async (): Promise<Settings> => {
     phone: m.phone || defaultSettings.phone,
     uan: m.uan || defaultSettings.uan,
     tel: m.tel || defaultSettings.tel,
+    telType: m.telType === "phone" ? "phone" : m.telType === "ptcl" ? "ptcl" : defaultSettings.telType,
     fax: m.fax || defaultSettings.fax,
     email: m.email || defaultSettings.email,
     email2: m.email2 || defaultSettings.email2,

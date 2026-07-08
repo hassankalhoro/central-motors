@@ -102,6 +102,8 @@ export type Settings = {
   phone: string;
   uan: string;
   tel: string;
+  /** How `tel` is displayed: "ptcl" → local format (0…), "phone" → international (+92…). */
+  telType: "ptcl" | "phone";
   fax: string;
   email: string;
   email2?: string;

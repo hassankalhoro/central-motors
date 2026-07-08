@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
     "How Suzuki Central Motors collects, uses, and protects the personal information you submit through our website forms.",
+  alternates: { canonical: "/privacy" },
 };
 
 const UPDATED = "26 June 2026";

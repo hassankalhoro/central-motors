@@ -14,7 +14,7 @@ import { emailSettingsSchema, passwordChangeSchema } from "@/server/validators/s
 import type { ActionResult } from "@/lib/action-result";
 
 const SITE_KEYS = [
-  "siteName", "tagline", "address", "phone", "uan", "tel", "fax",
+  "siteName", "tagline", "address", "phone", "uan", "tel", "telType", "fax",
   "email", "email2", "servicePhone", "warrantyPhone", "facebook", "instagram", "youtube",
 ];
 

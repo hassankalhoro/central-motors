@@ -5,7 +5,9 @@ import { bodyShopServices } from "@/data";
 export const metadata: Metadata = {
   title: "Paint & Body Shop",
   description:
-    "Our Suzuki paint & body shop, collision repair, denting, colour-matched painting, frame straightening and insurance claims, restoring your car to factory condition.",
+    "Our Suzuki paint & body shop in Rawalpindi, serving Islamabad, collision repair, denting, colour-matched painting, frame straightening and insurance claims, restoring your car to factory condition.",
+  keywords: ["Suzuki paint shop Rawalpindi", "Suzuki body shop Islamabad", "Suzuki collision repair", "car denting painting Rawalpindi"],
+  alternates: { canonical: "/after-sales/paint-body-shop" },
 };
 
 const SECTIONS = [

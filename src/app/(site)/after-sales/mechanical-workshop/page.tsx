@@ -5,7 +5,9 @@ import { workshopServices } from "@/data";
 export const metadata: Metadata = {
   title: "Mechanical Workshop",
   description:
-    "Our authorised Suzuki mechanical workshop, scheduled maintenance, engine diagnostics, AC, brakes, electrical and more, by certified technicians using genuine parts.",
+    "Our authorised Suzuki mechanical workshop in Rawalpindi, serving Islamabad, scheduled maintenance, engine diagnostics, AC, brakes, electrical and more, by certified technicians using genuine parts.",
+  keywords: ["Suzuki workshop Rawalpindi", "Suzuki mechanic Islamabad", "Suzuki service center", "Suzuki maintenance Pakistan"],
+  alternates: { canonical: "/after-sales/mechanical-workshop" },
 };
 
 const SECTIONS = [

@@ -14,7 +14,7 @@ const config: Config = {
           accent: "#2E7BD6",
           sky: "#7FB0F0",
         },
-        ink: { DEFAULT: "#11161F", soft: "#3A4458", muted: "#6B7587", faint: "#94A1B3" },
+        ink: { DEFAULT: "#11161F", soft: "#3A4458", muted: "#626B7C", faint: "#94A1B3" },
         paper: "#F4F6F9",
         line: "#E3E7ED",
       },

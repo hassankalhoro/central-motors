@@ -5,7 +5,8 @@ import { getNewsPaged } from "@/data/db";
 
 export const metadata: Metadata = {
   title: "News & Announcements",
-  description: "Latest news, offers and announcements from Suzuki Central Motors, Rawalpindi.",
+  description: "Latest news, offers and announcements from Suzuki Central Motors, serving Rawalpindi and Islamabad.",
+  alternates: { canonical: "/news" },
 };
 
 export const dynamic = "force-dynamic";

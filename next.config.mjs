@@ -6,7 +6,7 @@ const nextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 60 * 60 * 24 * 365, // optimized images cached 1 year
-    deviceSizes: [360, 414, 640, 768, 1024, 1280, 1536],
+    deviceSizes: [360, 414, 480, 576, 640, 768, 1024, 1280, 1536],
     imageSizes: [16, 32, 64, 96, 128, 256],
     // Admin-uploaded media is served from Cloudinary's CDN.
     remotePatterns: [{ protocol: "https", hostname: "res.cloudinary.com" }],

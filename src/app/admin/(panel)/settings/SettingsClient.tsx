@@ -143,7 +143,14 @@ export default function SettingsClient({
               <Field label="Tagline" value={s.tagline ?? ""} onChange={set("tagline")} disabled={ro} />
               <div className="sm:col-span-2"><Field label="Address" value={s.address ?? ""} onChange={set("address")} disabled={ro} /></div>
               <Field label="UAN" value={s.uan ?? ""} onChange={set("uan")} disabled={ro} />
-              <Field label="Telephone" value={s.tel ?? ""} onChange={set("tel")} disabled={ro} />
+              <Field label="Telephone (no prefix, e.g. 51 4917112 119)" value={s.tel ?? ""} onChange={set("tel")} disabled={ro} />
+              <div>
+                <label className="flabel">Telephone type</label>
+                <select className="field" value={s.telType || "ptcl"} onChange={(ev) => setS((p) => ({ ...p, telType: ev.target.value }))} disabled={ro}>
+                  <option value="ptcl">PTCL (local, 0…)</option>
+                  <option value="phone">Phone (international, +92…)</option>
+                </select>
+              </div>
               <Field label="Fax" value={s.fax ?? ""} onChange={set("fax")} disabled={ro} />
               <Field label="Service phone" value={s.servicePhone ?? ""} onChange={set("servicePhone")} disabled={ro} />
               <Field label="Email" value={s.email ?? ""} onChange={set("email")} disabled={ro} />

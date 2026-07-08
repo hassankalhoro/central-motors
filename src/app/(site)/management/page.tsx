@@ -6,7 +6,8 @@ import { initials, telHref } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Management",
-  description: "The team behind Suzuki Central Motors, reachable, accountable and here to help.",
+  description: "The team behind Suzuki Central Motors, an authorised Suzuki dealer serving Rawalpindi and Islamabad, reachable, accountable and here to help.",
+  alternates: { canonical: "/management" },
 };
 
 export const dynamic = "force-dynamic";

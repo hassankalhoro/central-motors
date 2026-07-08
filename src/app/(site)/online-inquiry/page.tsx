@@ -6,6 +6,7 @@ import { getProductNames } from "@/data/db";
 export const metadata: Metadata = {
   title: "Online Inquiry",
   description: "Tell us which Suzuki model you're interested in and our sales team will reach out with details and pricing.",
+  alternates: { canonical: "/online-inquiry" },
 };
 
 export const dynamic = "force-dynamic";

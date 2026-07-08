@@ -12,7 +12,12 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }: { params: { category: string } }): Promise<Metadata> {
   const c = await getCategoryBySlug(params.category);
   if (!c) return { title: "Category not found" };
-  return { title: c.name, description: c.blurb };
+  return {
+    title: `Suzuki ${c.name} Price in Pakistan`,
+    description: c.blurb,
+    keywords: [`Suzuki ${c.name}`, `Suzuki ${c.name} price Pakistan`, "Suzuki Rawalpindi", "Suzuki Islamabad"],
+    alternates: { canonical: `/products/${c.slug}` },
+  };
 }
 
 export default async function CategoryPage({ params }: { params: { category: string } }) {

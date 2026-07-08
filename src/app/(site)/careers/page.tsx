@@ -7,7 +7,8 @@ import { getJobs } from "@/data/db";
 
 export const metadata: Metadata = {
   title: "Careers",
-  description: "Build your career with Rawalpindi's trusted Suzuki dealership. View current vacancies and our recruitment process.",
+  description: "Build your career with Rawalpindi and Islamabad's trusted Suzuki dealership. View current vacancies and our recruitment process.",
+  alternates: { canonical: "/careers" },
 };
 
 export const dynamic = "force-dynamic";

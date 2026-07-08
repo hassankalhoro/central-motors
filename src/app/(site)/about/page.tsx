@@ -5,7 +5,9 @@ import { aboutStats, ceo, mission, vision } from "@/data";
 
 export const metadata: Metadata = {
   title: "About Us",
-  description: "Rawalpindi's trusted Suzuki 7S dealership, honest sales, expert service and genuine parts under one roof.",
+  description: "Rawalpindi and Islamabad's trusted Suzuki 7S dealership, honest sales, expert service and genuine parts under one roof.",
+  keywords: ["Suzuki dealership Rawalpindi", "Suzuki dealership Islamabad", "about Suzuki Central Motors", "authorised Suzuki 7S dealer"],
+  alternates: { canonical: "/about" },
 };
 
 export default function AboutPage() {

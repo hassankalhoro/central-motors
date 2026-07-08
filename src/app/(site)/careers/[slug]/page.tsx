@@ -8,7 +8,11 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const j = await getJobBySlug(params.slug);
   if (!j) return { title: "Vacancy not found" };
-  return { title: j.title, description: j.description.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 160) };
+  return {
+    title: j.title,
+    description: j.description.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 160),
+    alternates: { canonical: `/careers/${j.slug}` },
+  };
 }
 
 export default async function JobPage({ params }: { params: { slug: string } }) {

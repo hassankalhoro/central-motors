@@ -11,7 +11,12 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const n = await getNewsBySlug(params.slug);
   if (!n) return { title: "Article not found" };
-  return { title: n.title, description: n.excerpt };
+  return {
+    title: n.title,
+    description: n.excerpt,
+    alternates: { canonical: `/news/${n.slug}` },
+    openGraph: n.image ? { images: [{ url: n.image }] } : undefined,
+  };
 }
 
 export default async function NewsPage({ params }: { params: { slug: string } }) {

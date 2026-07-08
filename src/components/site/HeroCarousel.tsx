@@ -96,6 +96,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
                 fill
                 priority={idx === 0}
                 sizes="100vw"
+                quality={20}
                 aria-hidden
                 className="scale-[1.7] object-cover object-[70%_40%] opacity-40 blur-[70px] saturate-150"
               />
@@ -162,7 +163,11 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
                   {s.sub}
                 </p>
                 <div className={cn("mt-5 flex flex-wrap items-center gap-3 lg:mt-7", active && "animate-hero-reveal")} style={{ animationDelay: "530ms" }}>
-                  <Link href={`/product/${s.slug}`} className="inline-flex items-center gap-2 rounded-full bg-suzuki-red px-7 py-3.5 text-[15px] font-bold text-white shadow-cta transition hover:bg-suzuki-red-dk">
+                  <Link
+                    href={`/product/${s.slug}`}
+                    tabIndex={active ? undefined : -1}
+                    className="inline-flex items-center gap-2 rounded-full bg-suzuki-red px-7 py-3.5 text-[15px] font-bold text-white shadow-cta transition hover:bg-suzuki-red-dk"
+                  >
                     Explore {s.name} →
                   </Link>
                   <span className="text-[13px] text-[#9DB4D6]">
@@ -180,14 +185,16 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
         <>
           <button onClick={() => go(i - 1, -1)} aria-label="Previous" className="absolute left-4 top-1/2 z-[5] hidden h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-white/20 bg-white/5 text-lg text-white backdrop-blur-sm transition hover:bg-white/15 lg:grid">‹</button>
           <button onClick={() => go(i + 1, 1)} aria-label="Next" className="absolute right-4 top-1/2 z-[5] hidden h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-white/20 bg-white/5 text-lg text-white backdrop-blur-sm transition hover:bg-white/15 lg:grid">›</button>
-          <div className="absolute inset-x-0 bottom-7 z-[5] flex items-center justify-center gap-2.5">
+          <div className="absolute inset-x-0 bottom-7 z-[5] flex items-center justify-center gap-1.5">
             {slides.map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => go(idx, idx > i ? 1 : -1)}
                 aria-label={`Slide ${idx + 1}`}
-                className={cn("h-[7px] rounded-full transition-all duration-300", idx === i ? "w-8 bg-suzuki-red" : "w-[7px] bg-white/35 hover:bg-white/60")}
-              />
+                className="group grid h-6 w-6 place-items-center"
+              >
+                <span className={cn("h-[7px] rounded-full transition-all duration-300", idx === i ? "w-8 bg-suzuki-red" : "w-[7px] bg-white/35 group-hover:bg-white/60")} />
+              </button>
             ))}
           </div>
         </>

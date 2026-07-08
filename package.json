@@ -19,6 +19,7 @@
   "engines": {
     "node": ">=18.18.0"
   },
+  "browserslist": ["defaults", "not ie 11", "not op_mini all"],
   "dependencies": {
     "@prisma/client": "^6.19.3",
     "@tiptap/pm": "^3.27.1",

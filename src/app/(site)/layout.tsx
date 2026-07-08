@@ -41,6 +41,10 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       closes: "18:00",
     },
     brand: { "@type": "Brand", name: "Suzuki" },
+    areaServed: [
+      { "@type": "City", name: "Rawalpindi" },
+      { "@type": "City", name: "Islamabad" },
+    ],
     sameAs: [`https://${settings.facebook}`, `https://${settings.instagram}`, `https://${settings.youtube}`],
   };
 

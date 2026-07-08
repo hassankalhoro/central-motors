@@ -9,7 +9,9 @@ import { telHref } from "@/lib/utils";
 export const metadata: Metadata = {
   title: "Suzuki Genuine Parts",
   description:
-    "100% authentic Suzuki Genuine Parts, Accessories and ECSTAR oils. Engineered to fit, built to last, and available straight from our parts counter in Rawalpindi.",
+    "100% authentic Suzuki Genuine Parts, Accessories and ECSTAR oils. Engineered to fit, built to last, and available straight from our parts counter, serving Rawalpindi and Islamabad.",
+  keywords: ["Suzuki genuine parts Pakistan", "Suzuki parts Rawalpindi", "Suzuki parts Islamabad", "ECSTAR oil Suzuki", "Suzuki accessories"],
+  alternates: { canonical: "/genuine-parts" },
 };
 
 const PARTS_PHONE = "+92 308 2010254";

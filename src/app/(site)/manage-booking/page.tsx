@@ -5,6 +5,8 @@ import ManageBooking from "@/components/site/ManageBooking";
 export const metadata: Metadata = {
   title: "Manage Your Booking",
   description: "Request a cancellation or reschedule your workshop appointment using your booking reference. Changes are confirmed by our team.",
+  alternates: { canonical: "/manage-booking" },
+  robots: { index: false, follow: true },
 };
 
 export const dynamic = "force-dynamic";

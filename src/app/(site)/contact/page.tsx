@@ -3,11 +3,13 @@ import PageHero from "@/components/site/PageHero";
 import SubmitForm, { type Field } from "@/components/site/SubmitForm";
 import GoogleMap from "@/components/site/GoogleMap";
 import { getSettings } from "@/data/db";
-import { telHref } from "@/lib/utils";
+import { telHref, formatTel } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Contact Us",
-  description: "Questions about a model, a service or a part? Send us a message and our team will get back to you.",
+  description: "Contact Suzuki Central Motors, an authorised Suzuki dealer serving Rawalpindi and Islamabad. Questions about a model, a service or a part? Send us a message and our team will get back to you.",
+  keywords: ["Suzuki dealer Rawalpindi contact", "Suzuki dealer Islamabad contact", "Suzuki Central Motors contact", "Suzuki showroom address Rawalpindi"],
+  alternates: { canonical: "/contact" },
 };
 
 const fields: Field[] = [
@@ -42,7 +44,7 @@ export default async function ContactPage() {
             <h2 className="mb-4 font-display text-lg font-extrabold text-white">Visit our showroom</h2>
             <div className="text-sm leading-relaxed">{settings.address}</div>
             <div className="mt-4 text-sm"><span className="text-[#7E96BC]">UAN</span><br /><a href={telHref(settings.uan)} className="font-semibold text-white">{settings.uan}</a></div>
-            <div className="mt-2.5 text-sm"><span className="text-[#7E96BC]">Tel</span><br /><span className="font-semibold text-white">{settings.tel}</span></div>
+            <div className="mt-2.5 text-sm"><span className="text-[#7E96BC]">Tel</span><br /><span className="font-semibold text-white">{formatTel(settings.tel, settings.telType)}</span></div>
             <div className="mt-2.5 text-sm"><span className="text-[#7E96BC]">Fax</span><br /><span className="font-semibold text-white">{settings.fax}</span></div>
             <div className="mt-2.5 text-sm">
               <span className="text-[#7E96BC]">Email</span><br />

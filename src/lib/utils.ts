@@ -29,3 +29,8 @@ export function formatDateShort(iso: string): string {
 export function telHref(phone: string): string {
   return "tel:" + phone.replace(/[^0-9+]/g, "");
 }
+
+/** Format a bare local number ("51 4917112 119") as PTCL ("051 …") or an international phone ("+92 51 …"). */
+export function formatTel(tel: string, telType: "ptcl" | "phone"): string {
+  return telType === "phone" ? `+92 ${tel}` : `0${tel}`;
+}
