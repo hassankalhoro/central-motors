@@ -20,6 +20,11 @@ export default async function CareersPage() {
 
       <section className="container-site pt-[50px]">
         <h2 className="mb-5 font-display text-2xl font-extrabold text-ink">Current vacancies</h2>
+        {jobs.length === 0 && (
+          <p className="text-[14.5px] leading-relaxed text-ink-muted">
+            We don&apos;t have any open positions right now. Check back soon, or send us your CV for future opportunities.
+          </p>
+        )}
         <div className="flex flex-col gap-3.5">
           {jobs.map((j, idx) => (
             <Reveal key={j.slug} delay={idx * 40}>
