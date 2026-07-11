@@ -33,7 +33,7 @@ export default function PaintBodyShopPage() {
       image="/images/aftersales/body-shop.jpg"
       imageAlt="Car panel being spray-painted in our body shop booth"
       tone="red"
-      chips={["Colour-matched paint", "Genuine panels", "Insurance claims", "Factory finish"]}
+      chips={["Open 7 days · incl. Sundays", "Colour-matched paint", "Genuine panels", "Insurance claims", "Factory finish"]}
       book={{ href: "/online-inquiry", label: "Get a repair estimate" }}
       callPhone="0315-8709624"
       stats={STATS}

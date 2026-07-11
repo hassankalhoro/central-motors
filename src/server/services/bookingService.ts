@@ -94,7 +94,7 @@ export type ScheduleDayInput = {
 
 const DEFAULT_DAY = (weekday: number): ScheduleDayInput => ({
   weekday,
-  isOpen: weekday !== 0, // Sunday closed by default
+  isOpen: true, // open every day, including Sunday, for after-sales
   startTime: "09:00",
   endTime: "17:00",
   breakStart: "13:00",

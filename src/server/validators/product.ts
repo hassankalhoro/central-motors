@@ -95,7 +95,7 @@ export const productSchema = z.object({
   images: z
     .array(
       z.object({
-        url: z.string().url(),
+        url: z.string().refine((v) => v.startsWith("/") || /^https?:\/\//.test(v), "Must be an image URL or path."),
         publicId: z.string().optional(),
         blurData: z.string().optional(),
         alt: z.string().optional(),

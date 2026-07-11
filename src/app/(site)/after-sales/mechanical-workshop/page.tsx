@@ -33,7 +33,7 @@ export default function MechanicalWorkshopPage() {
       image="/images/aftersales/workshop.jpg"
       imageAlt="Technician servicing a car engine in our workshop"
       tone="cool"
-      chips={["Certified technicians", "Genuine parts", "Warranty on work", "Factory-grade tools"]}
+      chips={["Open 7 days · incl. Sundays", "Certified technicians", "Genuine parts", "Warranty on work", "Factory-grade tools"]}
       book={{ href: "/service-appointment", label: "Book an appointment" }}
       callPhone="0315-8709631"
       stats={STATS}

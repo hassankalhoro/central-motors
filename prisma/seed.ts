@@ -20,17 +20,49 @@ const GROUP: Record<string, TeamGroup> = {
   Managers: "MANAGERS",
 };
 
+type SeedUser = { email: string; name: string; passwordHash: string; role: Role; isActive: boolean };
+
+/** Optional live-DB snapshot of credential rows (prisma/seed-data.ts — gitignored).
+ *  Present on the maintainer's machine so a reseed restores the exact users and
+ *  SMTP secret; absent on fresh clones / CI, where the seed bootstraps an env admin.
+ *  The computed specifier keeps `tsc`/`next build` green when the file is missing. */
+async function loadSnapshot(): Promise<{ users: SeedUser[]; smtpPassEnc: string | null }> {
+  try {
+    const mod = await import("./" + "seed-data");
+    return { users: mod.seedUsers ?? [], smtpPassEnc: mod.seedSmtpPassEnc ?? null };
+  } catch {
+    return { users: [], smtpPassEnc: null };
+  }
+}
+
 async function main() {
-  /* ---- First super-admin -------------------------------------------------- */
-  const email = (process.env.ADMIN_EMAIL || "info@centralmotors.com.pk").toLowerCase();
-  const password = process.env.ADMIN_PASSWORD || "ChangeMe123!";
-  const passwordHash = await bcrypt.hash(password, 12);
-  const admin = await db.user.upsert({
-    where: { email },
-    update: { role: "SUPER_ADMIN", isActive: true },
-    create: { email, name: "Administrator", passwordHash, role: Role.SUPER_ADMIN },
-  });
-  console.log(`✓ super-admin: ${email}`);
+  /* ---- Users -------------------------------------------------------------- */
+  // Prefer the live-DB snapshot (exact hashes); otherwise bootstrap an env super-admin.
+  const snapshot = await loadSnapshot();
+  if (snapshot.users.length) {
+    for (const u of snapshot.users) {
+      await db.user.upsert({
+        where: { email: u.email },
+        update: { name: u.name, passwordHash: u.passwordHash, role: u.role, isActive: u.isActive },
+        create: { email: u.email, name: u.name, passwordHash: u.passwordHash, role: u.role, isActive: u.isActive },
+      });
+    }
+    console.log(`✓ users: ${snapshot.users.length} (snapshot, incl. password hashes)`);
+  } else {
+    const email = (process.env.ADMIN_EMAIL || "info@centralmotors.com.pk").toLowerCase();
+    const passwordHash = await bcrypt.hash(process.env.ADMIN_PASSWORD || "ChangeMe123!", 12);
+    await db.user.upsert({
+      where: { email },
+      update: { role: Role.SUPER_ADMIN, isActive: true },
+      create: { email, name: "Suzuki", passwordHash, role: Role.SUPER_ADMIN },
+    });
+    console.log(`✓ super-admin: ${email} (env bootstrap — no snapshot present)`);
+  }
+  const adminEmail = (process.env.ADMIN_EMAIL || "info@centralmotors.com.pk").toLowerCase();
+  const admin =
+    (await db.user.findUnique({ where: { email: adminEmail } })) ??
+    (await db.user.findFirst({ where: { role: "SUPER_ADMIN" }, orderBy: { email: "asc" } }));
+  if (!admin) throw new Error("No super-admin user was seeded.");
 
   /* ---- Categories --------------------------------------------------------- */
   for (const [i, c] of categories.entries()) {
@@ -52,7 +84,8 @@ async function main() {
     const fields = {
       name: p.name,
       categoryId: category.id,
-      tag: p.tag,
+      // DB has Fronx tagged "XUV"; mirror the live DB (src/data still says "SUV").
+      tag: p.slug === "fronx" ? "XUV" : p.tag,
       description: p.desc,
       startPrice: p.startPrice,
       featured: p.featured,
@@ -113,19 +146,10 @@ async function main() {
     console.log(`✓ team: ${teamCount} existing (kept, admin-managed)`);
   }
 
-  /* ---- Careers (created once, admin-managed afterwards) -------------------- */
-  const jobCount = await db.job.count();
-  if (jobCount === 0) {
-    const { jobs } = await import("../src/data/jobs");
-    for (const [i, j] of jobs.entries()) {
-      await db.job.create({
-        data: { slug: j.slug, title: j.title, location: j.location, type: j.type, description: j.description, order: i + 1 },
-      });
-    }
-    console.log("✓ jobs: seeded fresh");
-  } else {
-    console.log("✓ jobs: existing (kept, admin-managed)");
-  }
+  /* ---- Careers (admin-managed; not seeded) -------------------------------- */
+  // The live DB has no seeded jobs — Careers are added via the admin panel, so a
+  // fresh restart mirrors the DB and starts with an empty Careers list.
+  console.log(`✓ jobs: ${await db.job.count()} existing (admin-managed, not seeded)`);
 
   /* ---- News --------------------------------------------------------------- */
   for (const n of news) {
@@ -147,6 +171,7 @@ async function main() {
     phone: settings.phone,
     uan: settings.uan,
     tel: settings.tel,
+    telType: settings.telType,
     fax: settings.fax,
     email: settings.email,
     email2: settings.email2 ?? "",
@@ -176,16 +201,25 @@ async function main() {
   for (const [key, value] of Object.entries(smtpDefaults)) {
     await db.setting.upsert({ where: { key }, update: {}, create: { key, value } });
   }
-  console.log(`✓ settings: ${Object.keys(siteRows).length} site (synced) + ${Object.keys(smtpDefaults).length} smtp (kept if present)`);
+  // Encrypted SMTP password from the snapshot (if present) so mail works after a restart.
+  if (snapshot.smtpPassEnc) {
+    await db.setting.upsert({
+      where: { key: "smtpPassEnc" },
+      update: { value: snapshot.smtpPassEnc },
+      create: { key: "smtpPassEnc", value: snapshot.smtpPassEnc },
+    });
+  }
+  console.log(`✓ settings: ${Object.keys(siteRows).length} site (synced) + ${Object.keys(smtpDefaults).length} smtp${snapshot.smtpPassEnc ? " + smtpPassEnc (snapshot)" : ""}`);
 
   /* ---- Workshop schedule (created once, admin-managed afterwards) ---------- */
+  // Mirrors the live DB: open Mon–Sat, closed Sunday, 09:00–17:00 with a 13:00–14:00 break.
   for (let weekday = 0; weekday < 7; weekday++) {
     await db.scheduleDay.upsert({
       where: { weekday },
       update: {}, // never clobber what the admin configured
       create: {
         weekday,
-        isOpen: weekday !== 0, // Sunday closed
+        isOpen: weekday !== 0, // Sunday closed (matches DB)
         startTime: "09:00",
         endTime: "17:00",
         breakStart: "13:00",
@@ -203,7 +237,7 @@ async function main() {
   for (const [key, value] of Object.entries(bookingDefaults)) {
     await db.setting.upsert({ where: { key }, update: {}, create: { key, value } });
   }
-  console.log("✓ workshop schedule: 7 weekdays + booking rules (kept if present)");
+  console.log("✓ workshop schedule: Mon–Sat open, Sunday closed + booking rules (kept if present)");
 }
 
 main()

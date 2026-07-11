@@ -20,7 +20,7 @@ export default async function ServiceAppointmentPage() {
       <PageHero
         eyebrow="Workshop"
         title="Book a Service"
-        subtitle={`Pick a day and time that suits you, we'll confirm your slot right away. Service: ${settings.servicePhone} · Warranty: ${settings.warrantyPhone}`}
+        subtitle={`Open 7 days a week, including Sundays. Pick a day and time that suits you, we'll confirm your slot right away. Service: ${settings.servicePhone} · Warranty: ${settings.warrantyPhone}`}
       />
       <section className="mx-auto max-w-[860px] px-5 py-[46px] sm:px-8">
         <BookingWizard models={models} />
