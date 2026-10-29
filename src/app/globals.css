@@ -1,62 +1,172 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Font variables used by the root layout */
+:root {
+  --font-display: "Archivo", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-urdu: "Noto Nastaliq Urdu", serif;
+}
+
 @layer base {
-  html { scroll-behavior: smooth; }
-  body { @apply bg-white text-ink font-body antialiased; text-rendering: optimizeLegibility; }
-  h1, h2, h3, h4 { @apply font-display tracking-tight; }
-  ::selection { @apply bg-suzuki-red text-white; }
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  html {
+    scroll-behavior: smooth;
   }
+
+  body {
+    @apply bg-white text-ink font-body antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display tracking-tight;
+  }
+
+  ::selection {
+    @apply bg-suzuki-red text-white;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+      transition: none !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
   .skip-link {
     @apply absolute left-[-999px] top-0 z-[200] rounded-lg bg-suzuki-dark px-4 py-2.5 text-white;
   }
-  .skip-link:focus { @apply left-3 top-3; }
+
+  .skip-link:focus {
+    @apply left-3 top-3;
+  }
 }
 
 @layer components {
-  .container-site { @apply mx-auto w-full max-w-site px-5 sm:px-8; }
-  .eyebrow { @apply text-xs font-bold uppercase tracking-[0.14em] text-suzuki-blue; }
-  .eyebrow-light { @apply text-xs font-bold uppercase tracking-[0.14em] text-suzuki-sky; }
-  .section-title { @apply font-display text-[clamp(26px,3.4vw,38px)] font-extrabold tracking-tight text-ink; }
+  .container-site {
+    @apply mx-auto w-full max-w-site px-5 sm:px-8;
+  }
 
-  .btn { @apply inline-flex items-center justify-center gap-2 rounded-full font-bold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2; }
-  .btn-primary { @apply btn bg-suzuki-red px-6 py-3.5 text-sm text-white shadow-cta hover:bg-suzuki-red-dk focus-visible:ring-suzuki-red; }
-  .btn-light { @apply btn bg-white px-6 py-3.5 text-sm text-suzuki-dark shadow-card hover:shadow-lift focus-visible:ring-white; }
-  .btn-ghost { @apply btn border border-line bg-white px-6 py-3.5 text-sm text-suzuki-dark hover:border-suzuki-blue hover:text-suzuki-blue focus-visible:ring-suzuki-blue; }
-  .btn-outline-light { @apply btn border border-white/25 bg-white/10 px-6 py-3.5 text-sm text-white hover:bg-white/15; }
+  .eyebrow {
+    @apply text-xs font-bold uppercase tracking-[0.14em] text-suzuki-blue;
+  }
 
-  .card { @apply rounded-2xl border border-line bg-white shadow-card; }
-  .card-lift { @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lift; }
+  .eyebrow-light {
+    @apply text-xs font-bold uppercase tracking-[0.14em] text-suzuki-sky;
+  }
 
-  .field { @apply mt-1.5 w-full rounded-[10px] border border-[#D8DEE8] bg-white px-3.5 py-3 text-[14.5px] text-ink outline-none transition focus:border-suzuki-accent focus:ring-[3px] focus:ring-suzuki-accent/20; }
-  .flabel { @apply text-[12.5px] font-bold text-ink-soft; }
+  .section-title {
+    @apply font-display text-[clamp(26px,3.4vw,38px)] font-extrabold tracking-tight text-ink;
+  }
 
-  .chip { @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-4 py-2 text-[13.5px] font-bold text-ink-soft transition; }
-  .chip-active { @apply border-suzuki-dark bg-suzuki-dark text-white; }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full font-bold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
+  }
+
+  .btn-primary {
+    @apply btn bg-suzuki-red px-6 py-3.5 text-sm text-white shadow-cta hover:bg-suzuki-red-dk focus-visible:ring-suzuki-red;
+  }
+
+  .btn-light {
+    @apply btn bg-white px-6 py-3.5 text-sm text-suzuki-dark shadow-card hover:shadow-lift focus-visible:ring-white;
+  }
+
+  .btn-ghost {
+    @apply btn border border-line bg-white px-6 py-3.5 text-sm text-suzuki-dark hover:border-suzuki-blue hover:text-suzuki-blue focus-visible:ring-suzuki-blue;
+  }
+
+  .btn-outline-light {
+    @apply btn border border-white/25 bg-white/10 px-6 py-3.5 text-sm text-white hover:bg-white/15;
+  }
+
+  .card {
+    @apply rounded-2xl border border-line bg-white shadow-card;
+  }
+
+  .card-lift {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lift;
+  }
+
+  .field {
+    @apply mt-1.5 w-full rounded-[10px] border border-[#D8DEE8] bg-white px-3.5 py-3 text-[14.5px] text-ink outline-none transition focus:border-suzuki-accent focus:ring-[3px] focus:ring-suzuki-accent/20;
+  }
+
+  .flabel {
+    @apply text-[12.5px] font-bold text-ink-soft;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-4 py-2 text-[13.5px] font-bold text-ink-soft transition;
+  }
+
+  .chip-active {
+    @apply border-suzuki-dark bg-suzuki-dark text-white;
+  }
 
   /* Page hero band (navy) */
-  .page-hero { @apply relative overflow-hidden bg-suzuki-dark py-12 sm:py-[50px]; }
+  .page-hero {
+    @apply relative overflow-hidden bg-suzuki-dark py-12 sm:py-[50px];
+  }
 }
 
 @layer utilities {
-  .text-balance { text-wrap: balance; }
-  .well-stripe {
-    background-image: repeating-linear-gradient(135deg, rgba(6,36,92,.035) 0, rgba(6,36,92,.035) 1px, transparent 1px, transparent 9px);
+  .text-balance {
+    text-wrap: balance;
   }
+
+  .well-stripe {
+    background-image: repeating-linear-gradient(
+      135deg,
+      rgba(6, 36, 92, 0.035) 0,
+      rgba(6, 36, 92, 0.035) 1px,
+      transparent 1px,
+      transparent 9px
+    );
+  }
+
   .bg-hero {
     background:
-      radial-gradient(600px 600px at 100% -30%, rgba(46,123,214,.5), transparent 65%),
-      radial-gradient(500px 500px at -10% 120%, rgba(225,22,34,.24), transparent 65%),
-      #06245C;
+      radial-gradient(
+        600px 600px at 100% -30%,
+        rgba(46, 123, 214, 0.5),
+        transparent 65%
+      ),
+      radial-gradient(
+        500px 500px at -10% 120%,
+        rgba(225, 22, 34, 0.24),
+        transparent 65%
+      ),
+      #06245c;
   }
-  /* nav underline */
-  .navlink { position: relative; }
+
+  /* Nav underline */
+  .navlink {
+    position: relative;
+  }
+
   .navlink::after {
-    content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 2px;
-    background: #E11622; transform: scaleX(0); transform-origin: left; transition: transform .25s ease;
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -6px;
+    height: 2px;
+    background: #e11622;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
   }
-  .navlink:hover::after, .navlink[data-active="true"]::after { transform: scaleX(1); }
+
+  .navlink:hover::after,
+  .navlink[data-active="true"]::after {
+    transform: scaleX(1);
+  }
 }
