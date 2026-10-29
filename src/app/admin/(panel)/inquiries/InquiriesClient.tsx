@@ -156,12 +156,12 @@ export default function InquiriesClient({
     const model = item.productSlug ? prettyModel(item.productSlug) : "";
     setReplySubject(
       model
-        ? `Re: your inquiry about the Suzuki ${model}, Suzuki Central Motors`
-        : `Re: your ${item.kind}, Suzuki Central Motors`,
+        ? `Re: your inquiry about the Suzuki ${model}, Central Motors`
+        : `Re: your ${item.kind}, Central Motors`,
     );
     const lines = [`Dear ${item.name},`, ""];
     if (model) lines.push(`Thank you for your interest in the Suzuki ${model}.`, "");
-    lines.push("", "", "— Suzuki Central Motors");
+    lines.push("", "", "— Central Motors");
     setReplyBody(lines.join("\n"));
     setSendMsg(null);
     setComposeOpen(true);

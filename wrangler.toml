@@ -1,0 +1,9 @@
+name = "central-motors"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".vercel/output/static"
+
+[vars]
+NEXT_PUBLIC_SITE_URL = "https://www.centralmotors.com.pk"
+NEXT_PUBLIC_DEALERSHIP_NAME = "Central Motors"
+NODE_VERSION = "20"

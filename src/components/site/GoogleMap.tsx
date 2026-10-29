@@ -9,7 +9,7 @@ export default function GoogleMap({ className = "" }: { className?: string }) {
         allowFullScreen
         loading="lazy"
         referrerPolicy="strict-origin-when-cross-origin"
-        title="Suzuki Central Motors on Google Maps"
+        title="Central Motors on Google Maps"
       />
     </div>
   );

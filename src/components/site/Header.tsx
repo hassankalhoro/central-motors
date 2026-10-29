@@ -55,24 +55,14 @@ export default function Header({ settings, lang = "en" }: { settings: Settings; 
       <div className="container-site flex h-[72px] items-center gap-4 xl:gap-6">
         <Link href="/" className="flex flex-shrink-0 items-center" aria-label={`${settings.siteName} home`}>
           {/* full lockup where there's room, compact S mark at the tight lg range */}
-          <Image
-            src="/brand/suzuki-wordmark.png"
-            alt={settings.siteName}
-            width={1912}
-            height={556}
-            priority
-            sizes="150px"
-            className="block h-9 w-auto lg:hidden xl:block xl:h-10"
-          />
-          <Image
-            src="/brand/suzuki-mark.png"
-            alt={settings.siteName}
-            width={606}
-            height={606}
-            priority
-            sizes="48px"
-            className="hidden h-10 w-auto lg:block xl:hidden"
-          />
+          <div className="flex flex-col">
+            <span className="font-display text-[20px] font-black tracking-tight text-ink uppercase leading-none sm:text-[22px]">
+              Central <span className="text-suzuki-red">Motors</span>
+            </span>
+            <span className="text-[10px] font-bold tracking-[0.12em] uppercase text-ink-muted leading-tight mt-0.5">
+              Rawalpindi · Islamabad
+            </span>
+          </div>
         </Link>
 
         <nav className="ml-2 hidden items-center gap-[18px] lg:flex xl:ml-3.5 xl:gap-[26px]">
@@ -122,7 +112,14 @@ export default function Header({ settings, lang = "en" }: { settings: Settings; 
         <div className="fixed inset-0 z-[300] bg-[rgba(6,17,36,.55)] backdrop-blur-sm lg:hidden" onClick={() => setOpen(false)}>
           <div className="absolute right-0 top-0 bottom-0 flex w-[min(86vw,340px)] flex-col overflow-y-auto bg-white p-5 shadow-[-12px_0_40px_rgba(0,0,0,.2)]" onClick={(e) => e.stopPropagation()}>
             <div className="mb-4 flex items-center justify-between">
-              <Image src="/brand/suzuki-wordmark.png" alt={settings.siteName} width={1912} height={556} sizes="150px" className="h-8 w-auto" />
+              <div className="flex flex-col">
+                <span className="font-display text-[19px] font-black tracking-tight text-ink uppercase leading-none">
+                  Central <span className="text-suzuki-red">Motors</span>
+                </span>
+                <span className="text-[9.5px] font-bold tracking-[0.12em] uppercase text-ink-muted leading-tight mt-0.5">
+                  Rawalpindi · Islamabad
+                </span>
+              </div>
               <button onClick={() => setOpen(false)} aria-label="Close" className="grid h-[38px] w-[38px] place-items-center rounded-[9px] border border-line text-lg text-ink-soft">✕</button>
             </div>
             {NAV.map((n) => (

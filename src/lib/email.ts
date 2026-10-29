@@ -10,14 +10,14 @@ import { getEmailConfig } from "@/server/services/settingsService";
  *   SMTP_PORT   465 (SSL) or 587 (STARTTLS)
  *   SMTP_USER   full mailbox e.g. contact@caisol.com
  *   SMTP_PASS   mailbox password
- *   MAIL_FROM   "Suzuki Central Motors <contact@caisol.com>"
+ *   MAIL_FROM   "Central Motors <contact@caisol.com>"
  *   MAIL_TO     destination inbox for notifications
  * ------------------------------------------------------------------ */
 
 /* Compliance / footer config, env-overridable, with defaults matching the
  * dealership's published details (kept here so this module stays self-contained
  * and the preview/test scripts can import it without the Next path alias). */
-const DEALER_NAME = "Suzuki Central Motors";
+const DEALER_NAME = "Central Motors";
 const DEALER_ADDRESS =
   process.env.DEALER_ADDRESS ||
   "Main G.T. Road, Soan Camp, Opposite Toyota Rawal, Rawalpindi 46000, Pakistan";
@@ -227,7 +227,7 @@ export function renderLeadEmail({ kind, data }: RenderInput): {
           <table role="presentation" cellpadding="0" cellspacing="0" width="100%">
             <tr>
               <td style="vertical-align:middle;">
-                <div class="brand-name" style="font:800 19px/1.1 -apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#ffffff;letter-spacing:-.01em;">Suzuki Central Motors</div>
+                <div class="brand-name" style="font:800 19px/1.1 -apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#ffffff;letter-spacing:-.01em;">Central Motors</div>
                 <div style="margin-top:3px;font:600 11px/1.3 -apple-system,Segoe UI,Roboto,Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#9db8e6;">Website Notification</div>
               </td>
               <td style="vertical-align:middle;text-align:right;">

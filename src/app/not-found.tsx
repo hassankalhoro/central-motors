@@ -14,8 +14,8 @@ export default function NotFound() {
     <main className="flex min-h-screen flex-col bg-paper">
       <header className="border-b border-line bg-white">
         <div className="container-site flex h-[72px] items-center">
-          <Link href="/" aria-label="Suzuki Central Motors home" className="flex items-center">
-            <Image src="/brand/suzuki-wordmark.png" alt="Suzuki Central Motors" width={1912} height={556} priority className="h-10 w-auto" />
+          <Link href="/" aria-label="Central Motors home" className="flex items-center">
+            <span className="font-display text-[24px] font-black tracking-tight text-ink uppercase">Central <span className="text-suzuki-red">Motors</span></span>
           </Link>
         </div>
       </header>

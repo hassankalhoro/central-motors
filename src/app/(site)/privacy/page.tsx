@@ -6,7 +6,7 @@ import { telHref } from "@/lib/utils";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "How Suzuki Central Motors collects, uses, and protects the personal information you submit through our website forms.",
+    "How Central Motors collects, uses, and protects the personal information you submit through our website forms.",
   alternates: { canonical: "/privacy" },
 };
 

@@ -11,7 +11,7 @@ import { sendMail, notificationInbox } from "./email";
    ──────────────────────────────────────────────────────────────── */
 
 const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://centralmotors.com.pk").replace(/\/$/, "");
-const DEALER = "Suzuki Central Motors";
+const DEALER = "Central Motors";
 const ADDRESS = "Main G.T. Road, Soan Camp, Opposite Toyota Rawal, Rawalpindi";
 
 const esc = (s: unknown) =>
@@ -78,7 +78,7 @@ function makeICS(a: Appointment): string {
   return [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//Suzuki Central Motors//Appointments//EN",
+    "PRODID:-//Central Motors//Appointments//EN",
     "METHOD:PUBLISH",
     "BEGIN:VEVENT",
     `UID:${a.code}@centralmotors.com.pk`,

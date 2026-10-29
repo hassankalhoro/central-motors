@@ -77,7 +77,7 @@ export async function sendTestEmail(input: unknown): Promise<ActionResult> {
     await verifyConfig(cfg);
     await sendMail(cfg, {
       to: cfg.notifyTo,
-      subject: "Test email, Suzuki Central Motors",
+      subject: "Test email, Central Motors",
       text: "This is a test email confirming your SMTP settings are working.",
     });
     return { ok: true };

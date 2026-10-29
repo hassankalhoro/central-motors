@@ -51,7 +51,7 @@ export default function Sidebar({ role, open, onClose }: { role: Role; open: boo
           <div className="flex items-center gap-3">
             <Image
               src="/brand/suzuki-mark.png"
-              alt="Suzuki Central Motors"
+              alt="Central Motors"
               width={606}
               height={606}
               priority
@@ -94,7 +94,7 @@ export default function Sidebar({ role, open, onClose }: { role: Role; open: boo
           <div className="flex items-center gap-3 rounded-xl bg-white/10 px-4 py-3">
             <StoreIcon className="h-6 w-6 text-white/80" />
             <div className="leading-tight">
-              <p className="text-[13px] font-bold">Suzuki Central Motors</p>
+              <p className="text-[13px] font-bold">Central Motors</p>
               <p className="text-[11px] text-white/60">Authorised Dealership</p>
             </div>
           </div>

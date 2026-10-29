@@ -6,7 +6,7 @@ import { serviceSections } from "@/data";
 
 export const metadata: Metadata = {
   title: "Services",
-  description: "Everything beyond the sale from Suzuki Central Motors: exchange, certified used cars, extended warranty and car insurance, in Rawalpindi and Islamabad.",
+  description: "Everything beyond the sale from Central Motors: exchange, certified used cars, extended warranty and car insurance, in Rawalpindi and Islamabad.",
   alternates: { canonical: "/services" },
 };
 

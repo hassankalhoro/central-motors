@@ -56,7 +56,7 @@ export async function getEmailConfig(): Promise<EmailConfig> {
     secure: (s.smtpSecure ?? "true") === "true",
     user: s.smtpUser || process.env.SMTP_USER || "",
     pass,
-    fromName: s.fromName || "Suzuki Central Motors",
+    fromName: s.fromName || "Central Motors",
     fromEmail: s.fromEmail || s.smtpUser || process.env.SMTP_USER || "",
     notifyTo: s.notifyTo || process.env.MAIL_TO || s.smtpUser || "",
   };

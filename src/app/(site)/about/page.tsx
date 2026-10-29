@@ -6,7 +6,7 @@ import { aboutStats, ceo, mission, vision } from "@/data";
 export const metadata: Metadata = {
   title: "About Us",
   description: "Rawalpindi and Islamabad's trusted Suzuki 7S dealership, honest sales, expert service and genuine parts under one roof.",
-  keywords: ["Suzuki dealership Rawalpindi", "Suzuki dealership Islamabad", "about Suzuki Central Motors", "authorised Suzuki 7S dealer"],
+  keywords: ["Suzuki dealership Rawalpindi", "Suzuki dealership Islamabad", "about Central Motors", "authorised Suzuki 7S dealer"],
   alternates: { canonical: "/about" },
 };
 

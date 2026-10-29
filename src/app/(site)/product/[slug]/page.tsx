@@ -68,7 +68,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
       highPrice: Math.max(...prices),
       offerCount: product.variants.length,
       availability: product.status === "DISCONTINUED" ? "https://schema.org/Discontinued" : "https://schema.org/InStock",
-      seller: { "@type": "AutoDealer", name: "Suzuki Central Motors" },
+      seller: { "@type": "AutoDealer", name: "Central Motors" },
     },
   };
   const breadcrumbLd = {
@@ -101,7 +101,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
         name: `Where can I buy the Suzuki ${product.name} in Rawalpindi or Islamabad?`,
         acceptedAnswer: {
           "@type": "Answer",
-          text: `You can buy the Suzuki ${product.name} at Suzuki Central Motors, an authorised 7S Suzuki dealership on G.T. Road, Rawalpindi, with test drives, financing guidance, genuine parts and after-sales service.`,
+          text: `You can buy the Suzuki ${product.name} at Central Motors, an authorised 7S Suzuki dealership on G.T. Road, Rawalpindi, with test drives, financing guidance, genuine parts and after-sales service.`,
         },
       },
       ...(product.specs?.tax

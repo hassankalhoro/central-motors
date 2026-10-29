@@ -4,6 +4,7 @@ const nextConfig = {
   poweredByHeader: false,
   compress: true,
   images: {
+    unoptimized: true,
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 60 * 60 * 24 * 365, // optimized images cached 1 year
     deviceSizes: [360, 414, 480, 576, 640, 768, 1024, 1280, 1536],

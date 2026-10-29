@@ -54,7 +54,7 @@ async function main() {
   if (process.argv[2] === "verify") return;
 
   const to = process.env.MAIL_TO || SMTP_USER;
-  const from = process.env.MAIL_FROM || `Suzuki Central Motors <${SMTP_USER}>`;
+  const from = process.env.MAIL_FROM || `Central Motors <${SMTP_USER}>`;
 
   for (const [kind, data] of Object.entries(SAMPLES)) {
     const { subject, html, text } = renderLeadEmail({ kind, data });

@@ -1,6 +1,6 @@
-# Suzuki Central Motors — Website
+# Central Motors — Website
 
-Public website for Suzuki Central Motors (Authorised 3S Suzuki Dealer, Rawalpindi).
+Public website for Central Motors (Authorised 3S Suzuki Dealer, Rawalpindi).
 Static public site backed by a lightweight backend: form submissions persist to a
 database and media is stored on a CDN. No admin panel yet.
 

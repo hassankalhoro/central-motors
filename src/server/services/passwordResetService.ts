@@ -62,7 +62,7 @@ export async function resetPassword(rawToken: string, newPassword: string): Prom
 }
 
 function resetEmail(name: string, link: string, fromName: string): { subject: string; html: string; text: string } {
-  const subject = "Reset your Suzuki Central Motors admin password";
+  const subject = "Reset your Central Motors admin password";
   const text =
     `Hello ${name},\n\n` +
     `We received a request to reset your admin password. Open the link below to choose a new one (valid for 1 hour):\n\n` +
@@ -72,7 +72,7 @@ function resetEmail(name: string, link: string, fromName: string): { subject: st
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center">
     <table role="presentation" width="100%" style="max-width:520px;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(6,36,92,.12);">
       <tr><td style="background:linear-gradient(135deg,#06245C,#0d3a86);padding:24px 30px;">
-        <div style="font:800 18px/1.1 sans-serif;color:#fff;">Suzuki Central Motors</div>
+        <div style="font:800 18px/1.1 sans-serif;color:#fff;">Central Motors</div>
         <div style="margin-top:3px;font:600 11px/1.3 sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#9db8e6;">Dealer Management Portal</div>
       </td></tr>
       <tr><td style="padding:30px;">

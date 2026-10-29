@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     template: `%s | ${settings.siteName}`,
   },
   description:
-    "Suzuki Central Motors, an authorised 7S Suzuki Motor Company dealership serving Rawalpindi and Islamabad. Buy Suzuki Fronx, Swift, Cultus, Alto and Every at official prices, book test drives, workshop service, genuine parts and warranty.",
+    "Central Motors, an authorised 7S Suzuki Motor Company dealership serving Rawalpindi and Islamabad. Buy Suzuki Fronx, Swift, Cultus, Alto and Every at official prices, book test drives, workshop service, genuine parts and warranty.",
   keywords: [
     "Suzuki",
     "Suzuki Pakistan",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     "Suzuki service center Rawalpindi",
     "Suzuki service center Islamabad",
     "Central Motors",
-    "Suzuki Central Motors",
+    "Central Motors",
     "new Suzuki models Pakistan",
   ],
   applicationName: settings.siteName,

@@ -16,13 +16,13 @@ import { t, langClass } from "@/lib/i18n";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: { absolute: "Suzuki Central Motors | Suzuki Cars, Prices, Rawalpindi & Islamabad" },
+  title: { absolute: "Central Motors | Suzuki Cars, Prices, Rawalpindi & Islamabad" },
   description:
-    "Suzuki Central Motors, an authorised 7S Suzuki Motor Company dealership serving Rawalpindi and Islamabad. Buy Suzuki Fronx, Swift, Cultus, Alto and Every at official prices, book test drives, workshop service, genuine parts and warranty.",
+    "Central Motors, an authorised 7S Suzuki Motor Company dealership serving Rawalpindi and Islamabad. Buy Suzuki Fronx, Swift, Cultus, Alto and Every at official prices, book test drives, workshop service, genuine parts and warranty.",
   keywords: [
     "Suzuki", "Suzuki Pakistan", "Suzuki Motor", "Suzuki Motors", "Suzuki Motor Company",
     "Suzuki Fronx", "Suzuki Fronx price in Pakistan", "Suzuki dealer Rawalpindi", "Suzuki dealer Islamabad",
-    "Suzuki Islamabad", "Suzuki showroom Rawalpindi", "Suzuki showroom Islamabad", "Suzuki Central Motors",
+    "Suzuki Islamabad", "Suzuki showroom Rawalpindi", "Suzuki showroom Islamabad", "Central Motors",
   ],
   alternates: { canonical: "/" },
 };
