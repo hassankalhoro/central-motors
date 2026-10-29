@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Archivo, Inter, Noto_Nastaliq_Urdu } from "next/font/google";
+import { Archivo, Inter } from "next/font/google";
 import "./globals.css";
 import { settings } from "@/data";
 
@@ -75,7 +75,7 @@ export const metadata: Metadata = {
  * the admin panel has its own layout under /admin. */
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable} ${urdu.variable} scroll-smooth`}>
+    <html lang="en" className={`${display.variable} ${body.variable} scroll-smooth`}>
       <body>{children}</body>
     </html>
   );
